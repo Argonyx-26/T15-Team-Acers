@@ -6,6 +6,8 @@
 | --- | --- |
 | `id` | Stable identifier used by the app |
 | `crop` | Crop name |
+| `state` | State where the recommendation applies |
+| `district` | District or locality, when the recommendation is localized |
 | `problem` | Pest, disease, or non-pest issue |
 | `symptoms` | Farmer-observable symptoms |
 | `severity` | `low`, `medium`, or `high` |
@@ -25,6 +27,10 @@
 | `hi_script` | Hindi audio advisory |
 | `source` | URL or document name |
 | `verification_status` | `draft`, `needs_local_verification`, or `ready_for_app` |
+
+The current intake covers Karnataka, Kerala, and Tamil Nadu. Do not use a
+state-wide record as proof that a product is approved or available in every
+district.
 
 ## Dosage calculation
 

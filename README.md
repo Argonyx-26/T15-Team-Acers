@@ -3,8 +3,10 @@
 ## Agri-Logic & Content Manager MVP
 
 This repository contains the content and data contract for the AgriPulse advisory
-feature. The current MVP is designed for a hackathon demonstration and focuses on
-three Karnataka-focused crops: tomato, rice, and chilli.
+feature. The current hackathon intake covers crop problems in Karnataka, Kerala,
+and Tamil Nadu. The original starter records remain a small demonstration set;
+the Word-document intake and its gaps are tracked in
+`data/hackprojectinfo-review.md`.
 
 ### Deliverables
 
