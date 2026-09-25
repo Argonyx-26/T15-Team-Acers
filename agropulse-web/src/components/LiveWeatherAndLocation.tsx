@@ -16,6 +16,8 @@ import {
   ExternalLink,
   ShieldAlert
 } from 'lucide-react';
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
 import { DISTRICTS, DistrictInfo } from '../data/districts';
 import { RiskTelemetry, fetchLiveRiskTelemetry } from '../services/riskService';
 import { getSoilProfileForDistrict, SoilProfile } from '../data/soilData';
@@ -126,11 +128,69 @@ export const LiveWeatherAndLocation: React.FC<LiveWeatherAndLocationProps> = ({
   const activeLat = customCoords?.lat ?? selectedDistrict.lat;
   const activeLon = customCoords?.lon ?? selectedDistrict.lon;
 
-  // Google Maps zero-redirect direct embed URL
-  const locationQuery = customCoords
-    ? `${activeLat},${activeLon}`
-    : `${selectedDistrict.name}, ${selectedDistrict.state}`;
-  const gmapsEmbedUrl = `https://www.google.com/maps/embed?origin=mfe&pb=!1m3!2m1!1s${encodeURIComponent(locationQuery)}!6i12`;
+  const mapContainerRef = React.useRef<HTMLDivElement | null>(null);
+  const mapInstanceRef = React.useRef<L.Map | null>(null);
+  const markerRef = React.useRef<L.Marker | null>(null);
+
+  // Initialize and update Google Maps via Leaflet canvas/tiles
+  useEffect(() => {
+    if (!mapContainerRef.current) return;
+
+    if (!mapInstanceRef.current) {
+      const map = L.map(mapContainerRef.current, {
+        center: [activeLat, activeLon],
+        zoom: 12,
+        zoomControl: true,
+        attributionControl: false,
+      });
+
+      // Genuine Google Maps tile layer (roadmap) — direct image requests, 100% bypasses Firefox iframe blocks
+      L.tileLayer('https://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
+        maxZoom: 20,
+        subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
+      }).addTo(map);
+
+      // Distinct Google Maps red marker pin
+      const googlePin = L.divIcon({
+        className: 'custom-map-pin',
+        html: `
+          <div style="position: relative; width: 30px; height: 42px; transform: translate(-15px, -42px); filter: drop-shadow(0 2px 5px rgba(0,0,0,0.5));">
+            <svg viewBox="0 0 24 36" width="30" height="42" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 0C5.37 0 0 5.37 0 12c0 9 12 24 12 24s12-15 12-24c0-6.63-5.37-12-12-12z" fill="#EA4335"/>
+              <circle cx="12" cy="12" r="5" fill="#FFFFFF"/>
+            </svg>
+          </div>
+        `,
+        iconSize: [0, 0],
+      });
+
+      const marker = L.marker([activeLat, activeLon], { icon: googlePin }).addTo(map);
+      marker.bindPopup(`<b>${selectedDistrict.name}</b><br/>${activeLat.toFixed(4)}°N, ${activeLon.toFixed(4)}°E`);
+
+      mapInstanceRef.current = map;
+      markerRef.current = marker;
+
+      setTimeout(() => map.invalidateSize(), 150);
+      setTimeout(() => map.invalidateSize(), 400);
+    } else {
+      mapInstanceRef.current.setView([activeLat, activeLon], 12, { animate: true });
+      if (markerRef.current) {
+        markerRef.current.setLatLng([activeLat, activeLon]);
+        markerRef.current.setPopupContent(`<b>${selectedDistrict.name}</b><br/>${activeLat.toFixed(4)}°N, ${activeLon.toFixed(4)}°E`);
+      }
+      setTimeout(() => mapInstanceRef.current?.invalidateSize(), 150);
+    }
+  }, [activeLat, activeLon, selectedDistrict.name]);
+
+  useEffect(() => {
+    return () => {
+      if (mapInstanceRef.current) {
+        mapInstanceRef.current.remove();
+        mapInstanceRef.current = null;
+      }
+    };
+  }, []);
+
   const gmapsExternalUrl = customCoords
     ? `https://www.google.com/maps/search/?api=1&query=${activeLat},${activeLon}`
     : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${selectedDistrict.name}, ${selectedDistrict.state}`)}`;
@@ -211,15 +271,12 @@ export const LiveWeatherAndLocation: React.FC<LiveWeatherAndLocationProps> = ({
         </div>
       )}
 
-      {/* Embedded Google Maps View & Coordinates Info */}
+      {/* Direct Google Maps Canvas (Bypasses Firefox/Brave Iframe Blocks) */}
       <div className="relative rounded-lg overflow-hidden border border-[#3A3A3A] bg-[#111111] h-48 mb-4">
-        <iframe
-          key={`${locationQuery}-${activeLat}-${activeLon}`}
-          title="Google Maps Field Location"
-          src={gmapsEmbedUrl}
-          className="w-full h-full border-0"
-          loading="eager"
-          referrerPolicy="no-referrer-when-downgrade"
+        <div
+          ref={mapContainerRef}
+          className="w-full h-full"
+          style={{ width: '100%', height: '100%', minHeight: '192px', zIndex: 1 }}
         />
         {/* Floating Coordinates overlay */}
         <div className="absolute bottom-2 left-2 right-2 z-10 bg-[#111111]/92 backdrop-blur-md border border-[#333333] px-3 py-1.5 rounded-md flex items-center justify-between text-[11px] font-mono shadow-md">
