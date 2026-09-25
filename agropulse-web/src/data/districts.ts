@@ -1,10 +1,11 @@
 export interface DistrictInfo {
   name: string;
-  state: 'Karnataka' | 'Kerala' | 'Tamil Nadu';
+  state: 'Karnataka' | 'Kerala' | 'Tamil Nadu' | 'Punjab';
   lat: number;
   lon: number;
   primaryCrops: string[];
   climateZone: string;
+  zone?: string;
 }
 
 export const TARGET_DISTRICTS: DistrictInfo[] = [
@@ -45,4 +46,12 @@ export const TARGET_DISTRICTS: DistrictInfo[] = [
   { name: 'Erode', state: 'Tamil Nadu', lat: 11.3410, lon: 77.7172, primaryCrops: ['Turmeric', 'Sugarcane', 'Banana', 'Rice'], climateZone: 'Western Zone' },
   { name: 'Tiruchirappalli', state: 'Tamil Nadu', lat: 10.7905, lon: 78.7047, primaryCrops: ['Banana', 'Rice', 'Cotton', 'Onion'], climateZone: 'Cauvery Delta' },
   { name: 'The Nilgiris', state: 'Tamil Nadu', lat: 11.4102, lon: 76.6950, primaryCrops: ['Potato', 'Tea', 'Carrot', 'Cabbage'], climateZone: 'High Altitude Hilly Zone' },
+
+  // Punjab (Indo-Gangetic Belt)
+  { name: 'Jalandhar', state: 'Punjab', lat: 31.3260, lon: 75.5762, primaryCrops: ['Potato (Seed Hub)', 'Wheat', 'Rice'], climateZone: 'Central Plain Zone' },
+  { name: 'Hoshiarpur', state: 'Punjab', lat: 31.5273, lon: 75.9149, primaryCrops: ['Kinnow', 'Potato', 'Maize', 'Wheat'], climateZone: 'Sub-Mountainous Undulating Zone' },
+  { name: 'Ludhiana', state: 'Punjab', lat: 30.9010, lon: 75.8573, primaryCrops: ['Wheat', 'Rice', 'Potato', 'Maize'], climateZone: 'Central Plain Zone' },
+  { name: 'Bathinda', state: 'Punjab', lat: 30.2110, lon: 74.9455, primaryCrops: ['Cotton', 'Wheat', 'Mustard'], climateZone: 'South-Western Zone' }
 ];
+
+export const DISTRICTS: DistrictInfo[] = TARGET_DISTRICTS;

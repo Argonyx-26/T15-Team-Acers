@@ -133,7 +133,7 @@ export const WeatherRiskCard: React.FC<WeatherRiskCardProps> = ({ currentCrop, o
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-xs font-mono uppercase tracking-wider text-[#AEA79F]">Risk Score</span>
                   <span className="text-[11px] font-mono text-[#AEA79F] px-1.5 py-0.5 rounded bg-[#1E1E1E] border border-[#2E2E2E]">
-                    {telemetry.source === 'live' ? 'Live Open-Meteo' : 'Cached Fallback'}
+                    {telemetry.source.includes('live') ? 'Live Telemetry' : 'Cached Fallback'}
                   </span>
                 </div>
                 <div className="flex items-baseline gap-2 mb-1">
