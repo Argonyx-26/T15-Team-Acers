@@ -21,7 +21,7 @@ The detailed implementation handoff is documented in
 
 This repository contains the content and data contract for the AgriPulse advisory
 feature. The current hackathon intake covers crop problems in Karnataka, Kerala,
-and Tamil Nadu. The original starter records remain a small demonstration set;
+Tamil Nadu, and potato coverage in Punjab. The original starter records remain a small demonstration set;
 the Word-document intake and its gaps are tracked in
 `data/hackprojectinfo-review.md`.
 
@@ -38,6 +38,16 @@ the Word-document intake and its gaps are tracked in
 - `data/latest-product-verification.csv` - latest product-label and dosage records, pending evidence
 - `data/latest-final-status.csv` - final readiness status for each crop problem
 - `data/app-safety-settings.txt` - team-approved recommendation safety behavior
+- `data/tomato-potato-source-register.csv` - tomato and potato source records
+- `data/tomato-potato-crop-problems.csv` - tomato and potato symptoms and prevention
+- `data/tomato-potato-product-verification.csv` - tomato and potato product records
+- `data/tomato-potato-calculations.csv` - dosage calculations for the new crops
+- `data/tomato-potato-prices-and-alternatives.csv` - price and alternative records
+- `data/tomato-potato-diagnosis.csv` - diagnostic confirmation records
+- `data/tomato-potato-final-status.csv` - readiness status for the new crops
+- `data/punjab-districts.csv` - Punjab district scope introduced for potato
+- `data/updated-regulatory-status.csv` - regulatory claims requiring evidence checks
+- `data/diagnostic-protocols.csv` - field diagnosis and triage protocols
 - `content/audio-scripts.md` - optional short multilingual scripts; language review is outside the current scope
 
 ### Safety rule

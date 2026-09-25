@@ -1,0 +1,3 @@
+state_scope,crop,problem,scientific_name,diagnosis_status,similar_problems,diagnostic_difference,expert_confirmation
+"Karnataka; Tamil Nadu; Kerala",Tomato,Early blight,Alternaria solani,not_confirmed,"Late blight; Septoria leaf spot; bacterial spot","Early blight has target-like concentric rings on lower leaves; late blight has rapidly expanding water-soaked lesions and white growth; bacterial spots lack concentric rings.",not_provided
+"Karnataka; Tamil Nadu; Punjab",Potato,Late blight,Phytophthora infestans,not_confirmed,"Early blight; frost/chemical injury; bacterial wilt","Late blight expands rapidly with wet dark lesions and white underside growth; early blight has dry target rings; bacterial wilt causes wilt without foliar blight lesions.",not_provided

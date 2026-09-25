@@ -54,6 +54,25 @@ The latest product-label records, final readiness states, and app safety
 settings are in `latest-product-verification.csv`, `latest-final-status.csv`,
 and `app-safety-settings.txt`.
 
+Tomato and potato intake records are in:
+
+- `tomato-potato-source-register.csv`
+- `tomato-potato-crop-problems.csv`
+- `tomato-potato-product-verification.csv`
+- `tomato-potato-calculations.csv`
+- `tomato-potato-prices-and-alternatives.csv`
+- `tomato-potato-diagnosis.csv`
+- `tomato-potato-final-status.csv`
+
+The Word document expands potato coverage to Punjab. Its 23-district scope is
+listed in `punjab-districts.csv`; all new tomato and potato records remain
+pending verification.
+
+The updated regulatory claims and diagnostic protocols from the document are
+preserved in `updated-regulatory-status.csv` and `diagnostic-protocols.csv`.
+These are evidence-tracking records, not proof that a product is legally
+approved for every listed crop or target.
+
 ## Dosage calculation
 
 Only calculate a quantity after the label dose and the required field units are

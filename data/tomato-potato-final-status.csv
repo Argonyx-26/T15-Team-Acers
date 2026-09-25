@@ -1,0 +1,3 @@
+state_scope,crop,problem,source_status,dosage_status,product_label_status,safety_status,price_status,diagnosis_status,final_status
+"Karnataka; Tamil Nadu; Kerala",Tomato,Early blight,needs_verification,needs_verification,needs_verification,needs_verification,needs_verification,needs_verification,draft_only
+"Karnataka; Tamil Nadu; Punjab",Potato,Late blight,needs_verification,needs_verification,needs_verification,needs_verification,needs_verification,needs_verification,draft_only

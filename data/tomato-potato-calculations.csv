@@ -1,0 +1,4 @@
+product_id,crop,problem,field_size,field_unit,water_quantity,total_water,total_product,calculation,calculation_status
+TOMATO-PROD-01,Tomato,Early blight,1,Acre,200 L/acre,200 L,400 g,"200 L/acre x 1 acre = 200 L; 2 g/L x 200 L = 400 g",needs_verification
+POTATO-PROD-01,Potato,Late blight,1,Acre,200 L/acre,200 L,400 g,"200 L/acre x 1 acre = 200 L; 2 g/L x 200 L = 400 g",needs_verification
+POTATO-PROD-01,Potato,Late blight,100,kg seed tubers,Seed treatment dose 2.5 g/kg,Not applicable,250 g,"100 kg x 2.5 g/kg = 250 g",needs_verification
