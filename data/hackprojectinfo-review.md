@@ -31,6 +31,8 @@ explicit fields instead of treating all recommendations as interchangeable.
   waiting periods.
 - Four product price estimates: tricyclazole, chlorantraniliprole,
   imidacloprid, and propiconazole.
+- Dosage values from the Word document are preserved in
+  `data/word-doc-dosage-draft.csv` as user-provided draft data.
 - English, Kannada, Hindi, Tamil, and Malayalam reviewer fields (no reviewers
   have been identified yet).
 - Developer handoff format: both CSV and JSON.
@@ -89,6 +91,11 @@ These are **not** being treated as verified recommendations:
   the stated PHI applies to the product and use pattern.
 - The onion combination must not be presented as an approved mixture until the
   label or an authoritative recommendation explicitly supports it.
+
+The Word-document dosage register is intentionally separate from
+`advisories.csv`. This preserves the information supplied by the team without
+claiming that every rate, mixture, application method, or waiting period is
+currently label-approved.
 
 ## Research plan for missing data
 

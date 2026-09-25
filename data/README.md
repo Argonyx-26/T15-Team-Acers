@@ -40,6 +40,13 @@ The initial geography list for all districts in the three states is in
 `target-districts.csv`. District coverage does not mean that every product is
 approved, stocked, or priced identically in every district.
 
+The dosage values transcribed from the submitted Word document are preserved in
+`word-doc-dosage-draft.csv`. They are explicitly marked
+`user_provided_needs_verification` or `user_provided_needs_label_verification`.
+They must not be shown as final recommendations until the crop, target,
+formulation, dose, method, waiting period, and safety instructions are checked
+against a current official label or agricultural package.
+
 ## Dosage calculation
 
 Only calculate a quantity after the label dose and the required field units are
