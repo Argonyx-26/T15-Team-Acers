@@ -48,6 +48,9 @@ the Word-document intake and its gaps are tracked in
 - `data/punjab-districts.csv` - Punjab district scope introduced for potato
 - `data/updated-regulatory-status.csv` - regulatory claims requiring evidence checks
 - `data/diagnostic-protocols.csv` - field diagnosis and triage protocols
+- `data/soil-climate-baseline.csv` - regional soil, crop-fit, and climate baseline
+- `data/soil-climate-risk-rules.csv` - soil/climate risk signals for the app
+- `data/soil-climate-source-register.csv` - source and verification register
 - `content/audio-scripts.md` - optional short multilingual scripts; language review is outside the current scope
 
 ### Safety rule

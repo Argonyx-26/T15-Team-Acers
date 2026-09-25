@@ -1,0 +1,8 @@
+state_or_region,soil_or_climate_signal,related_crops,linked_risk,app_action,verification_status
+Karnataka red-soil rainfed belt,Delayed monsoon or mid-season dry spell,Ragi; millets; pulses,Drought stress and blast risk after humidity swings,Ask for rainfall/soil-moisture deviation; prioritize moisture conservation and diagnosis before chemical advice,needs_verification
+Karnataka black-soil belt,Heavy rain followed by poor drainage,Sugarcane; pulses; cereals,Waterlogging and root stress,Flag drainage risk and suppress blanket irrigation/fertilizer advice,needs_verification
+Karnataka Western Ghats laterite,High rainfall plus acidic low-CEC soil,Rubber; pepper; coconut,Leaching and Phytophthora disease pressure,Prioritize drainage, organic matter, and soil-test-based lime; show disease triage,needs_verification
+Tamil Nadu Cauvery delta alluvium,High EC or saline irrigation water,Rice; banana; sugarcane,Salinity intrusion and yield decline,Request EC/water-source data and flag salinity risk,needs_verification
+Tamil Nadu interior red soil,Delayed NE monsoon followed by humid wet period,Onion; ragi; pulses,Drought followed by fungal disease pressure,Flag moisture stress then disease-conducive humidity,needs_verification
+Kerala laterite,High rainfall and low pH/low CEC,Rubber; pepper; coconut; banana,Nutrient leaching and Phytophthora diseases,Recommend soil test, organic matter and drainage before chemical escalation,needs_verification
+Kerala Kuttanad,Water table rise or high EC,Rice,Flooding and salinity,Flag water-control and salinity risk; route to local rice advisory,needs_verification

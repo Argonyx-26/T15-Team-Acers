@@ -1,0 +1,7 @@
+source_id,topic,source_institution,source_url,document_or_reference,what_it_can_verify,status
+SOIL-PPQS-01,Pesticide legality and major uses,"Directorate of Plant Protection Quarantine and Storage",https://ppqs.gov.in/divisions/central-insecticide-board-registration-committee/major-uses-of-pesticides,"CIBRC major-use register; not a soil source but needed when soil-aware advice includes chemicals","Verify product claims separately"
+SOIL-KAU-01,Kerala soil and agro-climate,"Kerala Agricultural University",https://kau.in/,"Soil survey, package of practices, and Kerala agro-climate references","needs_document_page"
+SOIL-TNAU-01,Tamil Nadu soil and agro-climate,"Tamil Nadu Agricultural University Agritech Portal",https://agritech.tnau.ac.in/,"Crop production, soil, and agro-climate references","needs_document_page"
+SOIL-UASB-01,Karnataka soil and agro-climate,"University of Agricultural Sciences Bengaluru",https://uasbangalore.edu.in/,"Karnataka package and regional agriculture references","needs_document_page"
+SOIL-ICAR-01,National soil survey and soil health,"ICAR / National Bureau of Soil Survey and Land Use Planning","Not confirmed - supplied domain currently resolves to a parked page","Soil classification, mapping, and land-use references","needs_authoritative_url"
+SOIL-REPORT-01,Submitted baseline,"Soil_Climate_Intelligence_Report_KA_TN_KL.docx","file supplied by team","Regional soil groups, crop fit, climate ranges, and risk hypotheses","team_draft_needs_verification"

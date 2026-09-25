@@ -73,6 +73,15 @@ preserved in `updated-regulatory-status.csv` and `diagnostic-protocols.csv`.
 These are evidence-tracking records, not proof that a product is legally
 approved for every listed crop or target.
 
+The soil and climate layer is in `soil-climate-baseline.csv`,
+`soil-climate-risk-rules.csv`, and `soil-climate-source-register.csv`.
+Soil pH, nutrient, rainfall, and district mappings are regional baselines—not
+substitutes for a farmer's laboratory soil test. The supplied report does not
+cover Punjab soil/climate even though potato coverage includes Punjab; that
+state needs a separate soil baseline before soil-aware potato logic is enabled.
+The app should request or
+accept soil-test pH, EC, organic carbon, N, P, K, and texture when available.
+
 ## Dosage calculation
 
 Only calculate a quantity after the label dose and the required field units are
