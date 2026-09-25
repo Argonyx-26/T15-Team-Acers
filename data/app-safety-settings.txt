@@ -1,0 +1,9 @@
+chemical_recommendation_requires_expert_warning=yes
+show_eco_friendly_actions_before_chemicals=yes
+hide_unverified_products=yes
+
+uncertain_diagnosis_message=The diagnosis is not confirmed. Please provide a clear crop image and symptom details, and consult a local agriculture expert before using any chemical treatment.
+
+unverified_dosage_message=The dosage for this product has not yet been verified from a current official label. Do not apply it until the label or an agriculture expert confirms the dose, water quantity, application method, and waiting period.
+
+safety_disclaimer=This advisory is for general guidance only and does not replace advice from a qualified agriculture officer or the current product label. Use a chemical only if it is approved for the selected crop and problem. Follow the label dosage, water quantity, application method, waiting period, re-entry period, protective equipment, mixing instructions, environmental restrictions, and disposal instructions. Do not mix products unless the label specifically permits it. Keep chemicals away from children, livestock, food, and water sources. Do not spray in strong wind, rain, or extreme heat. If the diagnosis is uncertain, do not apply a chemical treatment until expert confirmation is obtained.

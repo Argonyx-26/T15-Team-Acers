@@ -35,6 +35,9 @@ the Word-document intake and its gaps are tracked in
 - `data/word-doc-dosage-draft.csv` - dosage values transcribed from the submitted Word document, pending verification
 - `data/updated-source-register.csv` - source/package records from the updated Word document
 - `data/updated-crop-problems.csv` - crop symptoms and preventive guidance from the updated Word document
+- `data/latest-product-verification.csv` - latest product-label and dosage records, pending evidence
+- `data/latest-final-status.csv` - final readiness status for each crop problem
+- `data/app-safety-settings.txt` - team-approved recommendation safety behavior
 - `content/audio-scripts.md` - optional short multilingual scripts; language review is outside the current scope
 
 ### Safety rule

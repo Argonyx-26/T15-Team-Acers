@@ -50,6 +50,10 @@ against a current official label or agricultural package.
 The updated Word-document source and crop-problem records are in
 `updated-source-register.csv` and `updated-crop-problems.csv`.
 
+The latest product-label records, final readiness states, and app safety
+settings are in `latest-product-verification.csv`, `latest-final-status.csv`,
+and `app-safety-settings.txt`.
+
 ## Dosage calculation
 
 Only calculate a quantity after the label dose and the required field units are
