@@ -47,6 +47,9 @@ They must not be shown as final recommendations until the crop, target,
 formulation, dose, method, waiting period, and safety instructions are checked
 against a current official label or agricultural package.
 
+The updated Word-document source and crop-problem records are in
+`updated-source-register.csv` and `updated-crop-problems.csv`.
+
 ## Dosage calculation
 
 Only calculate a quantity after the label dose and the required field units are
@@ -76,5 +79,4 @@ Before changing a record to `ready_for_app`, confirm:
 - waiting period and safety instructions are recorded;
 - generic alternatives have the same active ingredient and formulation;
 - cost is calculated per acre and has a date/source;
-- Kannada and Hindi were reviewed by a fluent speaker;
 - the recommendation does not imply a certain diagnosis from an uncertain image.

@@ -33,8 +33,8 @@ explicit fields instead of treating all recommendations as interchangeable.
   imidacloprid, and propiconazole.
 - Dosage values from the Word document are preserved in
   `data/word-doc-dosage-draft.csv` as user-provided draft data.
-- English, Kannada, Hindi, Tamil, and Malayalam reviewer fields (no reviewers
-  have been identified yet).
+- Language-review fields were removed from the project scope at the team lead's
+  request; they are not required for app readiness.
 - Developer handoff format: both CSV and JSON.
 - Planned app inputs: crop, state/district, crop stage, written symptoms,
   image, field size, and preferred language.
@@ -47,16 +47,13 @@ explicit fields instead of treating all recommendations as interchangeable.
    all districts are included in `data/target-districts.csv`. Local product
    availability and prices still need district-level evidence before being
    displayed.
-2. **Demo district or location**. No district has been selected yet.
-3. **Language reviewer names and capabilities** for Kannada, Hindi, Tamil, and
-   Malayalam. Blank reviewer fields remain unapproved.
-4. **App input contract:** image, farmer text, crop stage, field size, symptoms,
+2. **App input contract:** image, farmer text, crop stage, field size, symptoms,
    or a combination.
-5. **Developer export requirement:** CSV, JSON, or both. The repository currently
+3. **Developer export requirement:** CSV, JSON, or both. The repository currently
    contains both.
-6. **Price date, pack-size evidence, and retailer/source URL** for each cost
+4. **Price date, pack-size evidence, and retailer/source URL** for each cost
    estimate.
-7. **Direct links** for the named agriculture sources and product labels. The
+5. **Direct links** for the named agriculture sources and product labels. The
    document provides institution names and source descriptions, but no clickable
    source URLs or document page numbers.
 
@@ -71,7 +68,6 @@ explicit fields instead of treating all recommendations as interchangeable.
 5. Whether a stated product is suitable for the disease named in the draft.
 6. Whether a mixture is label-approved. The app must not imply that two
    products can be tank-mixed merely because both appear in one draft.
-7. Local-language terminology and audio pronunciation review by fluent speakers.
 
 ## Safety flags requiring source review
 
@@ -115,10 +111,10 @@ currently label-approved.
 
 - `draft`: transcribed from the Word document; not checked.
 - `needs_source_verification`: a source or label is missing.
-- `needs_local_review`: source exists but local agronomist or language review is
+- `needs_local_review`: source exists but an agriculture expert review is
   pending.
-- `ready_for_app`: all required technical, safety, price, and language checks
-  are complete.
+- `ready_for_app`: all required technical, safety, price, and source checks are
+  complete.
 
 The Word-document entries should remain `needs_source_verification`. CPCRI's
 official coconut bud-rot page is recorded as `source_backed_needs_label_check`,

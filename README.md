@@ -33,7 +33,9 @@ the Word-document intake and its gaps are tracked in
 - `data/kerala-tamilnadu-packages.md` - package-of-practices collection guide
 - `data/target-districts.csv` - all districts in Karnataka, Kerala, and Tamil Nadu
 - `data/word-doc-dosage-draft.csv` - dosage values transcribed from the submitted Word document, pending verification
-- `content/audio-scripts.md` - short English, Kannada, and Hindi scripts for audio testing
+- `data/updated-source-register.csv` - source/package records from the updated Word document
+- `data/updated-crop-problems.csv` - crop symptoms and preventive guidance from the updated Word document
+- `content/audio-scripts.md` - optional short multilingual scripts; language review is outside the current scope
 
 ### Safety rule
 
@@ -49,5 +51,5 @@ before displaying a chemical recommendation.
 2. Confirm the target state/region and the supported crops.
 3. Replace `source_pending` values with authoritative sources.
 4. Add only label-verified dosage and cost data.
-5. Have a native Kannada and Hindi speaker review the audio scripts.
-6. Mark a record `ready_for_app` only after all required checks pass.
+5. Mark a record `ready_for_app` only after all required technical, source,
+   safety, and price checks pass.
