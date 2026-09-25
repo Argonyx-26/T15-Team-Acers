@@ -12,6 +12,8 @@ the Word-document intake and its gaps are tracked in
 
 - `data/advisories.csv` - importable advisory records for the app team
 - `data/README.md` - field definitions, validation rules, and dosage-calculation rules
+- `data/kerala-tamilnadu-crop-sources.csv` - source and package register for the additional states
+- `data/kerala-tamilnadu-packages.md` - package-of-practices collection guide
 - `content/audio-scripts.md` - short English, Kannada, and Hindi scripts for audio testing
 
 ### Safety rule

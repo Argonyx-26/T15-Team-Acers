@@ -32,6 +32,10 @@ The current intake covers Karnataka, Kerala, and Tamil Nadu. Do not use a
 state-wide record as proof that a product is approved or available in every
 district.
 
+The Kerala and Tamil Nadu source register is in
+`kerala-tamilnadu-crop-sources.csv`, with package references in
+`kerala-tamilnadu-packages.md`.
+
 ## Dosage calculation
 
 Only calculate a quantity after the label dose and the required field units are
