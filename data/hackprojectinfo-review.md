@@ -16,10 +16,11 @@
 | Kerala | Black pepper | Quick wilt |
 | Tamil Nadu | Banana | Fusarium wilt / Panama disease symptoms |
 | Tamil Nadu | Onion | Purple blotch symptoms |
-| Tamil Nadu | Rice | Crop listed, but no separate problem was provided |
+| Tamil Nadu | Rice | Excluded from the app-ready scope for now; no problem was supplied |
 
 The original MVP was Karnataka-only. This intake expands the requested scope to
-three states, so the app should store `state` and preferably `district` as
+three states—Karnataka, Kerala, and Tamil Nadu—so the app should store `state`
+and preferably `district` as
 explicit fields instead of treating all recommendations as interchangeable.
 
 ## Information captured from the document
@@ -30,7 +31,11 @@ explicit fields instead of treating all recommendations as interchangeable.
   waiting periods.
 - Four product price estimates: tricyclazole, chlorantraniliprole,
   imidacloprid, and propiconazole.
-- English, Kannada, Hindi, Tamil, and Malayalam reviewer fields.
+- English, Kannada, Hindi, Tamil, and Malayalam reviewer fields (no reviewers
+  have been identified yet).
+- Developer handoff format: both CSV and JSON.
+- Planned app inputs: crop, state/district, crop stage, written symptoms,
+  image, field size, and preferred language.
 
 ## Missing or incomplete information
 
@@ -38,8 +43,7 @@ explicit fields instead of treating all recommendations as interchangeable.
 
 1. **District or demonstration location** for each state. "All districts" is too
    broad for local availability and advisory wording.
-2. **Tamil Nadu rice problem** or confirmation that the duplicate crop should be
-   removed.
+2. **Demo district or location**. No district has been selected yet.
 3. **Language reviewer names and capabilities** for Kannada, Hindi, Tamil, and
    Malayalam. Blank reviewer fields remain unapproved.
 4. **App input contract:** image, farmer text, crop stage, field size, symptoms,
@@ -48,6 +52,9 @@ explicit fields instead of treating all recommendations as interchangeable.
    contains both.
 6. **Price date, pack-size evidence, and retailer/source URL** for each cost
    estimate.
+7. **Direct links** for the named agriculture sources and product labels. The
+   document provides institution names and source descriptions, but no clickable
+   source URLs or document page numbers.
 
 ### Must be verified before `ready_for_app`
 
@@ -104,4 +111,6 @@ These are **not** being treated as verified recommendations:
 - `ready_for_app`: all required technical, safety, price, and language checks
   are complete.
 
-At present, the Word-document entries should remain `needs_source_verification`.
+The Word-document entries should remain `needs_source_verification`. The
+Tamil Nadu rice row is not included in the app-ready crop-problem scope until
+the team defines a problem for it.
