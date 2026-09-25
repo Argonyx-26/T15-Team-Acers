@@ -118,8 +118,9 @@ export const LiveWeatherAndLocation: React.FC<LiveWeatherAndLocationProps> = ({
   const activeLat = customCoords?.lat ?? selectedDistrict.lat;
   const activeLon = customCoords?.lon ?? selectedDistrict.lon;
 
-  // Google Maps Embed URL with pinned location
-  const gmapsEmbedUrl = `https://maps.google.com/maps?q=${activeLat},${activeLon}&z=11&output=embed`;
+  // OpenStreetMap embed URL with marker pin for zero-block, high-reliability rendering
+  const bboxDelta = 0.08;
+  const osmEmbedUrl = `https://www.openstreetmap.org/export/embed.html?bbox=${(activeLon - bboxDelta).toFixed(4)}%2C${(activeLat - bboxDelta).toFixed(4)}%2C${(activeLon + bboxDelta).toFixed(4)}%2C${(activeLat + bboxDelta).toFixed(4)}&layer=mapnik&marker=${activeLat.toFixed(4)}%2C${activeLon.toFixed(4)}`;
 
   // Spray drift safety assessment based on wind speed
   const windSpeed = telemetry?.windSpeedKmH || 11.5;
@@ -197,22 +198,30 @@ export const LiveWeatherAndLocation: React.FC<LiveWeatherAndLocationProps> = ({
         </div>
       )}
 
-      {/* Embedded Google Maps View & Coordinates Info */}
+      {/* Embedded OpenStreetMap View & Coordinates Info */}
       <div className="relative rounded-lg overflow-hidden border border-[#3A3A3A] bg-[#111111] h-44 mb-4">
         <iframe
           title="Field Location Pin Map"
-          src={gmapsEmbedUrl}
-          className="w-full h-full border-0 filter invert contrast-125 brightness-90 grayscale-[25%]"
+          src={osmEmbedUrl}
+          className="w-full h-full border-0 filter contrast-105 opacity-90"
           loading="lazy"
         />
         {/* Floating Coordinates overlay */}
-        <div className="absolute bottom-2 left-2 right-2 bg-[#111111]/90 backdrop-blur-md border border-[#333333] px-3 py-1.5 rounded-md flex items-center justify-between text-[11px] font-mono">
+        <div className="absolute bottom-2 left-2 right-2 bg-[#111111]/92 backdrop-blur-md border border-[#333333] px-3 py-1.5 rounded-md flex items-center justify-between text-[11px] font-mono">
           <div className="flex items-center gap-1.5 text-white">
             <MapPin className="w-3 h-3 text-[#E95420]" />
             <span className="font-semibold">{selectedDistrict.name}, {selectedDistrict.state}</span>
           </div>
-          <div className="text-[#AEA79F]">
-            {activeLat.toFixed(4)}°N, {activeLon.toFixed(4)}°E
+          <div className="text-[#AEA79F] flex items-center gap-2">
+            <span>{activeLat.toFixed(4)}°N, {activeLon.toFixed(4)}°E</span>
+            <a
+              href={`https://www.openstreetmap.org/?mlat=${activeLat}&mlon=${activeLon}#map=12/${activeLat}/${activeLon}`}
+              target="_blank"
+              rel="noreferrer"
+              className="text-[#E95420] hover:underline text-[10px]"
+            >
+              Open Map ↗
+            </a>
           </div>
         </div>
       </div>
