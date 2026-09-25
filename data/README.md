@@ -82,6 +82,16 @@ state needs a separate soil baseline before soil-aware potato logic is enabled.
 The app should request or
 accept soil-test pH, EC, organic carbon, N, P, K, and texture when available.
 
+The later Word-document soil update is preserved in
+`updated-soil-climate-profiles.csv`. It adds crop-specific regional profiles
+for ragi, sugarcane, rice, and potato in Karnataka; rubber, coconut, and black
+pepper in Kerala; and paddy, coconut, banana, tomato, and potato in Tamil Nadu.
+These records remain `team_document_needs_independent_verification`: the
+document contains blank numeric fields for several Tamil Nadu records and
+mostly portal-level citations without exact pages or tables. Do not expose its
+fertilizer, lime, gypsum, pesticide, or disease-threshold claims as verified
+recommendations until the cited source documents and units are checked.
+
 ## Dosage calculation
 
 Only calculate a quantity after the label dose and the required field units are

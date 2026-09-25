@@ -51,6 +51,7 @@ the Word-document intake and its gaps are tracked in
 - `data/soil-climate-baseline.csv` - regional soil, crop-fit, and climate baseline
 - `data/soil-climate-risk-rules.csv` - soil/climate risk signals for the app
 - `data/soil-climate-source-register.csv` - source and verification register
+- `data/updated-soil-climate-profiles.csv` - crop-specific soil profiles from the latest Word document, pending independent verification
 - `content/audio-scripts.md` - optional short multilingual scripts; language review is outside the current scope
 
 ### Safety rule
