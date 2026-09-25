@@ -91,24 +91,24 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = ({ scripts, cropName, dis
   };
 
   return (
-    <div className="bg-[#192720] border border-[#2b4437] rounded-xl p-4 text-[#e2ece4]">
+    <div className="bg-[#1E1E1E] border border-[#2E2E2E] rounded-xl p-4 text-[#E5E5E5]">
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-lg bg-[#243d30] flex items-center justify-center text-[#9ed871]">
-            <Volume2 className="w-4 h-4" />
+          <div className="w-8 h-8 rounded-lg bg-[#2A160F] flex items-center justify-center text-[#E95420]">
+            <Volume2 className="w-4 h-4 text-[#E95420]" />
           </div>
           <div>
-            <h4 className="text-sm font-semibold text-[#f0f7f2]">Field Audio Advisory</h4>
-            <p className="text-xs text-[#87a393]">Vernacular speech for non-reading operators</p>
+            <h4 className="text-sm font-semibold text-[#FFFFFF]">Field Audio Advisory</h4>
+            <p className="text-xs text-[#AEA79F]">Vernacular speech for non-reading operators</p>
           </div>
         </div>
 
         {isPlaying && (
           <div className="flex items-center gap-1">
-            <span className="w-1 h-3 bg-[#9ed871] animate-pulse rounded-full" />
-            <span className="w-1 h-5 bg-[#9ed871] animate-pulse delay-75 rounded-full" />
-            <span className="w-1 h-2 bg-[#9ed871] animate-pulse delay-150 rounded-full" />
-            <span className="w-1 h-4 bg-[#9ed871] animate-pulse delay-100 rounded-full" />
+            <span className="w-1 h-3 bg-[#E95420] animate-pulse rounded-full" />
+            <span className="w-1 h-5 bg-[#E95420] animate-pulse delay-75 rounded-full" />
+            <span className="w-1 h-2 bg-[#E95420] animate-pulse delay-150 rounded-full" />
+            <span className="w-1 h-4 bg-[#E95420] animate-pulse delay-100 rounded-full" />
           </div>
         )}
       </div>
@@ -120,8 +120,8 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = ({ scripts, cropName, dis
           onClick={() => handlePlay('kn')}
           className={`py-2 px-3 rounded-lg text-xs font-semibold flex items-center justify-center gap-1.5 transition-all border ${
             selectedLang === 'kn' && isPlaying
-              ? 'bg-[#9ed871] text-[#0f1d16] border-[#9ed871]'
-              : 'bg-[#121f19] hover:bg-[#1a2d24] text-[#cfdec4] border-[#294134]'
+              ? 'bg-[#E95420] text-white border-[#E95420] shadow-sm'
+              : 'bg-[#141414] hover:bg-[#1E1E1E] text-[#CCCCCC] border-[#2E2E2E]'
           }`}
         >
           {isPlaying && selectedLang === 'kn' ? <Square className="w-3 h-3 fill-current" /> : <Play className="w-3 h-3 fill-current" />}
@@ -133,8 +133,8 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = ({ scripts, cropName, dis
           onClick={() => handlePlay('hi')}
           className={`py-2 px-3 rounded-lg text-xs font-semibold flex items-center justify-center gap-1.5 transition-all border ${
             selectedLang === 'hi' && isPlaying
-              ? 'bg-[#9ed871] text-[#0f1d16] border-[#9ed871]'
-              : 'bg-[#121f19] hover:bg-[#1a2d24] text-[#cfdec4] border-[#294134]'
+              ? 'bg-[#E95420] text-white border-[#E95420] shadow-sm'
+              : 'bg-[#141414] hover:bg-[#1E1E1E] text-[#CCCCCC] border-[#2E2E2E]'
           }`}
         >
           {isPlaying && selectedLang === 'hi' ? <Square className="w-3 h-3 fill-current" /> : <Play className="w-3 h-3 fill-current" />}
@@ -146,8 +146,8 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = ({ scripts, cropName, dis
           onClick={() => handlePlay('en')}
           className={`py-2 px-3 rounded-lg text-xs font-semibold flex items-center justify-center gap-1.5 transition-all border ${
             selectedLang === 'en' && isPlaying
-              ? 'bg-[#9ed871] text-[#0f1d16] border-[#9ed871]'
-              : 'bg-[#121f19] hover:bg-[#1a2d24] text-[#cfdec4] border-[#294134]'
+              ? 'bg-[#E95420] text-white border-[#E95420] shadow-sm'
+              : 'bg-[#141414] hover:bg-[#1E1E1E] text-[#CCCCCC] border-[#2E2E2E]'
           }`}
         >
           {isPlaying && selectedLang === 'en' ? <Square className="w-3 h-3 fill-current" /> : <Play className="w-3 h-3 fill-current" />}
@@ -156,17 +156,17 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = ({ scripts, cropName, dis
       </div>
 
       {/* Transcript Card */}
-      <div className="bg-[#121d17] border border-[#23382c] rounded-lg p-3 text-xs leading-relaxed text-[#c3d6c8]">
-        <div className="flex items-center justify-between text-[11px] text-[#789684] mb-1.5 font-mono uppercase tracking-wider">
+      <div className="bg-[#141414] border border-[#2E2E2E] rounded-lg p-3 text-xs leading-relaxed text-[#CCCCCC]">
+        <div className="flex items-center justify-between text-[11px] text-[#AEA79F] mb-1.5 font-mono uppercase tracking-wider">
           <span>{selectedLang === 'kn' ? 'Kannada Transcript' : selectedLang === 'hi' ? 'Hindi Transcript' : 'English Transcript'}</span>
-          {isPlaying && <span className="text-[#9ed871] font-semibold">Broadcasting</span>}
+          {isPlaying && <span className="text-[#E95420] font-semibold">Broadcasting</span>}
         </div>
-        <p className="font-sans text-[13px] text-[#e0ece3]">{scripts[selectedLang]}</p>
+        <p className="font-sans text-[13px] text-[#FFFFFF]">{scripts[selectedLang]}</p>
       </div>
 
       {voiceNotice && (
-        <p className="text-[11px] text-[#93aba0] mt-2 flex items-center gap-1.5 font-mono">
-          <span className="w-1.5 h-1.5 rounded-full bg-[#f3ad5c]" />
+        <p className="text-[11px] text-[#AEA79F] mt-2 flex items-center gap-1.5 font-mono">
+          <span className="w-1.5 h-1.5 rounded-full bg-[#E95420]" />
           {voiceNotice}
         </p>
       )}

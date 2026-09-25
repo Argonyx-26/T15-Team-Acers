@@ -363,33 +363,33 @@ export const ModelTestingStudio: React.FC = () => {
   const advisory: AdvisoryItem | undefined = ADVISORIES_MAP[prediction.className];
 
   return (
-    <div className="bg-[#121e18] border border-[#22382b] rounded-2xl p-6 text-[#e2ede5] shadow-2xl">
+    <div className="bg-[#1E1E1E] border border-[#2E2E2E] rounded-2xl p-6 text-[#E5E5E5] shadow-2xl">
       {/* Studio Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-[#1e3427]">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-[#2E2E2E]">
         <div>
-          <div className="flex items-center gap-2 text-xs font-mono text-[#9ed871] uppercase tracking-wider mb-1">
-            <FlaskConical className="w-4 h-4 text-[#9ed871]" />
+          <div className="flex items-center gap-2 text-xs font-mono text-[#E95420] uppercase tracking-wider mb-1">
+            <FlaskConical className="w-4 h-4 text-[#E95420]" />
             <span>AI Model Testing Lab & Neural Diagnostic Studio</span>
           </div>
-          <h2 className="text-2xl font-bold font-serif text-[#f2f7f3]">
+          <h2 className="text-2xl font-bold font-serif text-[#FFFFFF]">
             Empirical Validation & Stress Test Workbench
           </h2>
-          <p className="text-xs text-[#8ca395] mt-1 max-w-2xl">
+          <p className="text-xs text-[#AEA79F] mt-1 max-w-2xl">
             Test the 17-class MobileNetV2 vision model, verify autonomous crop recognition, inspect cross-validation mismatch alerts, and simulate Bayesian microclimate priors.
           </p>
         </div>
 
         {/* Backend & Model Status Pill */}
         <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2">
-          <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[#0c1611] border border-[#1b2f23] text-xs font-mono">
-            <Cpu className="w-3.5 h-3.5 text-[#84c3e8]" />
-            <span className="text-[#84c3e8]">Model:</span>
-            <span className="text-[#cfe4d7]">TFLite (2.7 MB)</span>
+          <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[#141414] border border-[#2E2E2E] text-xs font-mono">
+            <Cpu className="w-3.5 h-3.5 text-[#E95420]" />
+            <span className="text-[#AEA79F]">Model:</span>
+            <span className="text-[#FFFFFF]">TFLite (2.7 MB)</span>
           </div>
-          <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[#0c1611] border border-[#1b2f23] text-xs font-mono">
-            <span className={`w-2 h-2 rounded-full ${apiOnline ? 'bg-[#9ed871] animate-pulse' : 'bg-[#f5a65b]'}`} />
-            <span className="text-[#8ca395]">API:</span>
-            <span className={apiOnline ? 'text-[#9ed871] font-bold' : 'text-[#f5a65b]'}>
+          <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[#141414] border border-[#2E2E2E] text-xs font-mono">
+            <span className={`w-2 h-2 rounded-full ${apiOnline ? 'bg-[#38B44A] animate-pulse' : 'bg-[#E95420]'}`} />
+            <span className="text-[#AEA79F]">API:</span>
+            <span className={apiOnline ? 'text-[#38B44A] font-bold' : 'text-[#E95420]'}>
               {apiOnline ? 'Online (:8000)' : 'Standalone'}
             </span>
           </div>
@@ -397,13 +397,13 @@ export const ModelTestingStudio: React.FC = () => {
       </div>
 
       {/* Tabs */}
-      <div className="flex border-b border-[#1e3427] mt-4 mb-6">
+      <div className="flex border-b border-[#2E2E2E] mt-4 mb-6">
         <button
           onClick={() => setActiveTab('interactive')}
           className={`py-3 px-5 text-xs font-mono uppercase tracking-wider font-semibold border-b-2 transition-all flex items-center gap-2 ${
             activeTab === 'interactive'
-              ? 'border-[#9ed871] text-[#9ed871] bg-[#16271f]'
-              : 'border-transparent text-[#779483] hover:text-[#cfe4d7]'
+              ? 'border-[#E95420] text-[#E95420] bg-[#2A160F]'
+              : 'border-transparent text-[#AEA79F] hover:text-[#FFFFFF]'
           }`}
         >
           <Sliders className="w-3.5 h-3.5" />
@@ -414,8 +414,8 @@ export const ModelTestingStudio: React.FC = () => {
           onClick={() => setActiveTab('automated')}
           className={`py-3 px-5 text-xs font-mono uppercase tracking-wider font-semibold border-b-2 transition-all flex items-center gap-2 ${
             activeTab === 'automated'
-              ? 'border-[#9ed871] text-[#9ed871] bg-[#16271f]'
-              : 'border-transparent text-[#779483] hover:text-[#cfe4d7]'
+              ? 'border-[#E95420] text-[#E95420] bg-[#2A160F]'
+              : 'border-transparent text-[#AEA79F] hover:text-[#FFFFFF]'
           }`}
         >
           <Play className="w-3.5 h-3.5" />
@@ -429,16 +429,16 @@ export const ModelTestingStudio: React.FC = () => {
           {/* Left Column: Preset Test Vectors & Upload & Weather Simulator */}
           <div className="lg:col-span-5 space-y-5">
             {/* Farmer Crop Input Selection (Cross-Validation) */}
-            <div className="bg-[#0e1813] border border-[#1c3024] rounded-xl p-4">
+            <div className="bg-[#141414] border border-[#2E2E2E] rounded-xl p-4">
               <div className="flex items-center justify-between mb-2">
-                <span className="text-xs font-mono text-[#9ed871] uppercase tracking-wider font-semibold">
+                <span className="text-xs font-mono text-[#E95420] uppercase tracking-wider font-semibold">
                   Crop Input Selection (Cross-Validation)
                 </span>
-                <span className="text-[10px] font-mono text-[#779483]">
+                <span className="text-[10px] font-mono text-[#AEA79F]">
                   {farmerCropInput === 'Auto' ? 'Autonomous AI Detection' : `Selected: ${farmerCropInput}`}
                 </span>
               </div>
-              <p className="text-[11px] text-[#8ca395] mb-3">
+              <p className="text-[11px] text-[#AEA79F] mb-3">
                 Select your crop or leave on Auto. The AI autonomously recognizes leaf morphology and alerts if the selected crop does not match the specimen.
               </p>
               <div className="flex flex-wrap gap-1.5">
@@ -453,8 +453,8 @@ export const ModelTestingStudio: React.FC = () => {
                       }}
                       className={`px-3 py-1.5 rounded-lg text-xs font-mono transition-all ${
                         isSelected
-                          ? 'bg-[#1b3124] border border-[#9ed871] text-[#9ed871] font-bold shadow-sm'
-                          : 'bg-[#121f18] border border-[#1d3326] text-[#8ca395] hover:text-[#cfe4d7] hover:border-[#2f503c]'
+                          ? 'bg-[#2A160F] border border-[#E95420] text-[#E95420] font-bold shadow-sm'
+                          : 'bg-[#181818] border border-[#2E2E2E] text-[#AEA79F] hover:text-[#FFFFFF] hover:border-[#444444]'
                       }`}
                     >
                       {crop === 'Auto' ? '★ Auto-Detect Crop' : crop}
@@ -465,12 +465,12 @@ export const ModelTestingStudio: React.FC = () => {
             </div>
 
             {/* Quick Test Vector Selector */}
-            <div className="bg-[#0e1813] border border-[#1c3024] rounded-xl p-4">
+            <div className="bg-[#141414] border border-[#2E2E2E] rounded-xl p-4">
               <div className="flex items-center justify-between mb-3">
-                <span className="text-xs font-mono text-[#9ed871] uppercase tracking-wider font-semibold">
+                <span className="text-xs font-mono text-[#E95420] uppercase tracking-wider font-semibold">
                   Test Vector Presets (17 Classes)
                 </span>
-                <span className="text-[11px] font-mono text-[#6c8577]">Click to Test</span>
+                <span className="text-[11px] font-mono text-[#AEA79F]">Click to Test</span>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 max-h-60 overflow-y-auto pr-1">
@@ -487,19 +487,19 @@ export const ModelTestingStudio: React.FC = () => {
                       }}
                       className={`text-left p-2 rounded-lg border text-xs transition-all ${
                         isSelected
-                          ? 'bg-[#1b3124] border-[#9ed871] text-[#f2f7f3]'
-                          : 'bg-[#121f18] border-[#1d3326] text-[#b3ccc0] hover:border-[#2f503c]'
+                          ? 'bg-[#2A160F] border-[#E95420] text-[#FFFFFF]'
+                          : 'bg-[#181818] border-[#2E2E2E] text-[#CCCCCC] hover:border-[#444444]'
                       }`}
                     >
                       <div className="flex items-center justify-between gap-1 mb-1">
                         <span className="font-semibold truncate">{tc.name.split('—')[1] || tc.name}</span>
                         {isBug01 && (
-                          <span className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-[#3d2015] text-[#f5a65b] border border-[#5d301f]">
+                          <span className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-[#2A160F] text-[#E95420] border border-[#E95420]/40">
                             BUG-01
                           </span>
                         )}
                       </div>
-                      <div className="text-[10px] font-mono text-[#779483] truncate">{tc.crop}</div>
+                      <div className="text-[10px] font-mono text-[#AEA79F] truncate">{tc.crop}</div>
                     </button>
                   );
                 })}
@@ -507,17 +507,17 @@ export const ModelTestingStudio: React.FC = () => {
             </div>
 
             {/* Custom Image Upload Dropzone */}
-            <div className="bg-[#0e1813] border border-[#1c3024] rounded-xl p-4">
-              <span className="text-xs font-mono text-[#9ed871] uppercase tracking-wider font-semibold block mb-2">
+            <div className="bg-[#141414] border border-[#2E2E2E] rounded-xl p-4">
+              <span className="text-xs font-mono text-[#E95420] uppercase tracking-wider font-semibold block mb-2">
                 Custom Field Capture Upload
               </span>
 
-              <label className="border-2 border-dashed border-[#243d2e] hover:border-[#9ed871] rounded-xl p-4 flex flex-col items-center justify-center cursor-pointer transition-all bg-[#121f18]/60 hover:bg-[#16271e]">
-                <RefreshCw className="w-5 h-5 text-[#8ca395] mb-2" />
-                <span className="text-xs text-[#cfded4] font-medium text-center">
+              <label className="border-2 border-dashed border-[#2E2E2E] hover:border-[#E95420] rounded-xl p-4 flex flex-col items-center justify-center cursor-pointer transition-all bg-[#181818]/60 hover:bg-[#202020]">
+                <RefreshCw className="w-5 h-5 text-[#AEA79F] mb-2" />
+                <span className="text-xs text-[#E5E5E5] font-medium text-center">
                   Drag & Drop or Click to Upload Leaf Image
                 </span>
-                <span className="text-[10px] font-mono text-[#6c8577] mt-1">
+                <span className="text-[10px] font-mono text-[#AEA79F] mt-1">
                   Evaluated at 224×224 RGB via TFLite
                 </span>
                 <input
@@ -540,22 +540,22 @@ export const ModelTestingStudio: React.FC = () => {
             </div>
 
             {/* Microclimate Weather Prior Sliders */}
-            <div className="bg-[#0e1813] border border-[#1c3024] rounded-xl p-4 space-y-3">
+            <div className="bg-[#141414] border border-[#2E2E2E] rounded-xl p-4 space-y-3">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-mono text-[#f5a65b] uppercase tracking-wider font-semibold flex items-center gap-1.5">
-                  <Sliders className="w-3.5 h-3.5" />
+                <span className="text-xs font-mono text-[#E95420] uppercase tracking-wider font-semibold flex items-center gap-1.5">
+                  <Sliders className="w-3.5 h-3.5 text-[#E95420]" />
                   <span>Bayesian Microclimate Prior Simulator</span>
                 </span>
-                <span className="text-xs font-mono font-bold text-[#f5a65b]">
+                <span className="text-xs font-mono font-bold text-[#E95420]">
                   Risk: {computedWeatherRisk} / 100
                 </span>
               </div>
 
               {/* Temp Slider */}
               <div>
-                <div className="flex justify-between text-[11px] font-mono text-[#8ca395] mb-1">
+                <div className="flex justify-between text-[11px] font-mono text-[#AEA79F] mb-1">
                   <span>Temperature: {simTemp.toFixed(1)}°C</span>
-                  <span className="text-[#6c8577]">(Sporulation: 24-28°C)</span>
+                  <span className="text-[#888888]">(Sporulation: 24-28°C)</span>
                 </div>
                 <input
                   type="range"
@@ -564,15 +564,15 @@ export const ModelTestingStudio: React.FC = () => {
                   step="0.5"
                   value={simTemp}
                   onChange={(e) => setSimTemp(parseFloat(e.target.value))}
-                  className="w-full accent-[#f5a65b] cursor-pointer h-1.5 bg-[#1b2f23] rounded-lg"
+                  className="w-full accent-[#E95420] cursor-pointer h-1.5 bg-[#2E2E2E] rounded-lg"
                 />
               </div>
 
               {/* RH Slider */}
               <div>
-                <div className="flex justify-between text-[11px] font-mono text-[#8ca395] mb-1">
+                <div className="flex justify-between text-[11px] font-mono text-[#AEA79F] mb-1">
                   <span>Relative Humidity: {simRH}%</span>
-                  <span className="text-[#6c8577]">(Severe: &gt;85%)</span>
+                  <span className="text-[#888888]">(Severe: &gt;85%)</span>
                 </div>
                 <input
                   type="range"
@@ -581,15 +581,15 @@ export const ModelTestingStudio: React.FC = () => {
                   step="1"
                   value={simRH}
                   onChange={(e) => setSimRH(parseInt(e.target.value, 10))}
-                  className="w-full accent-[#f5a65b] cursor-pointer h-1.5 bg-[#1b2f23] rounded-lg"
+                  className="w-full accent-[#E95420] cursor-pointer h-1.5 bg-[#2E2E2E] rounded-lg"
                 />
               </div>
 
               {/* Wet Hours Slider */}
               <div>
-                <div className="flex justify-between text-[11px] font-mono text-[#8ca395] mb-1">
+                <div className="flex justify-between text-[11px] font-mono text-[#AEA79F] mb-1">
                   <span>Leaf Wetness Duration: {simWetHours} hrs</span>
-                  <span className="text-[#6c8577]">(Wallin Index)</span>
+                  <span className="text-[#888888]">(Wallin Index)</span>
                 </div>
                 <input
                   type="range"
@@ -598,7 +598,7 @@ export const ModelTestingStudio: React.FC = () => {
                   step="1"
                   value={simWetHours}
                   onChange={(e) => setSimWetHours(parseInt(e.target.value, 10))}
-                  className="w-full accent-[#f5a65b] cursor-pointer h-1.5 bg-[#1b2f23] rounded-lg"
+                  className="w-full accent-[#E95420] cursor-pointer h-1.5 bg-[#2E2E2E] rounded-lg"
                 />
               </div>
             </div>
@@ -607,60 +607,60 @@ export const ModelTestingStudio: React.FC = () => {
           {/* Right Column: Diagnostic & Inspection Dashboard */}
           <div className="lg:col-span-7 space-y-5">
             {/* Main Diagnostic Status Card */}
-            <div className="bg-[#0e1813] border border-[#1c3024] rounded-xl p-5 space-y-4">
+            <div className="bg-[#141414] border border-[#2E2E2E] rounded-xl p-5 space-y-4">
               <div className="flex flex-wrap items-start justify-between gap-3">
                 <div>
                   <div className="flex items-center gap-2 mb-1">
-                    <span className="text-xs font-mono text-[#8ca395] uppercase tracking-wider">
+                    <span className="text-xs font-mono text-[#AEA79F] uppercase tracking-wider">
                       Neural Inference Verdict
                     </span>
                     {prediction.status === 'DIAGNOSIS_CONFIRMED' && (
-                      <span className="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-[#173022] text-[#9ed871] border border-[#274f37]">
+                      <span className="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-[#2A160F] text-[#E95420] border border-[#E95420]/40">
                         CONFIRMED
                       </span>
                     )}
                     {prediction.status === 'REJECTED_NON_LEAF' && (
-                      <span className="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-[#3b2014] text-[#f5a65b] border border-[#61321e]">
+                      <span className="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-[#2A160F] text-[#E95420] border border-[#E95420]/60">
                         REJECTED: NON-LEAF (BUG-01)
                       </span>
                     )}
                   </div>
-                  <h3 className="text-xl font-bold font-serif text-[#f2f7f3]">
+                  <h3 className="text-xl font-bold font-serif text-[#FFFFFF]">
                     {prediction.className.replace(/___/g, ' — ')}
                   </h3>
                 </div>
 
                 <div className="text-right">
-                  <div className="text-[10px] font-mono text-[#779483] uppercase">Confidence</div>
-                  <div className="text-2xl font-mono font-extrabold text-[#9ed871]">
+                  <div className="text-[10px] font-mono text-[#AEA79F] uppercase">Confidence</div>
+                  <div className="text-2xl font-mono font-extrabold text-[#E95420]">
                     {prediction.confidence.toFixed(1)}%
                   </div>
                 </div>
               </div>
 
               {/* Dual-Task Autonomous Crop & Cross-Validation Card */}
-              <div className="bg-[#122019] border border-[#1d3326] rounded-xl p-3.5 space-y-2.5">
+              <div className="bg-[#1A1A1A] border border-[#2E2E2E] rounded-xl p-3.5 space-y-2.5">
                 <div className="flex flex-wrap items-center justify-between gap-2">
                   <div className="flex items-center gap-2">
-                    <span className="text-xs font-mono text-[#8ca395] uppercase">Autonomous Crop ID:</span>
-                    <span className="text-sm font-bold font-mono text-[#f2f7f3] bg-[#0c1611] px-2.5 py-0.5 rounded-md border border-[#1b3125]">
+                    <span className="text-xs font-mono text-[#AEA79F] uppercase">Autonomous Crop ID:</span>
+                    <span className="text-sm font-bold font-mono text-[#FFFFFF] bg-[#111111] px-2.5 py-0.5 rounded-md border border-[#2E2E2E]">
                       {prediction.detectedCrop}
                     </span>
-                    <span className="text-xs font-mono text-[#9ed871]">
+                    <span className="text-xs font-mono text-[#E95420]">
                       ({prediction.cropConfidence.toFixed(1)}%)
                     </span>
                   </div>
 
                   <div>
                     {prediction.cropVerification === 'VERIFIED_MATCH' && (
-                      <span className="px-2.5 py-1 rounded-full text-[10px] font-mono font-bold bg-[#173022] text-[#9ed871] border border-[#274f37] flex items-center gap-1">
-                        <CheckCircle2 className="w-3 h-3 text-[#9ed871]" />
+                      <span className="px-2.5 py-1 rounded-full text-[10px] font-mono font-bold bg-[#173022] text-[#38B44A] border border-[#274f37] flex items-center gap-1">
+                        <CheckCircle2 className="w-3 h-3 text-[#38B44A]" />
                         <span>FARMER INPUT VERIFIED</span>
                       </span>
                     )}
                     {prediction.cropVerification === 'CROP_MISMATCH_DETECTED' && (
-                      <span className="px-2.5 py-1 rounded-full text-[10px] font-mono font-bold bg-[#3b2014] text-[#f5a65b] border border-[#6d3720] flex items-center gap-1 animate-pulse">
-                        <AlertTriangle className="w-3 h-3 text-[#f5a65b]" />
+                      <span className="px-2.5 py-1 rounded-full text-[10px] font-mono font-bold bg-[#2A160F] text-[#E95420] border border-[#E95420]/60 flex items-center gap-1 animate-pulse">
+                        <AlertTriangle className="w-3 h-3 text-[#E95420]" />
                         <span>CROP MISMATCH CAUGHT</span>
                       </span>
                     )}
@@ -675,10 +675,10 @@ export const ModelTestingStudio: React.FC = () => {
 
                 {/* Crop Mismatch Alert Banner */}
                 {prediction.mismatchWarning && (
-                  <div className="p-3 rounded-lg bg-[#3b2014] border border-[#6d3720] text-[#fcd1b2] text-xs flex items-start gap-2">
-                    <AlertTriangle className="w-4 h-4 text-[#f5a65b] shrink-0 mt-0.5" />
+                  <div className="p-3 rounded-lg bg-[#2A160F] border border-[#E95420]/50 text-[#FFB69B] text-xs flex items-start gap-2">
+                    <AlertTriangle className="w-4 h-4 text-[#E95420] shrink-0 mt-0.5" />
                     <div>
-                      <span className="font-bold text-[#f5a65b] block mb-0.5">Crop Morphology Mismatch Alert:</span>
+                      <span className="font-bold text-[#E95420] block mb-0.5">Crop Morphology Mismatch Alert:</span>
                       {prediction.mismatchWarning}
                     </div>
                   </div>
@@ -686,20 +686,20 @@ export const ModelTestingStudio: React.FC = () => {
 
                 {/* Marginal Crop Distribution Bars */}
                 {prediction.cropDistribution && (
-                  <div className="pt-2 border-t border-[#1b2f23]">
-                    <span className="text-[10px] font-mono text-[#779483] uppercase block mb-1.5 font-semibold">
+                  <div className="pt-2 border-t border-[#2E2E2E]">
+                    <span className="text-[10px] font-mono text-[#AEA79F] uppercase block mb-1.5 font-semibold">
                       Marginal Crop Domain Distribution P(Crop | Leaf)
                     </span>
                     <div className="grid grid-cols-2 sm:grid-cols-5 gap-2">
                       {Object.entries(prediction.cropDistribution).map(([cropName, val]) => (
-                        <div key={cropName} className="bg-[#0c1611] p-1.5 rounded border border-[#182a1f] text-[11px] font-mono">
-                          <div className="flex justify-between text-[#8ca395] mb-0.5">
+                        <div key={cropName} className="bg-[#111111] p-1.5 rounded border border-[#2E2E2E] text-[11px] font-mono">
+                          <div className="flex justify-between text-[#AEA79F] mb-0.5">
                             <span className="truncate">{cropName}</span>
-                            <span className={val > 50 ? 'text-[#9ed871] font-bold' : 'text-[#6c8577]'}>{val.toFixed(1)}%</span>
+                            <span className={val > 50 ? 'text-[#E95420] font-bold' : 'text-[#888888]'}>{val.toFixed(1)}%</span>
                           </div>
-                          <div className="w-full bg-[#16271e] rounded-full h-1 overflow-hidden">
+                          <div className="w-full bg-[#222222] rounded-full h-1 overflow-hidden">
                             <div
-                              className={`h-full rounded-full transition-all duration-500 ${val > 50 ? 'bg-[#9ed871]' : 'bg-[#406853]'}`}
+                              className={`h-full rounded-full transition-all duration-500 ${val > 50 ? 'bg-[#E95420]' : 'bg-[#555555]'}`}
                               style={{ width: `${Math.min(100, Math.max(3, val))}%` }}
                             />
                           </div>
@@ -711,31 +711,31 @@ export const ModelTestingStudio: React.FC = () => {
               </div>
 
               {/* Shannon Entropy & Latency Metric Strip */}
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-3 border-t border-[#1b2f23] text-xs font-mono">
-                <div className="bg-[#122019] p-2 rounded-lg border border-[#1b3125]">
-                  <div className="text-[10px] text-[#779483]">Entropy H(p)</div>
-                  <div className="text-[#9ed871] font-bold">{prediction.entropy} bits</div>
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-3 border-t border-[#2E2E2E] text-xs font-mono">
+                <div className="bg-[#1A1A1A] p-2 rounded-lg border border-[#2E2E2E]">
+                  <div className="text-[10px] text-[#AEA79F]">Entropy H(p)</div>
+                  <div className="text-[#E95420] font-bold">{prediction.entropy} bits</div>
                 </div>
-                <div className="bg-[#122019] p-2 rounded-lg border border-[#1b3125]">
-                  <div className="text-[10px] text-[#779483]">Inference Time</div>
-                  <div className="text-[#84c3e8] font-bold">{prediction.latencyMs} ms</div>
+                <div className="bg-[#1A1A1A] p-2 rounded-lg border border-[#2E2E2E]">
+                  <div className="text-[10px] text-[#AEA79F]">Inference Time</div>
+                  <div className="text-[#FFFFFF] font-bold">{prediction.latencyMs} ms</div>
                 </div>
-                <div className="bg-[#122019] p-2 rounded-lg border border-[#1b3125]">
-                  <div className="text-[10px] text-[#779483]">Uncertainty Threshold</div>
-                  <div className="text-[#b3ccc0]">1.75 bits</div>
+                <div className="bg-[#1A1A1A] p-2 rounded-lg border border-[#2E2E2E]">
+                  <div className="text-[10px] text-[#AEA79F]">Uncertainty Threshold</div>
+                  <div className="text-[#CCCCCC]">1.75 bits</div>
                 </div>
-                <div className="bg-[#122019] p-2 rounded-lg border border-[#1b3125]">
-                  <div className="text-[10px] text-[#779483]">BUG-01 Guard</div>
-                  <div className="text-[#9ed871] font-bold">ACTIVE</div>
+                <div className="bg-[#1A1A1A] p-2 rounded-lg border border-[#2E2E2E]">
+                  <div className="text-[10px] text-[#AEA79F]">BUG-01 Guard</div>
+                  <div className="text-[#38B44A] font-bold">ACTIVE</div>
                 </div>
               </div>
 
               {/* BUG-01 Guard Message */}
               {prediction.status === 'REJECTED_NON_LEAF' && (
-                <div className="p-3.5 rounded-xl bg-[#3b2014] border border-[#6d3720] text-[#fcd1b2] text-xs flex items-start gap-2.5">
-                  <AlertTriangle className="w-4 h-4 text-[#f5a65b] shrink-0 mt-0.5" />
+                <div className="p-3.5 rounded-xl bg-[#2A160F] border border-[#E95420]/60 text-[#FFB69B] text-xs flex items-start gap-2.5">
+                  <AlertTriangle className="w-4 h-4 text-[#E95420] shrink-0 mt-0.5" />
                   <div>
-                    <span className="font-bold text-[#f5a65b] block mb-0.5">BUG-01 Non-Leaf Rejection Guard Triggered:</span>
+                    <span className="font-bold text-[#E95420] block mb-0.5">BUG-01 Non-Leaf Rejection Guard Triggered:</span>
                     The vision model classified this image as background clutter or non-crop object (confidence {prediction.confidence}%). The system safely refuses to output false chemical recommendations.
                   </div>
                 </div>
@@ -743,10 +743,10 @@ export const ModelTestingStudio: React.FC = () => {
 
               {/* Weather Threat Surge */}
               {prediction.threatLevel === 'ELEVATED_EPIDEMIOLOGICAL_RISK' && (
-                <div className="p-3.5 rounded-xl bg-[#3d1814] border border-[#7a2820] text-[#ffb5ab] text-xs flex items-start gap-2.5">
-                  <AlertCircle className="w-4 h-4 text-[#ff7865] shrink-0 mt-0.5" />
+                <div className="p-3.5 rounded-xl bg-[#33140C] border border-[#E95420] text-[#FFB69B] text-xs flex items-start gap-2.5">
+                  <AlertCircle className="w-4 h-4 text-[#E95420] shrink-0 mt-0.5" />
                   <div>
-                    <span className="font-bold text-[#ff7865] block mb-0.5">Microclimate Bayesian Threat Surge:</span>
+                    <span className="font-bold text-[#E95420] block mb-0.5">Microclimate Bayesian Threat Surge:</span>
                     {prediction.weatherNote}
                   </div>
                 </div>
@@ -754,19 +754,19 @@ export const ModelTestingStudio: React.FC = () => {
 
               {/* Top-3 Differential Probability Bars */}
               <div>
-                <span className="text-xs font-mono text-[#8ca395] uppercase tracking-wider block mb-2 font-semibold">
+                <span className="text-xs font-mono text-[#AEA79F] uppercase tracking-wider block mb-2 font-semibold">
                   Top Differential Candidates
                 </span>
                 <div className="space-y-2">
                   {prediction.topDifferential.map((cand, idx) => (
-                    <div key={idx} className="bg-[#122019] p-2 rounded-lg border border-[#1b3125] text-xs font-mono">
-                      <div className="flex justify-between text-[#cfe4d7] mb-1">
+                    <div key={idx} className="bg-[#1A1A1A] p-2 rounded-lg border border-[#2E2E2E] text-xs font-mono">
+                      <div className="flex justify-between text-[#E5E5E5] mb-1">
                         <span className="truncate">{idx + 1}. {cand.class_name.replace(/___/g, ' ')}</span>
-                        <span className="font-bold text-[#9ed871]">{cand.confidence_percent.toFixed(1)}%</span>
+                        <span className="font-bold text-[#E95420]">{cand.confidence_percent.toFixed(1)}%</span>
                       </div>
-                      <div className="w-full bg-[#1b2f23] rounded-full h-1.5 overflow-hidden">
+                      <div className="w-full bg-[#2E2E2E] rounded-full h-1.5 overflow-hidden">
                         <div
-                          className="bg-[#9ed871] h-full rounded-full transition-all duration-500"
+                          className="bg-[#E95420] h-full rounded-full transition-all duration-500"
                           style={{ width: `${Math.min(100, cand.confidence_percent)}%` }}
                         />
                       </div>
@@ -777,11 +777,11 @@ export const ModelTestingStudio: React.FC = () => {
 
               {/* Raw Tensor Output Inspector */}
               <div>
-                <div className="flex items-center gap-1.5 text-xs font-mono text-[#779483] mb-1">
-                  <Terminal className="w-3.5 h-3.5 text-[#9ed871]" />
+                <div className="flex items-center gap-1.5 text-xs font-mono text-[#AEA79F] mb-1">
+                  <Terminal className="w-3.5 h-3.5 text-[#E95420]" />
                   <span>TensorFlow Lite Contract Payload</span>
                 </div>
-                <pre className="bg-[#080f0b] border border-[#182a1f] rounded-lg p-3 text-[11px] font-mono text-[#9ed871] overflow-x-auto max-h-40">
+                <pre className="bg-[#0D0D0D] border border-[#2E2E2E] rounded-lg p-3 text-[11px] font-mono text-[#E95420] overflow-x-auto max-h-40">
                   {JSON.stringify(prediction.rawJson || {
                     status: prediction.status,
                     class_name: prediction.className,
@@ -801,12 +801,12 @@ export const ModelTestingStudio: React.FC = () => {
       {/* TAB 2: AUTOMATED QA BENCHMARK SUITE */}
       {activeTab === 'automated' && (
         <div className="space-y-5">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-[#0e1813] border border-[#1c3024] p-4 rounded-xl">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-[#141414] border border-[#2E2E2E] p-4 rounded-xl">
             <div>
-              <span className="text-xs font-mono text-[#9ed871] uppercase tracking-wider font-semibold block">
+              <span className="text-xs font-mono text-[#E95420] uppercase tracking-wider font-semibold block">
                 Standard Agricultural Validation Battery
               </span>
-              <p className="text-xs text-[#8ca395] mt-0.5">
+              <p className="text-xs text-[#AEA79F] mt-0.5">
                 Executes the standardized 8-scenario test suite verifying crop diseases, healthy foliage, and BUG-01 rejection.
               </p>
             </div>
@@ -814,7 +814,7 @@ export const ModelTestingStudio: React.FC = () => {
             <button
               onClick={runAutomatedSuite}
               disabled={suiteRunning}
-              className="py-2.5 px-5 rounded-xl bg-[#9ed871] hover:bg-[#8ec763] text-[#0f1d16] font-mono font-bold text-xs flex items-center gap-2 transition-all shadow-md disabled:opacity-50"
+              className="py-2.5 px-5 rounded-xl bg-[#E95420] hover:bg-[#FF6332] text-white font-mono font-bold text-xs flex items-center gap-2 transition-all shadow-md disabled:opacity-50"
             >
               {suiteRunning ? (
                 <>
@@ -831,10 +831,10 @@ export const ModelTestingStudio: React.FC = () => {
           </div>
 
           {/* Results Table */}
-          <div className="overflow-x-auto border border-[#1c3024] rounded-xl bg-[#0e1813]">
+          <div className="overflow-x-auto border border-[#2E2E2E] rounded-xl bg-[#141414]">
             <table className="w-full text-left border-collapse text-xs font-mono">
               <thead>
-                <tr className="border-b border-[#1c3024] bg-[#122019] text-[#8ca395]">
+                <tr className="border-b border-[#2E2E2E] bg-[#1A1A1A] text-[#AEA79F]">
                   <th className="p-3">Scenario Name</th>
                   <th className="p-3">Crop (AI ID)</th>
                   <th className="p-3">Predicted Pathology</th>
@@ -844,33 +844,33 @@ export const ModelTestingStudio: React.FC = () => {
                   <th className="p-3">Verdict</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[#182b20]">
+              <tbody className="divide-y divide-[#242424]">
                 {suiteResults.length === 0 ? (
                   <tr>
-                    <td colSpan={7} className="p-8 text-center text-[#6c8577]">
+                    <td colSpan={7} className="p-8 text-center text-[#888888]">
                       Click "Run Complete Suite" to benchmark all 8 scenarios live.
                     </td>
                   </tr>
                 ) : (
                   suiteResults.map((r, i) => (
-                    <tr key={i} className="hover:bg-[#13231a] transition-colors">
-                      <td className="p-3 text-[#f2f7f3] font-medium">{r.name}</td>
+                    <tr key={i} className="hover:bg-[#1E1E1E] transition-colors">
+                      <td className="p-3 text-[#FFFFFF] font-medium">{r.name}</td>
                       <td className="p-3">
-                        <span className="px-2 py-0.5 rounded bg-[#16271e] text-[#9ed871] font-bold border border-[#213b2c]">
+                        <span className="px-2 py-0.5 rounded bg-[#1E1E1E] text-[#E95420] font-bold border border-[#2E2E2E]">
                           {r.detectedCrop}
                         </span>
                       </td>
-                      <td className="p-3 text-[#cfe4d7] font-semibold">{r.predicted.replace(/___/g, ' ')}</td>
-                      <td className="p-3 text-[#9ed871]">{r.confidence}%</td>
+                      <td className="p-3 text-[#E5E5E5] font-semibold">{r.predicted.replace(/___/g, ' ')}</td>
+                      <td className="p-3 text-[#E95420]">{r.confidence}%</td>
                       <td className="p-3">
                         {r.cropVerification === 'CROP_MISMATCH_DETECTED' ? (
-                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#3b2014] text-[#f5a65b] border border-[#6d3720]">
-                            <AlertTriangle className="w-3 h-3 text-[#f5a65b]" />
+                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#2A160F] text-[#E95420] border border-[#E95420]/60">
+                            <AlertTriangle className="w-3 h-3 text-[#E95420]" />
                             <span>MISMATCH CAUGHT</span>
                           </span>
                         ) : r.cropVerification === 'VERIFIED_MATCH' ? (
-                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#173022] text-[#9ed871] border border-[#274f37]">
-                            <CheckCircle2 className="w-3 h-3 text-[#9ed871]" />
+                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#173022] text-[#38B44A] border border-[#274f37]">
+                            <CheckCircle2 className="w-3 h-3 text-[#38B44A]" />
                             <span>VERIFIED</span>
                           </span>
                         ) : (
@@ -880,10 +880,10 @@ export const ModelTestingStudio: React.FC = () => {
                           </span>
                         )}
                       </td>
-                      <td className="p-3 text-[#84c3e8]">{r.latencyMs} ms</td>
+                      <td className="p-3 text-[#CCCCCC]">{r.latencyMs} ms</td>
                       <td className="p-3">
-                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#173022] text-[#9ed871] border border-[#274f37]">
-                          <CheckCircle2 className="w-3 h-3 text-[#9ed871]" />
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#173022] text-[#38B44A] border border-[#274f37]">
+                          <CheckCircle2 className="w-3 h-3 text-[#38B44A]" />
                           <span>PASS</span>
                         </span>
                       </td>

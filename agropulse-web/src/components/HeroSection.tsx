@@ -3,90 +3,90 @@ import { Camera, CloudRain, Volume2, ShieldCheck, ArrowDown } from 'lucide-react
 
 export const HeroSection: React.FC = () => {
   return (
-    <div className="relative pt-10 pb-12 sm:pt-14 sm:pb-16 border-b border-[#21382b]">
+    <div className="relative pt-10 pb-12 sm:pt-14 sm:pb-16 border-b border-[#2C2C2C] bg-[#141414]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-3xl">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#182a20] border border-[#2d4b39] text-[#9ed871] text-xs font-mono mb-4">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#9ed871]" />
-            <span>AGROPULSE · FIELD INTELLIGENCE MVP</span>
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#222222] border border-[#383838] text-[#E95420] text-xs font-mono font-bold mb-4">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#E95420] animate-pulse" />
+            <span>AGROPULSE · CANONICAL INTELLIGENCE ARCHITECTURE</span>
           </div>
 
-          <h1 className="font-serif text-3xl sm:text-5xl font-bold tracking-tight text-[#f2f7f3] leading-[1.15]">
-            A calmer, safer way to read the field.
+          <h1 className="text-3xl sm:text-5xl font-bold tracking-tight text-white leading-[1.15]">
+            A reliable, offline-first way to diagnose crops in the field.
           </h1>
 
-          <p className="mt-4 text-base sm:text-lg text-[#9cb4a6] leading-relaxed font-sans max-w-2xl">
-            Offline-first crop health diagnosis and microclimate disease forecasting for smallholder farmers across Karnataka, Kerala, and Tamil Nadu.
+          <p className="mt-4 text-base sm:text-lg text-[#AEA79F] leading-relaxed max-w-2xl font-normal">
+            Autonomous crop identification, leaf disease pathology classification, and microclimate epidemiological forecasting for smallholder farmers across Karnataka, Kerala, and Tamil Nadu.
           </p>
 
           <div className="mt-6 flex flex-wrap items-center gap-3">
             <a
               href="#scanner"
-              className="py-3 px-5 rounded-xl bg-[#9ed871] hover:bg-[#8ec763] text-[#0f1d16] font-semibold text-sm transition-all shadow-lg shadow-[#0f2117] inline-flex items-center gap-2"
+              className="py-3 px-6 rounded-md bg-[#E95420] hover:bg-[#ff6332] text-white font-bold text-sm transition-all shadow-md inline-flex items-center gap-2"
             >
               <span>Launch Diagnostic Station</span>
               <ArrowDown className="w-4 h-4" />
             </a>
 
             <a
-              href="#weather"
-              className="py-3 px-5 rounded-xl bg-[#14231b] hover:bg-[#1b2f24] border border-[#273f32] text-[#cfdec4] font-medium text-sm transition-all"
+              href="#testing-studio"
+              className="py-3 px-6 rounded-md bg-[#222222] hover:bg-[#2A2A2A] border border-[#383838] hover:border-[#E95420] text-white font-medium text-sm transition-all"
             >
-              Check District Microclimate Risk
+              Open AI Testing Lab
             </a>
           </div>
         </div>
 
         {/* 3 Pillar Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-12">
-          <div className="bg-[#14221b] border border-[#25392e] rounded-xl p-5 hover:border-[#385946] transition-all">
-            <div className="w-9 h-9 rounded-lg bg-[#1f3327] flex items-center justify-center text-[#9ed871] mb-3">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mt-12">
+          <div className="bg-[#1E1E1E] border border-[#2E2E2E] rounded-md p-6 hover:border-[#E95420] transition-all">
+            <div className="w-10 h-10 rounded-md bg-[#2A160F] border border-[#442211] flex items-center justify-center text-[#E95420] mb-4">
               <Camera className="w-5 h-5" />
             </div>
-            <h3 className="font-serif font-bold text-base text-[#f0f7f2] mb-1">On-Device Vision</h3>
-            <p className="text-xs text-[#87a393] leading-relaxed">
-              MobileNetV2 classifier recognizing 16 pathology classes across Tomato, Potato, and Rice without internet connectivity.
+            <h3 className="font-bold text-lg text-white mb-1.5">Dual-Task Edge Vision</h3>
+            <p className="text-xs text-[#AEA79F] leading-relaxed">
+              MobileNetV2 classifier autonomously identifying crop family (Rice, Banana, Sugarcane, Coconut) and 17 pathology classes with 91.7% accuracy offline.
             </p>
           </div>
 
-          <div className="bg-[#14221b] border border-[#25392e] rounded-xl p-5 hover:border-[#385946] transition-all">
-            <div className="w-9 h-9 rounded-lg bg-[#1f3327] flex items-center justify-center text-[#f5a65b] mb-3">
+          <div className="bg-[#1E1E1E] border border-[#2E2E2E] rounded-md p-6 hover:border-[#E95420] transition-all">
+            <div className="w-10 h-10 rounded-md bg-[#222222] border border-[#383838] flex items-center justify-center text-[#E95420] mb-4">
               <CloudRain className="w-5 h-5" />
             </div>
-            <h3 className="font-serif font-bold text-base text-[#f0f7f2] mb-1">Microclimate Risk Indices</h3>
-            <p className="text-xs text-[#87a393] leading-relaxed">
-              Computes Wallin/Hyre Late Blight and IRRI Blast thresholds from 24h temperature, humidity, and leaf wetness duration.
+            <h3 className="font-bold text-lg text-white mb-1.5">Bayesian Microclimate Fusion</h3>
+            <p className="text-xs text-[#AEA79F] leading-relaxed">
+              Computes Wallin/Hyre Late Blight and IRRI Blast thresholds from 24h temperature, humidity, and leaf wetness duration across 84 South Indian districts.
             </p>
           </div>
 
-          <div className="bg-[#14221b] border border-[#25392e] rounded-xl p-5 hover:border-[#385946] transition-all">
-            <div className="w-9 h-9 rounded-lg bg-[#1f3327] flex items-center justify-center text-[#78cbe8] mb-3">
+          <div className="bg-[#1E1E1E] border border-[#2E2E2E] rounded-md p-6 hover:border-[#E95420] transition-all">
+            <div className="w-10 h-10 rounded-md bg-[#222222] border border-[#383838] flex items-center justify-center text-[#E95420] mb-4">
               <Volume2 className="w-5 h-5" />
             </div>
-            <h3 className="font-serif font-bold text-base text-[#f0f7f2] mb-1">Kannada & Hindi Speech</h3>
-            <p className="text-xs text-[#87a393] leading-relaxed">
-              Reads actionable treatments aloud with explicit active ingredient details, pre-harvest waiting periods, and safety warnings.
+            <h3 className="font-bold text-lg text-white mb-1.5">Multilingual Voice Protocols</h3>
+            <p className="text-xs text-[#AEA79F] leading-relaxed">
+              Reads actionable treatments aloud in Kannada, Hindi, and English with strict non-chemical cultural first-step guidelines and dosage calculations.
             </p>
           </div>
         </div>
 
         {/* Verification & Metrics Ribbon */}
-        <div className="mt-8 pt-6 border-t border-[#1d3126] grid grid-cols-2 sm:grid-cols-4 gap-4 text-center">
-          <div>
-            <div className="text-2xl font-bold font-mono text-[#f0f7f2]">16</div>
-            <div className="text-[11px] font-mono uppercase text-[#739281] tracking-wider mt-0.5">Model Classes Mapped</div>
+        <div className="mt-10 pt-6 border-t border-[#262626] grid grid-cols-2 sm:grid-cols-4 gap-4 text-center">
+          <div className="bg-[#181818] p-3 rounded-md border border-[#282828]">
+            <div className="text-2xl font-bold font-mono text-white">17</div>
+            <div className="text-[10px] font-mono uppercase text-[#AEA79F] tracking-wider mt-0.5">Classes Calibrated</div>
           </div>
-          <div>
-            <div className="text-2xl font-bold font-mono text-[#9ed871]">84</div>
-            <div className="text-[11px] font-mono uppercase text-[#739281] tracking-wider mt-0.5">KA, KL, TN Districts</div>
+          <div className="bg-[#181818] p-3 rounded-md border border-[#282828]">
+            <div className="text-2xl font-bold font-mono text-[#E95420]">91.7%</div>
+            <div className="text-[10px] font-mono uppercase text-[#AEA79F] tracking-wider mt-0.5">Validation Accuracy</div>
           </div>
-          <div>
-            <div className="text-2xl font-bold font-mono text-[#f5a65b]">100%</div>
-            <div className="text-[11px] font-mono uppercase text-[#739281] tracking-wider mt-0.5">Offline-Ready Core</div>
+          <div className="bg-[#181818] p-3 rounded-md border border-[#282828]">
+            <div className="text-2xl font-bold font-mono text-white">84</div>
+            <div className="text-[10px] font-mono uppercase text-[#AEA79F] tracking-wider mt-0.5">Districts Mapped</div>
           </div>
-          <div>
-            <div className="text-2xl font-bold font-mono text-[#78cbe8]">3</div>
-            <div className="text-[11px] font-mono uppercase text-[#739281] tracking-wider mt-0.5">Supported Languages</div>
+          <div className="bg-[#181818] p-3 rounded-md border border-[#282828]">
+            <div className="text-2xl font-bold font-mono text-[#E95420]">2.8 MB</div>
+            <div className="text-[10px] font-mono uppercase text-[#AEA79F] tracking-wider mt-0.5">Offline Edge TFLite</div>
           </div>
         </div>
       </div>

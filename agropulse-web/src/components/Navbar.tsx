@@ -3,69 +3,69 @@ import { Sprout, WifiOff, ShieldCheck, Smartphone } from 'lucide-react';
 
 export const Navbar: React.FC = () => {
   return (
-    <header className="border-b border-[#253d30] bg-[#0f1a14]/90 backdrop-blur sticky top-0 z-50">
+    <header className="border-b border-[#2C2C2C] bg-[#181818]/95 backdrop-blur sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         {/* Logo and Brand */}
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-[#1b3124] border border-[#2d523c] flex items-center justify-center text-[#9ed871] shadow-inner">
+          <div className="w-9 h-9 rounded-md bg-[#E95420] flex items-center justify-center text-white shadow-sm">
             <Sprout className="w-5 h-5" />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <span className="font-serif font-bold text-lg text-[#f0f7f2] tracking-tight">AgroPulse</span>
-              <span className="text-[10px] font-mono uppercase bg-[#1e3327] text-[#9ed871] px-1.5 py-0.5 rounded border border-[#2e4d3b]">
+              <span className="font-bold text-lg text-white tracking-tight">AgroPulse</span>
+              <span className="text-[10px] font-mono uppercase bg-[#242424] text-[#E95420] font-bold px-1.5 py-0.5 rounded border border-[#383838]">
                 Team Acers
               </span>
             </div>
-            <div className="text-[11px] font-sans text-[#789987] hidden sm:block">
-              Edge Diagnostics & Microclimate Risk for Smallholder Farmers
+            <div className="text-[11px] text-[#AEA79F] hidden sm:block">
+              Canonical Edge Diagnostics & Microclimate Risk Engine
             </div>
           </div>
         </div>
 
         {/* Status badges and links */}
         <div className="flex items-center gap-3">
-          <div className="hidden md:flex items-center gap-2 bg-[#14231b] border border-[#24392e] px-3 py-1.5 rounded-full text-xs font-mono text-[#8fa89b]">
-            <span className="w-2 h-2 rounded-full bg-[#9ed871]" />
-            <span>Offline-First (TFLite)</span>
+          <div className="hidden md:flex items-center gap-2 bg-[#222222] border border-[#333333] px-3 py-1.5 rounded-full text-xs font-mono text-[#AEA79F]">
+            <span className="w-2 h-2 rounded-full bg-[#E95420]" />
+            <span>Offline TFLite (2.8 MB)</span>
           </div>
 
           <a
             href="#scanner"
-            className="text-xs font-medium text-[#cfdec4] hover:text-[#9ed871] transition-colors hidden sm:block px-2"
+            className="text-xs font-medium text-[#CCCCCC] hover:text-[#E95420] transition-colors hidden sm:block px-2"
           >
             Leaf Scanner
           </a>
 
           <a
             href="#weather"
-            className="text-xs font-medium text-[#cfdec4] hover:text-[#9ed871] transition-colors hidden sm:block px-2"
+            className="text-xs font-medium text-[#CCCCCC] hover:text-[#E95420] transition-colors hidden sm:block px-2"
           >
             Weather Risk
           </a>
 
           <a
             href="#testing-studio"
-            className="text-xs font-medium text-[#9ed871] hover:text-[#b4ee84] transition-colors hidden md:flex items-center gap-1.5 px-2 bg-[#1b3124] py-1 rounded-md border border-[#2d523c]"
+            className="text-xs font-medium text-white hover:bg-[#ff6332] transition-colors hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-[#E95420] shadow-sm font-semibold"
           >
-            <span className="w-1.5 h-1.5 rounded-full bg-[#9ed871] animate-pulse" />
+            <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
             <span>AI Testing Lab</span>
           </a>
 
           <a
             href="#districts"
-            className="text-xs font-medium text-[#cfdec4] hover:text-[#9ed871] transition-colors hidden lg:block px-2"
+            className="text-xs font-medium text-[#CCCCCC] hover:text-[#E95420] transition-colors hidden lg:block px-2"
           >
             Districts
           </a>
 
-          <div className="h-4 w-px bg-[#263e30] hidden sm:block" />
+          <div className="h-4 w-px bg-[#333333] hidden sm:block" />
 
           <a
             href="https://github.com/Argonyx-26/T15-Team-Acers"
             target="_blank"
             rel="noreferrer"
-            className="p-2 rounded-lg bg-[#14231b] border border-[#253d30] text-[#cfdec4] hover:text-[#9ed871] hover:border-[#3a5e4a] transition-all"
+            className="p-2 rounded-md bg-[#222222] border border-[#333333] text-[#CCCCCC] hover:text-[#E95420] hover:border-[#E95420] transition-all"
             title="Repository"
           >
             <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">

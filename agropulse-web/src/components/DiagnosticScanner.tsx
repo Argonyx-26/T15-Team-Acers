@@ -141,13 +141,13 @@ export const DiagnosticScanner: React.FC<DiagnosticScannerProps> = ({ onDiseaseS
   const getSeverityBadge = (severity: string) => {
     switch (severity) {
       case 'high':
-        return <span className="px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-[#3d1814] text-[#ff7865] border border-[#662820]">High Severity</span>;
+        return <span className="px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-[#3D1414] text-[#FF5544] border border-[#661C14]">High Severity</span>;
       case 'medium':
-        return <span className="px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-[#3b2713] text-[#f5a65b] border border-[#5f3f1e]">Moderate Risk</span>;
+        return <span className="px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-[#2A160F] text-[#E95420] border border-[#4D2311]">Moderate Risk</span>;
       case 'low':
-        return <span className="px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-[#1a2f22] text-[#9ed871] border border-[#2b5239]">Low Severity</span>;
+        return <span className="px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-[#192B1D] text-[#38B44A] border border-[#23472C]">Low Severity</span>;
       default:
-        return <span className="px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-[#14281c] text-[#7ce08d] border border-[#224730]">Healthy Foliage</span>;
+        return <span className="px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-[#192B1D] text-[#38B44A] border border-[#23472C]">Healthy Foliage</span>;
     }
   };
 
@@ -157,12 +157,12 @@ export const DiagnosticScanner: React.FC<DiagnosticScannerProps> = ({ onDiseaseS
       <div>
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-[#9ed871]" />
-            <h3 className="text-sm font-bold font-mono uppercase tracking-wider text-[#d4e4d8]">
+            <span className="w-2 h-2 rounded-full bg-[#E95420]" />
+            <h3 className="text-sm font-bold font-mono uppercase tracking-wider text-white">
               Test with Reference Specimen or Upload Your Own
             </h3>
           </div>
-          <span className="text-xs text-[#7d9b8b]">16 PlantVillage Classes Calibrated</span>
+          <span className="text-xs text-[#AEA79F] font-mono">17 Classes Calibrated</span>
         </div>
 
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5">
@@ -173,18 +173,18 @@ export const DiagnosticScanner: React.FC<DiagnosticScannerProps> = ({ onDiseaseS
                 key={sample.id}
                 type="button"
                 onClick={() => handleSelectSample(sample)}
-                className={`p-2.5 rounded-xl border text-left transition-all flex flex-col justify-between group ${
+                className={`p-2.5 rounded-md border text-left transition-all flex flex-col justify-between group ${
                   isSelected
-                    ? 'bg-[#1e3328] border-[#9ed871] shadow-lg shadow-[#0f1f17]'
-                    : 'bg-[#15221b] border-[#25392e] hover:border-[#3d5e4b] hover:bg-[#1a2c22]'
+                    ? 'bg-[#222222] border-[#E95420] shadow-md shadow-black/50'
+                    : 'bg-[#181818] border-[#2C2C2C] hover:border-[#444444] hover:bg-[#202020]'
                 }`}
               >
-                <div className="w-full h-20 mb-2 rounded-lg bg-[#0e1712] p-1 flex items-center justify-center overflow-hidden">
+                <div className="w-full h-20 mb-2 rounded bg-[#0E0E0E] p-1 flex items-center justify-center overflow-hidden border border-[#222222]">
                   <LeafIllustrator type={sample.svgType} className="w-16 h-16 group-hover:scale-105 transition-transform" />
                 </div>
                 <div>
-                  <div className="text-[11px] font-mono text-[#82a392] uppercase">{sample.crop}</div>
-                  <div className="text-xs font-semibold text-[#f0f7f2] line-clamp-1 leading-snug">
+                  <div className="text-[11px] font-mono text-[#AEA79F] uppercase">{sample.crop}</div>
+                  <div className="text-xs font-semibold text-white line-clamp-1 leading-snug">
                     {sample.title.split('—')[1]?.trim() || sample.title}
                   </div>
                 </div>
@@ -197,14 +197,14 @@ export const DiagnosticScanner: React.FC<DiagnosticScannerProps> = ({ onDiseaseS
       {/* Center Field Diagnostic Station */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
         {/* Left: Camera / Viewfinder Box */}
-        <div className="lg:col-span-5 bg-[#14221b] border border-[#273d31] rounded-2xl p-4 flex flex-col items-center">
+        <div className="lg:col-span-5 bg-[#181818] border border-[#2C2C2C] rounded-md p-4 flex flex-col items-center">
           {/* Optional Farmer Crop Input Selector */}
-          <div className="w-full mb-3 p-2.5 rounded-xl bg-[#0c1410] border border-[#1e3327]">
+          <div className="w-full mb-3 p-2.5 rounded bg-[#141414] border border-[#262626]">
             <div className="flex items-center justify-between mb-1.5">
-              <span className="text-[10px] font-mono uppercase tracking-wider text-[#9ed871] font-bold">
+              <span className="text-[10px] font-mono uppercase tracking-wider text-[#E95420] font-bold">
                 Optional Crop Input:
               </span>
-              <span className="text-[10px] font-mono text-[#779483]">
+              <span className="text-[10px] font-mono text-[#AEA79F]">
                 {userCropInput === 'Auto' ? 'AI Auto-Detects' : userCropInput}
               </span>
             </div>
@@ -219,10 +219,10 @@ export const DiagnosticScanner: React.FC<DiagnosticScannerProps> = ({ onDiseaseS
                       handleSelectSample(selectedSample, crop);
                     }
                   }}
-                  className={`px-2 py-1 rounded text-[11px] font-mono transition-all ${
+                  className={`px-2.5 py-1 rounded text-[11px] font-mono transition-all ${
                     userCropInput === crop
-                      ? 'bg-[#1e3328] text-[#9ed871] font-bold border border-[#9ed871]'
-                      : 'bg-[#14221b] text-[#8ca395] hover:text-[#cfe4d7] border border-[#23382c]'
+                      ? 'bg-[#E95420] text-white font-bold shadow-sm'
+                      : 'bg-[#222222] text-[#AEA79F] hover:text-white border border-[#333333]'
                   }`}
                 >
                   {crop === 'Auto' ? '★ Auto' : crop}
@@ -231,7 +231,7 @@ export const DiagnosticScanner: React.FC<DiagnosticScannerProps> = ({ onDiseaseS
             </div>
           </div>
 
-          <div className="w-full relative aspect-[4/3] rounded-xl overflow-hidden bg-[#0c1410] border border-[#1e3327] flex items-center justify-center">
+          <div className="w-full relative aspect-[4/3] rounded overflow-hidden bg-[#0D0D0D] border border-[#242424] flex items-center justify-center">
             {uploadedImageUri ? (
               <img
                 src={uploadedImageUri}
@@ -243,7 +243,7 @@ export const DiagnosticScanner: React.FC<DiagnosticScannerProps> = ({ onDiseaseS
                 <LeafIllustrator type={selectedSample.svgType} className="w-44 h-44 drop-shadow-2xl" />
               </div>
             ) : (
-              <div className="text-center p-6 text-[#7c9989]">
+              <div className="text-center p-6 text-[#777777]">
                 <Camera className="w-10 h-10 mx-auto mb-2 opacity-50" />
                 <p className="text-xs">No specimen loaded. Select a leaf above or upload your own.</p>
               </div>
@@ -252,27 +252,27 @@ export const DiagnosticScanner: React.FC<DiagnosticScannerProps> = ({ onDiseaseS
             {/* Viewfinder Reticle */}
             <div className="absolute inset-3 pointer-events-none flex flex-col justify-between">
               <div className="flex justify-between">
-                <div className="w-5 h-5 border-t-2 border-l-2 border-[#9ed871]" />
-                <div className="w-5 h-5 border-t-2 border-r-2 border-[#9ed871]" />
+                <div className="w-5 h-5 border-t-2 border-l-2 border-[#E95420]" />
+                <div className="w-5 h-5 border-t-2 border-r-2 border-[#E95420]" />
               </div>
 
               {isScanning && (
-                <div className="w-full h-0.5 bg-[#9ed871] shadow-[0_0_12px_#9ed871] animate-bounce" />
+                <div className="w-full h-0.5 bg-[#E95420] shadow-[0_0_12px_#E95420] animate-bounce" />
               )}
 
               <div className="flex justify-between items-end">
-                <div className="w-5 h-5 border-b-2 border-l-2 border-[#9ed871]" />
-                <div className="text-[10px] font-mono tracking-widest bg-[#0a120ecc] px-2 py-0.5 rounded text-[#9ed871] border border-[#1e3327]">
+                <div className="w-5 h-5 border-b-2 border-l-2 border-[#E95420]" />
+                <div className="text-[10px] font-mono tracking-widest bg-[#111111]/90 px-2 py-0.5 rounded text-[#E95420] border border-[#333333]">
                   {isScanning ? 'INFERRING 224x224 RGB...' : 'TFLITE OPTIMIZED'}
                 </div>
-                <div className="w-5 h-5 border-b-2 border-r-2 border-[#9ed871]" />
+                <div className="w-5 h-5 border-b-2 border-r-2 border-[#E95420]" />
               </div>
             </div>
           </div>
 
           {/* Action buttons under viewfinder */}
           <div className="w-full mt-4 flex items-center gap-2">
-            <label className="flex-1 py-2.5 px-3 rounded-xl bg-[#9ed871] hover:bg-[#8ec763] text-[#0f1d16] font-semibold text-xs flex items-center justify-center gap-2 cursor-pointer transition-all shadow-md">
+            <label className="flex-1 py-2.5 px-3 rounded-md bg-[#E95420] hover:bg-[#ff6332] text-white font-bold text-xs flex items-center justify-center gap-2 cursor-pointer transition-all shadow-md">
               <Upload className="w-3.5 h-3.5" />
               <span>Upload Custom Photo</span>
               <input
@@ -290,7 +290,7 @@ export const DiagnosticScanner: React.FC<DiagnosticScannerProps> = ({ onDiseaseS
                   setUploadedImageUri(null);
                   handleSelectSample(SAMPLE_LEAVES[0]);
                 }}
-                className="py-2.5 px-3 rounded-xl bg-[#1b2b22] hover:bg-[#253d30] border border-[#2d4739] text-[#b3ccc0] text-xs font-medium flex items-center gap-1.5 transition-all"
+                className="py-2.5 px-3 rounded-md bg-[#242424] hover:bg-[#2C2C2C] border border-[#383838] text-[#CCCCCC] text-xs font-medium flex items-center gap-1.5 transition-all"
                 title="Reset to default sample"
               >
                 <RotateCcw className="w-3.5 h-3.5" />
@@ -299,7 +299,7 @@ export const DiagnosticScanner: React.FC<DiagnosticScannerProps> = ({ onDiseaseS
             )}
           </div>
 
-          <div className="w-full mt-3 pt-3 border-t border-[#1e3328] text-[11px] font-mono text-[#779483] flex justify-between">
+          <div className="w-full mt-3 pt-3 border-t border-[#262626] text-[11px] font-mono text-[#AEA79F] flex justify-between">
             <span>Model: MobileNetV2</span>
             <span>Target: 17 Classes</span>
           </div>
@@ -308,37 +308,37 @@ export const DiagnosticScanner: React.FC<DiagnosticScannerProps> = ({ onDiseaseS
         {/* Right: Diagnosis Result & Guidance Panel */}
         <div className="lg:col-span-7 space-y-4">
           {/* Main Diagnosis Banner */}
-          <div className="bg-[#17251e] border border-[#2b4437] rounded-2xl p-5 text-[#e0ece3]">
+          <div className="bg-[#1E1E1E] border border-[#2E2E2E] rounded-md p-6 text-[#E5E5E5]">
             <div className="flex flex-wrap items-start justify-between gap-3 mb-4">
               <div>
-                <div className="flex flex-wrap items-center gap-2 mb-1">
-                  <span className="text-xs font-mono text-[#9ed871] uppercase tracking-wider">
+                <div className="flex flex-wrap items-center gap-2 mb-1.5">
+                  <span className="text-xs font-mono text-[#E95420] uppercase tracking-wider font-bold">
                     {inferenceDetails.detectedCrop || currentAdvisory.crop} Analysis
                   </span>
                   {getSeverityBadge(currentAdvisory.severity)}
                   {inferenceDetails.detectedCrop && (
-                    <span className="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-[#14281c] text-[#9ed871] border border-[#254b35]">
+                    <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-[#2A160F] text-[#E95420] border border-[#442211]">
                       Crop: {inferenceDetails.detectedCrop} {inferenceDetails.cropConfidence ? `(${inferenceDetails.cropConfidence}%)` : ''}
                     </span>
                   )}
                   {inferenceDetails.cropVerification === 'CROP_MISMATCH_DETECTED' && (
-                    <span className="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-[#3b2014] text-[#f5a65b] border border-[#6d3720] animate-pulse">
+                    <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-[#3D1414] text-[#FF5544] border border-[#661C14] animate-pulse">
                       MISMATCH DETECTED
                     </span>
                   )}
                 </div>
-                <h2 className="text-2xl font-bold font-serif text-[#f2f7f3]">
+                <h2 className="text-2xl font-bold text-white tracking-tight">
                   {currentAdvisory.commonName}
                 </h2>
-                <div className="text-xs font-mono italic text-[#84a392]">
+                <div className="text-xs font-mono italic text-[#AEA79F]">
                   {currentAdvisory.scientificOrPathogen}
                 </div>
               </div>
 
               {/* Confidence badge */}
-              <div className="bg-[#111e17] border border-[#24392e] rounded-xl px-3.5 py-2 text-right">
-                <div className="text-xs font-mono text-[#739281] uppercase tracking-wider">Confidence</div>
-                <div className="text-2xl font-extrabold font-mono text-[#9ed871]">
+              <div className="bg-[#141414] border border-[#282828] rounded-md px-4 py-2 text-right">
+                <div className="text-xs font-mono text-[#AEA79F] uppercase tracking-wider">Confidence</div>
+                <div className="text-2xl font-extrabold font-mono text-[#E95420]">
                   {(confidence * 100).toFixed(1)}%
                 </div>
               </div>
@@ -346,10 +346,10 @@ export const DiagnosticScanner: React.FC<DiagnosticScannerProps> = ({ onDiseaseS
 
             {/* Crop Mismatch Alert Banner */}
             {inferenceDetails.mismatchWarning && (
-              <div className="mb-4 p-3.5 rounded-xl bg-[#3d2514] border border-[#7a481c] text-[#ffd199] flex items-start gap-3">
-                <AlertTriangle className="w-5 h-5 text-[#f5a65b] shrink-0 mt-0.5" />
+              <div className="mb-4 p-3.5 rounded-md bg-[#2A160F] border border-[#E95420] text-[#FFD6C2] flex items-start gap-3">
+                <AlertTriangle className="w-5 h-5 text-[#E95420] shrink-0 mt-0.5" />
                 <div className="text-xs leading-relaxed">
-                  <span className="font-bold text-[#f5a65b] block mb-0.5">Crop Morphology Mismatch Warning:</span>
+                  <span className="font-bold text-[#E95420] block mb-0.5">Crop Morphology Mismatch Warning:</span>
                   {inferenceDetails.mismatchWarning}
                 </div>
               </div>
@@ -357,10 +357,10 @@ export const DiagnosticScanner: React.FC<DiagnosticScannerProps> = ({ onDiseaseS
 
             {/* BUG-01 OOD Rejection Guard Banner */}
             {currentAdvisory.modelClass === 'Background_without_leaves' && (
-              <div className="mb-4 p-3.5 rounded-xl bg-[#3d2514] border border-[#7a481c] text-[#ffd199] flex items-start gap-3">
-                <AlertTriangle className="w-5 h-5 text-[#f5a65b] shrink-0 mt-0.5" />
+              <div className="mb-4 p-3.5 rounded-md bg-[#2A160F] border border-[#E95420] text-[#FFD6C2] flex items-start gap-3">
+                <AlertTriangle className="w-5 h-5 text-[#E95420] shrink-0 mt-0.5" />
                 <div className="text-xs leading-relaxed">
-                  <span className="font-bold text-[#f5a65b] block mb-0.5">BUG-01 OOD Rejection Guard Active:</span>
+                  <span className="font-bold text-[#E95420] block mb-0.5">BUG-01 OOD Rejection Guard Active:</span>
                   The capture does not appear to contain recognizable crop foliage. Centering a single, well-lit leaf inside the viewfinder prevents false diagnoses.
                 </div>
               </div>
@@ -368,10 +368,10 @@ export const DiagnosticScanner: React.FC<DiagnosticScannerProps> = ({ onDiseaseS
 
             {/* Microclimate Threat Banner */}
             {inferenceDetails.threat === 'ELEVATED_EPIDEMIOLOGICAL_RISK' && (
-              <div className="mb-4 p-3.5 rounded-xl bg-[#3d1814] border border-[#7a2820] text-[#ffb5ab] flex items-start gap-3">
-                <AlertTriangle className="w-5 h-5 text-[#ff7865] shrink-0 mt-0.5" />
+              <div className="mb-4 p-3.5 rounded-md bg-[#2E1210] border border-[#661814] text-[#FFB3AC] flex items-start gap-3">
+                <AlertTriangle className="w-5 h-5 text-[#FF5544] shrink-0 mt-0.5" />
                 <div className="text-xs leading-relaxed">
-                  <span className="font-bold text-[#ff7865] block mb-0.5">Microclimate Bayesian Threat Surge:</span>
+                  <span className="font-bold text-[#FF5544] block mb-0.5">Microclimate Bayesian Threat Surge:</span>
                   {inferenceDetails.weatherCorr || 'High humidity and temperature match pathogen sporulation window.'}
                 </div>
               </div>
@@ -379,32 +379,32 @@ export const DiagnosticScanner: React.FC<DiagnosticScannerProps> = ({ onDiseaseS
 
             {/* Inference metadata */}
             {inferenceDetails.entropy !== undefined && (
-              <div className="flex flex-wrap items-center gap-2 text-[11px] font-mono text-[#8ca395] mb-3">
-                <span className="bg-[#111e17] px-2.5 py-1 rounded-md border border-[#22362a]">
-                  Uncertainty Entropy: <strong className="text-[#9ed871]">{inferenceDetails.entropy} bits</strong>
+              <div className="flex flex-wrap items-center gap-2 text-[11px] font-mono text-[#AEA79F] mb-3">
+                <span className="bg-[#141414] px-2.5 py-1 rounded border border-[#282828]">
+                  Uncertainty Entropy: <strong className="text-white">{inferenceDetails.entropy} bits</strong>
                 </span>
-                <span className="bg-[#111e17] px-2.5 py-1 rounded-md border border-[#22362a]">
-                  Inference Source: <strong className="text-[#84c3e8]">{inferenceDetails.source === 'api' ? 'FastAPI Neural Engine (Port 8000)' : 'Preset Vector'}</strong>
+                <span className="bg-[#141414] px-2.5 py-1 rounded border border-[#282828]">
+                  Inference Source: <strong className="text-[#E95420]">{inferenceDetails.source === 'api' ? 'FastAPI Neural Engine (Port 8000)' : 'Preset Vector'}</strong>
                 </span>
               </div>
             )}
 
             {/* Symptoms and Immediate Action */}
-            <div className="space-y-3 pt-3 border-t border-[#23382c] text-xs leading-relaxed">
+            <div className="space-y-3 pt-3 border-t border-[#2A2A2A] text-xs leading-relaxed">
               <div>
-                <span className="font-semibold text-[#f0f7f2] block mb-0.5">Observable Diagnostic Signs:</span>
-                <p className="text-[#b2c9bb]">{currentAdvisory.symptoms}</p>
+                <span className="font-semibold text-white block mb-0.5">Observable Diagnostic Signs:</span>
+                <p className="text-[#CCCCCC]">{currentAdvisory.symptoms}</p>
               </div>
 
-              <div className="bg-[#121f19] border border-[#23392c] rounded-xl p-3.5 space-y-2">
+              <div className="bg-[#141414] border border-[#282828] rounded-md p-4 space-y-2.5">
                 <div>
-                  <span className="text-[#9ed871] font-bold block mb-0.5">Immediate Cultural Action:</span>
-                  <p className="text-[#cfdec4]">{currentAdvisory.immediateAction}</p>
+                  <span className="text-[#E95420] font-bold block mb-0.5">Immediate Cultural Action:</span>
+                  <p className="text-[#E5E5E5]">{currentAdvisory.immediateAction}</p>
                 </div>
 
-                <div className="pt-2 border-t border-[#1e3326]">
-                  <span className="text-[#84c3e8] font-bold block mb-0.5">Biological & Eco-Friendly Controls:</span>
-                  <p className="text-[#b8d2c2]">{currentAdvisory.ecoFriendlyAction}</p>
+                <div className="pt-2 border-t border-[#222222]">
+                  <span className="text-white font-bold block mb-0.5">Biological & Eco-Friendly Controls:</span>
+                  <p className="text-[#CCCCCC]">{currentAdvisory.ecoFriendlyAction}</p>
                 </div>
               </div>
             </div>

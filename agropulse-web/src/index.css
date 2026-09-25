@@ -2,15 +2,15 @@
 
 @layer base {
   :root {
-    --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    --font-serif: 'Fraunces', Georgia, serif;
-    --font-mono: 'JetBrains Mono', monospace;
+    --font-sans: 'Ubuntu', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-serif: 'Ubuntu', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-mono: 'Ubuntu Mono', 'JetBrains Mono', monospace;
   }
 
   html {
     font-family: var(--font-sans);
-    background-color: #0d1712;
-    color: #f2f7f3;
+    background-color: #111111;
+    color: #f7f7f7;
     scroll-behavior: smooth;
   }
 
@@ -18,29 +18,31 @@
     margin: 0;
     padding: 0;
     min-height: 100vh;
+    background-color: #111111;
+    color: #f7f7f7;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
 
-  /* Custom scrollbars */
+  /* Canonical Ubuntu scrollbars */
   ::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
+    width: 7px;
+    height: 7px;
   }
   ::-webkit-scrollbar-track {
-    background: #0d1712;
+    background: #111111;
   }
   ::-webkit-scrollbar-thumb {
-    background: #23392d;
-    border-radius: 3px;
+    background: #333333;
+    border-radius: 2px;
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: #314e3e;
+    background: #E95420;
   }
 }
 
 .font-serif {
-  font-family: var(--font-serif);
+  font-family: var(--font-sans);
 }
 
 .font-mono {
@@ -50,3 +52,4 @@
 .font-sans {
   font-family: var(--font-sans);
 }
+

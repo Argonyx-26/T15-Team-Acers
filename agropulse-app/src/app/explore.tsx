@@ -77,7 +77,7 @@ export default function ExploreScreen() {
           </View>
           <View style={styles.specBox}>
             <ThemedText style={styles.specKey}>BUG-01 GUARD</ThemedText>
-            <ThemedText style={[styles.specVal, { color: '#b9f36b' }]}>ACTIVE</ThemedText>
+            <ThemedText style={[styles.specVal, { color: '#E95420' }]}>ACTIVE</ThemedText>
           </View>
         </View>
 
@@ -138,10 +138,10 @@ export default function ExploreScreen() {
                     <ThemedText
                       style={[
                         styles.badgeText,
-                        severity === 'high' && { color: '#ff7865' },
-                        severity === 'medium' && { color: '#f5a65b' },
-                        severity === 'healthy' && { color: '#b9f36b' },
-                        isOod && { color: '#f5a65b' },
+                        severity === 'high' && { color: '#E95420' },
+                        severity === 'medium' && { color: '#FF7A45' },
+                        severity === 'healthy' && { color: '#38B44A' },
+                        isOod && { color: '#E95420' },
                       ]}
                     >
                       {isOod ? 'OOD GUARD' : severity.toUpperCase()}
@@ -172,40 +172,40 @@ export default function ExploreScreen() {
 }
 
 const styles = StyleSheet.create({
-  scrollView: { flex: 1, backgroundColor: '#0d1715' },
+  scrollView: { flex: 1, backgroundColor: '#111111' },
   contentContainer: { paddingHorizontal: Spacing.four, paddingTop: Spacing.six, alignItems: 'center' },
   container: { width: '100%', maxWidth: MaxContentWidth, gap: Spacing.four },
   header: { gap: 6 },
-  eyebrow: { color: '#b9f36b', fontSize: 11, letterSpacing: 1.4, fontWeight: '700' },
-  title: { color: '#f2f5ec', fontSize: 28, fontWeight: '700' },
-  subtitle: { color: '#9aada3', fontSize: 13, lineHeight: 19 },
+  eyebrow: { color: '#E95420', fontSize: 11, letterSpacing: 1.4, fontWeight: '700' },
+  title: { color: '#FFFFFF', fontSize: 28, fontWeight: '700' },
+  subtitle: { color: '#AEA79F', fontSize: 13, lineHeight: 19 },
   specStrip: { flexDirection: 'row', gap: 8, justifyContent: 'space-between' },
-  specBox: { flex: 1, backgroundColor: '#13211b', borderWidth: 1, borderColor: '#1f3429', padding: 8, borderRadius: 6 },
-  specKey: { color: '#738a7c', fontSize: 9, fontWeight: '800', letterSpacing: 0.8 },
-  specVal: { color: '#f2f5ec', fontSize: 12, fontWeight: '700', marginTop: 3 },
-  safetyCard: { backgroundColor: '#18241d', borderWidth: 1, borderColor: '#2b3f33', borderLeftWidth: 3, borderLeftColor: '#b9f36b', padding: 12, borderRadius: 4 },
-  safetyTitle: { color: '#b9f36b', fontSize: 10, fontWeight: '800', letterSpacing: 1 },
-  safetyText: { color: '#b3ccc0', fontSize: 12, lineHeight: 17, marginTop: 4 },
+  specBox: { flex: 1, backgroundColor: '#181818', borderWidth: 1, borderColor: '#2E2E2E', padding: 8, borderRadius: 6 },
+  specKey: { color: '#AEA79F', fontSize: 9, fontWeight: '800', letterSpacing: 0.8 },
+  specVal: { color: '#FFFFFF', fontSize: 12, fontWeight: '700', marginTop: 3 },
+  safetyCard: { backgroundColor: '#1E1E1E', borderWidth: 1, borderColor: '#2E2E2E', borderLeftWidth: 3, borderLeftColor: '#E95420', padding: 12, borderRadius: 4 },
+  safetyTitle: { color: '#E95420', fontSize: 10, fontWeight: '800', letterSpacing: 1 },
+  safetyText: { color: '#CCCCCC', fontSize: 12, lineHeight: 17, marginTop: 4 },
   filterRow: { flexDirection: 'row', gap: 6, flexWrap: 'wrap' },
-  filterTab: { paddingHorizontal: 12, paddingVertical: 6, borderRadius: 16, backgroundColor: '#13211b', borderWidth: 1, borderColor: '#20362b' },
-  filterTabActive: { backgroundColor: '#203b2e', borderColor: '#b9f36b' },
-  filterText: { color: '#8ca395', fontSize: 12, fontWeight: '600' },
-  filterTextActive: { color: '#b9f36b', fontWeight: '800' },
+  filterTab: { paddingHorizontal: 12, paddingVertical: 6, borderRadius: 16, backgroundColor: '#181818', borderWidth: 1, borderColor: '#2E2E2E' },
+  filterTabActive: { backgroundColor: '#2A160F', borderColor: '#E95420' },
+  filterText: { color: '#AEA79F', fontSize: 12, fontWeight: '600' },
+  filterTextActive: { color: '#E95420', fontWeight: '800' },
   classList: { gap: 10 },
-  classCard: { backgroundColor: '#14221c', borderWidth: 1, borderColor: '#1f3429', padding: 12, borderRadius: 6 },
-  classCardExpanded: { borderColor: '#b9f36b' },
+  classCard: { backgroundColor: '#181818', borderWidth: 1, borderColor: '#2E2E2E', padding: 12, borderRadius: 6 },
+  classCardExpanded: { borderColor: '#E95420' },
   classCardHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
   classCardLeft: { flex: 1, paddingRight: 8 },
-  className: { color: '#f2f5ec', fontSize: 14, fontWeight: '700' },
-  classSub: { color: '#7e9688', fontSize: 11, marginTop: 2 },
+  className: { color: '#FFFFFF', fontSize: 14, fontWeight: '700' },
+  classSub: { color: '#AEA79F', fontSize: 11, marginTop: 2 },
   severityBadge: { paddingHorizontal: 8, paddingVertical: 3, borderRadius: 10, borderWidth: 1 },
-  badgeHigh: { backgroundColor: '#381714', borderColor: '#66241e' },
-  badgeMedium: { backgroundColor: '#382514', borderColor: '#6b411d' },
-  badgeHealthy: { backgroundColor: '#142b1d', borderColor: '#225235' },
-  badgeOod: { backgroundColor: '#2b1b11', borderColor: '#693717' },
+  badgeHigh: { backgroundColor: '#2A160F', borderColor: '#E95420' },
+  badgeMedium: { backgroundColor: '#261810', borderColor: '#FF7A45' },
+  badgeHealthy: { backgroundColor: '#173022', borderColor: '#274f37' },
+  badgeOod: { backgroundColor: '#2A160F', borderColor: '#E95420' },
   badgeText: { fontSize: 9, fontWeight: '800', letterSpacing: 0.8 },
-  expandedDetails: { marginTop: 10, paddingTop: 10, borderTopWidth: 1, borderTopColor: '#1c2e24', gap: 4 },
-  detailsTitle: { color: '#8ca395', fontSize: 11, fontWeight: '700' },
-  detailsCode: { color: '#b9f36b', fontSize: 10, fontFamily: Platform.OS === 'ios' ? 'Courier' : 'monospace' },
-  detailsDesc: { color: '#d2dfd6', fontSize: 11, lineHeight: 16, marginTop: 2 },
+  expandedDetails: { marginTop: 10, paddingTop: 10, borderTopWidth: 1, borderTopColor: '#2E2E2E', gap: 4 },
+  detailsTitle: { color: '#AEA79F', fontSize: 11, fontWeight: '700' },
+  detailsCode: { color: '#E95420', fontSize: 10, fontFamily: Platform.OS === 'ios' ? 'Courier' : 'monospace' },
+  detailsDesc: { color: '#CCCCCC', fontSize: 11, lineHeight: 16, marginTop: 2 },
 });
