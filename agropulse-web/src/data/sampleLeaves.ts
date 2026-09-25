@@ -1,7 +1,7 @@
 export interface SampleLeaf {
   id: string;
   title: string;
-  crop: 'Tomato' | 'Potato' | 'Rice' | 'Sugarcane' | 'Banana' | 'Coconut';
+  crop: 'Tomato' | 'Potato' | 'Rice' | 'Sugarcane' | 'Banana' | 'Coconut' | 'Unrecognized Subject';
   modelClass: string;
   description: string;
   expectedConfidence: number;
@@ -89,5 +89,35 @@ export const SAMPLE_LEAVES: SampleLeaf[] = [
     expectedConfidence: 0.98,
     sampleType: 'diseased',
     svgType: 'early_blight',
+  },
+  {
+    id: 'sample-coconut-leafspot',
+    title: 'Coconut — Grey Leaf Spot',
+    crop: 'Coconut',
+    modelClass: 'Coconut___Leaf_Spot',
+    description: 'Ash-grey circular necrotic lesions with dark brownish margin on coconut leaflet',
+    expectedConfidence: 0.93,
+    sampleType: 'diseased',
+    svgType: 'brown_spot',
+  },
+  {
+    id: 'sample-sugarcane-healthy',
+    title: 'Sugarcane — Healthy Foliage',
+    crop: 'Sugarcane',
+    modelClass: 'Sugarcane___Healthy',
+    description: 'Emerald green foliage with clear prominent white midrib, no lesions',
+    expectedConfidence: 0.97,
+    sampleType: 'healthy',
+    svgType: 'healthy',
+  },
+  {
+    id: 'sample-non-leaf-bug01',
+    title: 'Stress Test — Non-Leaf (BUG-01 Guard)',
+    crop: 'Unrecognized Subject',
+    modelClass: 'Background_without_leaves',
+    description: 'Desk surface / office clutter / non-plant capture rejected by OOD classifier',
+    expectedConfidence: 0.87,
+    sampleType: 'healthy',
+    svgType: 'healthy',
   },
 ];

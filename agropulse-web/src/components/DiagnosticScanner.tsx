@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Upload, Camera, Sparkles, CheckCircle, AlertTriangle, ArrowRight, RotateCcw } from 'lucide-react';
+import { Upload, Camera, Sparkles, CheckCircle, AlertTriangle, ArrowRight, RotateCcw, ShieldCheck } from 'lucide-react';
 import { SAMPLE_LEAVES, SampleLeaf } from '../data/sampleLeaves';
 import { ADVISORIES_MAP, AdvisoryItem } from '../data/advisories';
 import { LeafIllustrator } from './LeafIllustrator';
@@ -18,6 +18,14 @@ export const DiagnosticScanner: React.FC<DiagnosticScannerProps> = ({ onDiseaseS
     ADVISORIES_MAP['Tomato___Early_blight']
   );
   const [confidence, setConfidence] = useState<number>(0.94);
+  const [inferenceDetails, setInferenceDetails] = useState<{
+    status?: string;
+    entropy?: number;
+    threat?: string;
+    weatherCorr?: string;
+    differential?: Array<{ class_name: string; confidence_percent: number }>;
+    source?: 'api' | 'sample';
+  }>({ source: 'sample' });
 
   const handleSelectSample = (sample: SampleLeaf) => {
     setUploadedImageUri(null);
@@ -30,30 +38,62 @@ export const DiagnosticScanner: React.FC<DiagnosticScannerProps> = ({ onDiseaseS
       setIsScanning(false);
       setCurrentAdvisory(advisory);
       setConfidence(sample.expectedConfidence);
-      if (onDiseaseSelect) {
-        onDiseaseSelect(sample.crop);
+      setInferenceDetails({ source: 'sample' });
+      if (onDiseaseSelect && sample.crop !== 'Unrecognized Subject') {
+        onDiseaseSelect(sample.crop as any);
       }
-    }, 500);
+    }, 400);
   };
 
-  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
     const reader = new FileReader();
-    reader.onload = (event) => {
+    reader.onload = async (event) => {
       const uri = event.target?.result as string;
       setUploadedImageUri(uri);
       setSelectedSample(null);
       setIsScanning(true);
 
-      // Map upload to a realistic inference result (e.g. Potato Late Blight or Tomato Early Blight)
+      // Attempt live inference via AgroPulse local API (port 8000)
+      const formData = new FormData();
+      formData.append('file', file);
+      try {
+        const resp = await fetch('http://localhost:8000/api/predict', {
+          method: 'POST',
+          body: formData,
+        });
+        if (resp.ok) {
+          const data = await resp.json();
+          const mapped = ADVISORIES_MAP[data.class_name] || ADVISORIES_MAP['Tomato___Early_blight'];
+          setCurrentAdvisory(mapped);
+          setConfidence(data.confidence ? data.confidence / 100 : 0.90);
+          setInferenceDetails({
+            status: data.status,
+            entropy: data.uncertainty_entropy,
+            threat: data.fused_threat_level,
+            weatherCorr: data.weather_correlation,
+            differential: data.top_differential || [],
+            source: 'api',
+          });
+          if (onDiseaseSelect && mapped.crop !== 'Unrecognized Subject' && mapped.crop !== 'General' && mapped.crop !== 'Plant health') {
+            onDiseaseSelect(mapped.crop as any);
+          }
+          setIsScanning(false);
+          return;
+        }
+      } catch {
+        // Fallback if local API is unreachable
+      }
+
       setTimeout(() => {
         setIsScanning(false);
-        const randomAdvisory = ADVISORIES_MAP['Tomato___Early_blight'];
-        setCurrentAdvisory(randomAdvisory);
+        const fallbackAdvisory = ADVISORIES_MAP['Tomato___Early_blight'];
+        setCurrentAdvisory(fallbackAdvisory);
         setConfidence(0.91);
-      }, 700);
+        setInferenceDetails({ source: 'sample' });
+      }, 600);
     };
     reader.readAsDataURL(file);
   };
@@ -220,6 +260,40 @@ export const DiagnosticScanner: React.FC<DiagnosticScannerProps> = ({ onDiseaseS
                 </div>
               </div>
             </div>
+
+            {/* BUG-01 OOD Rejection Guard Banner */}
+            {currentAdvisory.modelClass === 'Background_without_leaves' && (
+              <div className="mb-4 p-3.5 rounded-xl bg-[#3d2514] border border-[#7a481c] text-[#ffd199] flex items-start gap-3">
+                <AlertTriangle className="w-5 h-5 text-[#f5a65b] shrink-0 mt-0.5" />
+                <div className="text-xs leading-relaxed">
+                  <span className="font-bold text-[#f5a65b] block mb-0.5">BUG-01 OOD Rejection Guard Active:</span>
+                  The capture does not appear to contain recognizable crop foliage. Centering a single, well-lit leaf inside the viewfinder prevents false diagnoses.
+                </div>
+              </div>
+            )}
+
+            {/* Microclimate Threat Banner */}
+            {inferenceDetails.threat === 'ELEVATED_EPIDEMIOLOGICAL_RISK' && (
+              <div className="mb-4 p-3.5 rounded-xl bg-[#3d1814] border border-[#7a2820] text-[#ffb5ab] flex items-start gap-3">
+                <AlertTriangle className="w-5 h-5 text-[#ff7865] shrink-0 mt-0.5" />
+                <div className="text-xs leading-relaxed">
+                  <span className="font-bold text-[#ff7865] block mb-0.5">Microclimate Bayesian Threat Surge:</span>
+                  {inferenceDetails.weatherCorr || 'High humidity and temperature match pathogen sporulation window.'}
+                </div>
+              </div>
+            )}
+
+            {/* Inference metadata */}
+            {inferenceDetails.entropy !== undefined && (
+              <div className="flex flex-wrap items-center gap-2 text-[11px] font-mono text-[#8ca395] mb-3">
+                <span className="bg-[#111e17] px-2.5 py-1 rounded-md border border-[#22362a]">
+                  Uncertainty Entropy: <strong className="text-[#9ed871]">{inferenceDetails.entropy} bits</strong>
+                </span>
+                <span className="bg-[#111e17] px-2.5 py-1 rounded-md border border-[#22362a]">
+                  Inference Source: <strong className="text-[#84c3e8]">{inferenceDetails.source === 'api' ? 'FastAPI Neural Engine (Port 8000)' : 'Preset Vector'}</strong>
+                </span>
+              </div>
+            )}
 
             {/* Symptoms and Immediate Action */}
             <div className="space-y-3 pt-3 border-t border-[#23382c] text-xs leading-relaxed">

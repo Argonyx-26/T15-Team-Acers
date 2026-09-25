@@ -3,9 +3,9 @@ import requests
 import json
 from pathlib import Path
 
-# Local FastAPI address where Visweshwara will host the backend
-API_BASE_URL = "http://127.0.0.1:8081"
-GOLD_DIR = Path("qa_test_assets/demo_gold")
+# Local FastAPI address where backend is hosted
+API_BASE_URL = os.environ.get("API_BASE_URL", "http://127.0.0.1:8000")
+GOLD_DIR = Path(__file__).resolve().parent / "qa_test_assets" / "demo_gold"
 
 def test_weather_engine():
     print("\n--- 1. Testing Meteorological Risk Engine Endpoint ---")

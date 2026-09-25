@@ -1,7 +1,7 @@
 export interface AdvisoryItem {
   id: string;
   modelClass: string;
-  crop: 'Tomato' | 'Potato' | 'Rice' | 'Chilli' | 'Sugarcane' | 'Banana' | 'Coconut';
+  crop: 'Tomato' | 'Potato' | 'Rice' | 'Chilli' | 'Sugarcane' | 'Banana' | 'Coconut' | 'General' | 'Plant health' | 'Unrecognized Subject';
   commonName: string;
   scientificOrPathogen: string;
   severity: 'low' | 'medium' | 'high' | 'none';
@@ -497,5 +497,281 @@ export const ADVISORIES_MAP: Record<string, AdvisoryItem> = {
       kn: 'ತೆಂಗಿನ ಮರದಲ್ಲಿ ಎಲೆ ಕರಕಲು ರೋಗ ಕಂಡುಬಂದಿದೆ. ಸುಳಿಯನ್ನು ಸ್ವಚ್ಛಗೊಳಿಸಿ, ಒಣಗಿದ ಗರಿಗಳನ್ನು ಕತ್ತರಿಸಿ ಬೋರ್ಡೋ ಮಿಶ್ರಣ ಸಿಂಪಡಿಸಿ.',
       hi: 'नारियल के पत्तों पर धब्बा रोग है। सूखे पत्तों की छंटाई करें और कॉपर ऑक्सीक्लोराइड या बोर्डो मिश्रण का छिड़काव करें।'
     }
+  },
+
+  'Banana___Cordana': {
+    id: 'banana-cordana-001',
+    modelClass: 'Banana___Cordana',
+    crop: 'Banana',
+    commonName: 'Banana Cordana Leaf Spot',
+    scientificOrPathogen: 'Cordana musae',
+    severity: 'medium',
+    symptoms: 'Large oval to diamond-shaped pale brown spots surrounded by bright yellow halos along the leaf margin.',
+    immediateAction: 'Ensure adequate spacing and air movement in canopy. Deleaf severely necrotic fronds.',
+    ecoFriendlyAction: 'Improve sunlight penetration through canopy thinning and avoid overhead water splashing.',
+    chemicalAction: 'Spray Copper Oxychloride 50% WP @ 2.5g/L or Mancozeb 75% WP @ 2g/L if spreading rapidly.',
+    activeIngredient: 'Copper Oxychloride 50% WP',
+    labelDose: '2.5 g/L',
+    waterVolumeLPerAcre: 200,
+    waitingPeriodDays: 14,
+    safetyNotes: 'Wear gloves and mask during spray application.',
+    genericAlternative: 'Blitox 50 WP',
+    verificationStatus: 'ready_for_app',
+    scripts: {
+      en: 'Cordana leaf spot identified on banana foliage. Thin canopy to allow airflow and spray copper oxychloride if spots multiply.',
+      kn: 'ಬಾಳೆಯಲ್ಲಿ ಕೊರ್ಡಾನಾ ಎಲೆ ಚುಕ್ಕೆ ರೋಗ ಕಂಡುಬಂದಿದೆ. ಗಾಳಿ-ಬೆಳಕು ಸಿಗುವಂತೆ ಎಲೆಗಳನ್ನು ಸವರ್ರಿ ಮತ್ತು ತಾಮ್ರದ ಔಷಧಿಯನ್ನು ಸಿಂಪಡಿಸಿ.',
+      hi: 'केले में कोरडाना पत्ती धब्बा रोग है। हवा और धूप के लिए छंटाई करें तथा कॉपर ऑक्सीक्लोराइड का छिड़काव करें।'
+    }
+  },
+
+  'Banana___Pestalotiopsis': {
+    id: 'banana-pesta-001',
+    modelClass: 'Banana___Pestalotiopsis',
+    crop: 'Banana',
+    commonName: 'Banana Pestalotiopsis Leaf Spot',
+    scientificOrPathogen: 'Pestalotiopsis microspora',
+    severity: 'medium',
+    symptoms: 'Irregular necrotic brown lesions with ash-colored centers on older senescing leaves.',
+    immediateAction: 'Prune senescent foliage and destroy infected litter.',
+    ecoFriendlyAction: 'Apply balanced potassium nutrition to toughen leaf cuticle against secondary fungal penetration.',
+    chemicalAction: 'Foliar spray of Mancozeb 75% WP @ 2.0g/L during warm humid weather.',
+    activeIngredient: 'Mancozeb 75% WP',
+    labelDose: '2.0 g/L',
+    waterVolumeLPerAcre: 200,
+    waitingPeriodDays: 20,
+    safetyNotes: 'Avoid spraying during strong winds.',
+    genericAlternative: 'Dithane M-45',
+    verificationStatus: 'ready_for_app',
+    scripts: {
+      en: 'Banana pestalotiopsis spot detected. Prune older yellowing leaves and ensure balanced potash fertilizer.',
+      kn: 'ಬಾಳೆಯಲ್ಲಿ ಪೆಸ್ಟಲೋಶಿಯೋಪ್ಸಿಸ್ ಚುಕ್ಕೆ ರೋಗವಿದೆ. ಹಳೆಯ ಎಲೆಗಳನ್ನು ತೆಗೆದುಹಾಕಿ ಮತ್ತು ಪೊಟ್ಯಾಶ್ ಗೊಬ್ಬರ ನೀಡಿ.',
+      hi: 'केले में पेस्टालोशियोप्सिस रोग है। पुरानी पत्तियों को हटाएं और पोटाश खाद का उचित उपयोग करें।'
+    }
+  },
+
+  'Banana___Healthy': {
+    id: 'banana-healthy-001',
+    modelClass: 'Banana___Healthy',
+    crop: 'Banana',
+    commonName: 'Banana - Vigorous Foliage',
+    scientificOrPathogen: 'Musa spp. (Healthy)',
+    severity: 'none',
+    symptoms: 'Vibrant green glossy canopy with uninterrupted venation, no necrotic halos or fungal pustules.',
+    immediateAction: 'No treatment required. Maintain scheduled irrigation and desuckering.',
+    ecoFriendlyAction: 'Regular mulching with dried banana pseudostem shreds and balanced organic compost.',
+    chemicalAction: 'None recommended. Do not apply prophylactic chemical fungicides.',
+    activeIngredient: 'Not applicable',
+    labelDose: '0',
+    waterVolumeLPerAcre: 0,
+    waitingPeriodDays: null,
+    safetyNotes: 'Maintain regular field scouting without unnecessary chemical input.',
+    genericAlternative: 'N/A',
+    verificationStatus: 'ready_for_app',
+    scripts: {
+      en: 'The banana foliage is vigorous and healthy. No chemical intervention is needed.',
+      kn: 'ಬಾಳೆ ಗಿಡಗಳು ಆರೋಗ್ಯಕರವಾಗಿವೆ ಮತ್ತು ಯಾವುದೇ ರೋಗದ ಲಕ್ಷಣಗಳಿಲ್ಲ. ಅನಗತ್ಯ ಔಷಧಿ ಸಿಂಪಡಿಸಬೇಡಿ.',
+      hi: 'केले की पत्तियां पूरी तरह स्वस्थ हैं। किसी भी रासायनिक छिड़काव की आवश्यकता नहीं है।'
+    }
+  },
+
+  'Coconut___Healthy': {
+    id: 'coconut-healthy-001',
+    modelClass: 'Coconut___Healthy',
+    crop: 'Coconut',
+    commonName: 'Coconut - Healthy Canopy',
+    scientificOrPathogen: 'Cocos nucifera (Healthy)',
+    severity: 'none',
+    symptoms: 'Normal dark-green drooping fronds with clear leaflets, healthy spear leaf emergence.',
+    immediateAction: 'No action needed. Continue seasonal basin mulching and watering.',
+    ecoFriendlyAction: 'Apply green manure crops (sunnhemp/cowpea) in basin during monsoon.',
+    chemicalAction: 'None needed.',
+    activeIngredient: 'Not applicable',
+    labelDose: '0',
+    waterVolumeLPerAcre: 0,
+    waitingPeriodDays: null,
+    safetyNotes: 'None',
+    genericAlternative: 'N/A',
+    verificationStatus: 'ready_for_app',
+    scripts: {
+      en: 'Coconut fronds appear healthy with no signs of fungal blight or pest attack.',
+      kn: 'ತೆಂಗಿನ ಗರಿಗಳು ಆರೋಗ್ಯಕರವಾಗಿದ್ದು ಯಾವುದೇ ರೋಗದ ಲಕ್ಷಣಗಳಿಲ್ಲ.',
+      hi: 'नारियल के पत्ते स्वस्थ हैं, कोई रोग लक्षण नहीं है।'
+    }
+  },
+
+  'Coconut___Yellowing': {
+    id: 'coconut-yellow-001',
+    modelClass: 'Coconut___Yellowing',
+    crop: 'Coconut',
+    commonName: 'Coconut Foliar Yellowing / Wilt Risk',
+    scientificOrPathogen: 'Physiological / Root Stress / Phytoplasma context',
+    severity: 'medium',
+    symptoms: 'Uniform yellowing of middle and lower whorl fronds, leaflet curling, flaccidity.',
+    immediateAction: 'Inspect basin drainage and root health. Avoid water stagnation.',
+    ecoFriendlyAction: 'Apply 500g Magnesium Sulphate + 50kg farmyard manure + neem cake around root zone.',
+    chemicalAction: 'Soil drenching with Copper Oxychloride 50% WP @ 3g/L if root rot suspected.',
+    activeIngredient: 'Magnesium Sulphate + Copper Oxychloride',
+    labelDose: '3.0 g/L (drench)',
+    waterVolumeLPerAcre: 200,
+    waitingPeriodDays: 15,
+    safetyNotes: 'Consult local CPCRI or KAU specialist before taking drastic measures.',
+    genericAlternative: 'Epsom Salt + Blitox',
+    verificationStatus: 'needs_local_verification',
+    scripts: {
+      en: 'Foliar yellowing detected on coconut fronds. Check soil drainage and apply magnesium sulphate with organic manure.',
+      kn: 'ತೆಂಗಿನಲ್ಲಿ ಗರಿ ಹಳದಿಯಾಗುವಿಕೆ ಕಂಡುಬಂದಿದೆ. ಬುಡದಲ್ಲಿ ನೀರು ನಿಲ್ಲದಂತೆ ನೋಡಿಕೊಳ್ಳಿ ಮತ್ತು ಮೆಗ್ನೀಸಿಯಮ್ ಸಲ್ಫೇಟ್ ಗೊಬ್ಬರ ನೀಡಿ.',
+      hi: 'नारियल के पत्तों में पीलापन है। जल निकासी सुधारें और मैग्नीशियम सल्फेट के साथ जैविक खाद दें।'
+    }
+  },
+
+  'Coconut___Pest_Damage': {
+    id: 'coconut-pest-001',
+    modelClass: 'Coconut___Pest_Damage',
+    crop: 'Coconut',
+    commonName: 'Coconut Rhinoceros Beetle / Eriophyid Mite Damage',
+    scientificOrPathogen: 'Oryctes rhinoceros / Aceria guerreronis',
+    severity: 'medium',
+    symptoms: 'V-shaped cuts on open fronds, geometric clipping of leaflets, or brown triangular scarring.',
+    immediateAction: 'Clean palm crowns and hook out adult beetles from spear leaf base using hooked iron rod.',
+    ecoFriendlyAction: 'Place naphthalene balls (3 balls) mixed with sand in innermost 2-3 leaf axils twice a year.',
+    chemicalAction: 'Neem-seed-kernel powder + sand mixture (1:2 ratio) placed in leaf axils.',
+    activeIngredient: 'Botanical Neem Formulation',
+    labelDose: '100g per palm axils',
+    waterVolumeLPerAcre: 0,
+    waitingPeriodDays: null,
+    safetyNotes: 'Wear climbing harness and protective goggles when treating palm crown.',
+    genericAlternative: 'Neem Cake + Sand',
+    verificationStatus: 'ready_for_app',
+    scripts: {
+      en: 'Pest damage detected on coconut fronds. Clean the crown and apply neem cake with sand in the top leaf axils.',
+      kn: 'ತೆಂಗಿನಲ್ಲಿ ಕೀಟ ಬಾಧೆ ಕಂಡುಬಂದಿದೆ. ಸುಳಿಯನ್ನು ಸ್ವಚ್ಛಗೊಳಿಸಿ ಬೇವಿನ ಹಿಂಡಿ ಮತ್ತು ಮರಳಿನ ಮಿಶ್ರಣವನ್ನು ಸುಳಿಗೆ ಹಾಕಿ.',
+      hi: 'नारियल में कीट क्षति के लक्षण हैं। पेड़ के शीर्ष को साफ करें और पत्तियों के जोड़ पर नीम की खली डालें।'
+    }
+  },
+
+  'Sugarcane___Rust': {
+    id: 'sugarcane-rust-001',
+    modelClass: 'Sugarcane___Rust',
+    crop: 'Sugarcane',
+    commonName: 'Sugarcane Leaf Rust',
+    scientificOrPathogen: 'Puccinia melanocephala',
+    severity: 'medium',
+    symptoms: 'Small elongated yellowish spots on both surfaces, turning reddish-brown with rupturing powdery pustules.',
+    immediateAction: 'Improve drainage and avoid excessive nitrogen application during humid spells.',
+    ecoFriendlyAction: 'Select rust-resistant varieties (e.g. Co 86032) for subsequent plantings.',
+    chemicalAction: 'Foliar spray with Mancozeb 75% WP @ 2.5g/L or Propiconazole 25% EC @ 1mL/L.',
+    activeIngredient: 'Propiconazole 25% EC',
+    labelDose: '1.0 mL/L',
+    waterVolumeLPerAcre: 200,
+    waitingPeriodDays: 30,
+    safetyNotes: 'Do not spray when temperatures exceed 35°C.',
+    genericAlternative: 'Tilt 25 EC',
+    verificationStatus: 'ready_for_app',
+    scripts: {
+      en: 'Sugarcane leaf rust observed. Spray registered triazole or mancozeb protectant upon first appearance of pustules.',
+      kn: 'ಕಬ್ಬಿನಲ್ಲಿ ತುಕ್ಕು ರೋಗದ ಕಂದು ಚುಕ್ಕೆಗಳು ಕಂಡುಬಂದಿವೆ. ಶಿಫಾರಸು ಮಾಡಿದ ಪ್ರೊಪಿಕೊನಾಜೋಲ್ ಔಷಧಿಯನ್ನು ಸಿಂಪಡಿಸಿ.',
+      hi: 'गन्ने में गेरुई रोग के लक्षण हैं। पत्तियों पर लक्षण दिखते ही अनुशंसित फफूंदनाशक का छिड़काव करें।'
+    }
+  },
+
+  'Sugarcane___Mosaic': {
+    id: 'sugarcane-mosaic-001',
+    modelClass: 'Sugarcane___Mosaic',
+    crop: 'Sugarcane',
+    commonName: 'Sugarcane Mosaic Virus',
+    scientificOrPathogen: 'Sugarcane mosaic virus (SCMV)',
+    severity: 'medium',
+    symptoms: 'Contrasting islands of dark green and pale yellow-green patches along leaf veins, stunted stools.',
+    immediateAction: 'Rogue out and destroy infected clumps to prevent aphid transmission to surrounding crop.',
+    ecoFriendlyAction: 'Install yellow sticky traps (10-12/acre) to monitor and catch aphid vectors.',
+    chemicalAction: 'Control aphid vectors using approved botanical neem extract (10,000 ppm) @ 2mL/L.',
+    activeIngredient: 'Azadirachtin 10000 ppm',
+    labelDose: '2.0 mL/L',
+    waterVolumeLPerAcre: 200,
+    waitingPeriodDays: 7,
+    safetyNotes: 'Always use clean cutting tools disinfected with bleaching powder.',
+    genericAlternative: 'Neemazol',
+    verificationStatus: 'ready_for_app',
+    scripts: {
+      en: 'Sugarcane mosaic virus detected. Rogue out infected clumps and manage aphid vectors with neem sprays.',
+      kn: 'ಕಬ್ಬಿನಲ್ಲಿ ಮೊಸಾಯಿಕ್ ರೋಗ ಕಂಡುಬಂದಿದೆ. ರೋಗಪೀಡಿತ ಗಿಡಗಳನ್ನು ಕಿತ್ತುಹಾಕಿ ಮತ್ತು ಹೇನು ಕೀಟಗಳನ್ನು ನಿಯಂತ್ರಿಸಿ.',
+      hi: 'गन्ने में मोज़ेक वायरस है। रोगी पौधों को उखाड़ें और कीटों की रोकथाम के लिए नीम आधारित दवा का प्रयोग करें।'
+    }
+  },
+
+  'Sugarcane___Yellow': {
+    id: 'sugarcane-yellow-001',
+    modelClass: 'Sugarcane___Yellow',
+    crop: 'Sugarcane',
+    commonName: 'Sugarcane Yellow Leaf Disease',
+    scientificOrPathogen: 'Sugarcane yellow leaf virus (SCYLV) / Phytoplasma',
+    severity: 'medium',
+    symptoms: 'Intense yellowing of midrib on 3rd to 5th leaves, gradually spreading to leaf lamina followed by tip desiccation.',
+    immediateAction: 'Ensure adequate soil moisture and balanced nutrition; avoid drought stress.',
+    ecoFriendlyAction: 'Use tissue-cultured disease-free planting material and manage vector populations.',
+    chemicalAction: 'Vector management with systemic insecticide only if aphid threshold exceeded.',
+    activeIngredient: 'Imidacloprid 17.8% SL',
+    labelDose: '0.3 mL/L',
+    waterVolumeLPerAcre: 200,
+    waitingPeriodDays: 35,
+    safetyNotes: 'Wear respirator mask and protective coveralls.',
+    genericAlternative: 'Confidor',
+    verificationStatus: 'needs_local_verification',
+    scripts: {
+      en: 'Sugarcane yellow leaf symptoms detected. Ensure adequate irrigation and maintain balanced potash nutrition.',
+      kn: 'ಕಬ್ಬಿನಲ್ಲಿ ಹಳದಿ ಎಲೆ ರೋಗ ಕಂಡುಬಂದಿದೆ. ಮಣ್ಣಿನಲ್ಲಿ ತೇವಾಂಶ ಕಾಪಾಡಿ ಮತ್ತು ಪೊಟ್ಯಾಶ್ ಗೊಬ್ಬರ ನೀಡಿ.',
+      hi: 'गन्ने में पीली पत्ती रोग के लक्षण हैं। सिंचाई का ध्यान रखें और संतुलित पोटाश खाद दें।'
+    }
+  },
+
+  'Sugarcane___Healthy': {
+    id: 'sugarcane-healthy-001',
+    modelClass: 'Sugarcane___Healthy',
+    crop: 'Sugarcane',
+    commonName: 'Sugarcane - Prime Foliage',
+    scientificOrPathogen: 'Saccharum officinarum (Healthy)',
+    severity: 'none',
+    symptoms: 'Broad emerald-green leaves with clear white midribs, vigorous tillering and clean leaf sheaths.',
+    immediateAction: 'No treatment required. Maintain scheduled trash mulching and earthing up.',
+    ecoFriendlyAction: 'In-situ trash incorporation with Trichoderma to enhance soil organic carbon.',
+    chemicalAction: 'None recommended.',
+    activeIngredient: 'Not applicable',
+    labelDose: '0',
+    waterVolumeLPerAcre: 0,
+    waitingPeriodDays: null,
+    safetyNotes: 'Maintain regular field scouting without unnecessary chemical input.',
+    genericAlternative: 'N/A',
+    verificationStatus: 'ready_for_app',
+    scripts: {
+      en: 'Sugarcane leaves are vigorous and free of disease symptoms. Continue routine agronomic care.',
+      kn: 'ಕಬ್ಬಿನ ಬೆಳೆಯು ಉತ್ತಮ ಬೆಳವಣಿಗೆಯಲ್ಲಿದ್ದು ಯಾವುದೇ ರೋಗದ ಲಕ್ಷಣಗಳಿಲ್ಲ. ಸಾಮಾನ್ಯ ನಿರ್ವಹಣೆ ಮುಂದುವರಿಸಿ.',
+      hi: 'गन्ने की फसल पूरी तरह स्वस्थ है। सामान्य कृषि क्रियाएं जारी रखें।'
+    }
+  },
+
+  'Background_without_leaves': {
+    id: 'ood-background-001',
+    modelClass: 'Background_without_leaves',
+    crop: 'Unrecognized Subject',
+    commonName: 'Non-Leaf / Invalid Capture (BUG-01 Guard)',
+    scientificOrPathogen: 'Out-of-Distribution Background Object',
+    severity: 'none',
+    symptoms: 'Capture does not contain recognizable plant foliage or is an office/desk/ground background.',
+    immediateAction: 'Invalid capture rejected. Center a single, well-lit crop leaf inside the viewfinder and retake photo.',
+    ecoFriendlyAction: 'Hold leaf steady against a calm, neutral field background with natural daylight.',
+    chemicalAction: 'None applicable. Do not apply chemicals to unidentified objects.',
+    activeIngredient: 'None',
+    labelDose: '0',
+    waterVolumeLPerAcre: 0,
+    waitingPeriodDays: null,
+    safetyNotes: 'Agricultural AI requires a clear crop leaf image to provide safe recommendations.',
+    genericAlternative: 'N/A',
+    verificationStatus: 'ready_for_app',
+    scripts: {
+      en: 'Invalid capture: No crop leaf detected. Center a single, well-lit leaf inside the frame and retake.',
+      kn: 'ಯಾವುದೇ ಬೆಳೆ ಎಲೆ ಪತ್ತೆಯಾಗಿಲ್ಲ. ಕ್ಯಾಮೆರಾದ ಮಧ್ಯದಲ್ಲಿ ಸ್ಪಷ್ಟವಾಗಿ ಎಲೆಯನ್ನು ಇಟ್ಟು ಮತ್ತೆ ಫೋಟೋ ತೆಗೆದುಕೊಳ್ಳಿ.',
+      hi: 'फसल की पत्ती नहीं पहचानी गई। कैमरे के केंद्र में पत्ती को स्पष्ट रखकर पुनः फोटो लें।'
+    }
   }
 };
+
