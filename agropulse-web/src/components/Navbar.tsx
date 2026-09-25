@@ -17,39 +17,11 @@ export const Navbar: React.FC = () => {
                 Team Acers
               </span>
             </div>
-            <div className="text-[11px] text-[#AEA79F] hidden sm:block">
-              Canonical Edge Diagnostics & Microclimate Risk Engine
-            </div>
           </div>
         </div>
 
         {/* Status badges and links */}
         <div className="flex items-center gap-3">
-          <div className="hidden md:flex items-center gap-2 bg-[#222222] border border-[#333333] px-3 py-1.5 rounded-full text-xs font-mono text-[#AEA79F]">
-            <span className="w-2 h-2 rounded-full bg-[#E95420]" />
-            <span>TFLite + AI Farmer Chat</span>
-          </div>
-
-          <a
-            href="#image-capture"
-            className="text-xs font-medium text-[#CCCCCC] hover:text-[#E95420] transition-colors hidden sm:block px-2"
-          >
-            Camera (Box 1)
-          </a>
-
-          <a
-            href="#weather-location"
-            className="text-xs font-medium text-[#CCCCCC] hover:text-[#E95420] transition-colors hidden sm:block px-2"
-          >
-            Weather & Map (Box 2)
-          </a>
-
-          <a
-            href="#ai-companion"
-            className="text-xs font-medium text-[#CCCCCC] hover:text-[#E95420] transition-colors hidden sm:block px-2"
-          >
-            AI Companion & Chat (Box 3)
-          </a>
 
           <a
             href="#ai-companion"

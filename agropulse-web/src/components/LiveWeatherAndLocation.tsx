@@ -35,8 +35,7 @@ export const LiveWeatherAndLocation: React.FC<LiveWeatherAndLocationProps> = ({
   onDistrictChange,
   onTelemetryUpdate
 }) => {
-  const [openWeatherKey, setOpenWeatherKey] = useState<string>('');
-  const [showKeyInput, setShowKeyInput] = useState<boolean>(false);
+  const [openWeatherKey] = useState<string>('');
   const [telemetry, setTelemetry] = useState<RiskTelemetry | null>(null);
   const [soilProfile, setSoilProfile] = useState<SoilProfile>(getSoilProfileForDistrict(selectedDistrict.name));
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -212,9 +211,6 @@ export const LiveWeatherAndLocation: React.FC<LiveWeatherAndLocationProps> = ({
             <h3 className="font-bold text-base text-white">
               Live Weather &amp; Field Location
             </h3>
-            <p className="text-xs text-[#AEA79F]">
-              Google Maps geolocation, OpenWeather telemetry, and 24h microclimate curve
-            </p>
           </div>
         </div>
 
@@ -303,48 +299,16 @@ export const LiveWeatherAndLocation: React.FC<LiveWeatherAndLocationProps> = ({
         </div>
       </div>
 
-      {/* OpenWeather API Key Config Accordion */}
+      {/* Weather Telemetry Source Indicator */}
       <div className="mb-4">
-        <div className="flex items-center justify-between text-xs text-[#AEA79F] mb-1">
-          <div className="flex items-center gap-1.5">
-            <span className={`w-2 h-2 rounded-full ${telemetry?.source === 'openweather_live' ? 'bg-emerald-400' : 'bg-[#E95420]'}`} />
-            <span className="font-mono uppercase text-[10px]">
-              {telemetry?.source === 'openweather_live'
-                ? 'OpenWeather API (Live Stream)'
-                : 'Open-Meteo High-Resolution (Live 24h)'}
-            </span>
-          </div>
-          <button
-            onClick={() => setShowKeyInput(!showKeyInput)}
-            className="text-[11px] text-[#E95420] hover:underline flex items-center gap-1"
-          >
-            {showKeyInput ? 'Hide Key' : 'Configure OpenWeather Key'}
-          </button>
+        <div className="flex items-center gap-1.5 text-xs text-[#AEA79F] mb-1">
+          <span className={`w-2 h-2 rounded-full ${telemetry?.source === 'openweather_live' ? 'bg-emerald-400' : 'bg-[#E95420]'}`} />
+          <span className="font-mono uppercase text-[10px]">
+            {telemetry?.source === 'openweather_live'
+              ? 'OpenWeather API (Live Stream)'
+              : 'Open-Meteo High-Resolution (Live 24h)'}
+          </span>
         </div>
-
-        {showKeyInput && (
-          <div className="p-3 bg-[#111111] border border-[#3A3A3A] rounded-lg mb-2 text-xs space-y-2">
-            <label className="text-white block font-medium">OpenWeather API Key (Optional)</label>
-            <div className="flex gap-2">
-              <input
-                type="text"
-                placeholder="Enter OpenWeatherMap API Key..."
-                value={openWeatherKey}
-                onChange={(e) => setOpenWeatherKey(e.target.value)}
-                className="flex-1 bg-[#1E1E1E] border border-[#3A3A3A] rounded px-2.5 py-1.5 text-white font-mono text-xs focus:outline-none focus:border-[#E95420]"
-              />
-              <button
-                onClick={() => loadWeatherData(activeLat, activeLon, selectedDistrict.name)}
-                className="px-3 py-1.5 bg-[#E95420] hover:bg-[#77216F] text-white rounded font-medium text-xs transition-colors"
-              >
-                Apply
-              </button>
-            </div>
-            <p className="text-[10px] text-[#AEA79F]">
-              If no key is entered, AgroPulse automatically falls back to live open microclimate endpoints without quota limits.
-            </p>
-          </div>
-        )}
       </div>
 
       {/* Live Telemetry Key Cards */}
