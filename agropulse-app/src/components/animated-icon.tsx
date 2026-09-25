@@ -33,7 +33,12 @@ export function AnimatedSplashOverlay() {
     },
   });
 
-  const image = <Image style={styles.image} source={require('@/assets/images/expo-logo.png')} />;
+  const brand = (
+    <View style={styles.brandMark}>
+      <View style={styles.brandLeaf} />
+      <View style={styles.brandStem} />
+    </View>
+  );
 
   return animate ? (
     <Animated.View
@@ -44,7 +49,10 @@ export function AnimatedSplashOverlay() {
         }
       })}
       style={styles.splashOverlay}>
-      {image}
+      {brand}
+      <Animated.Text entering={logoKeyframe.duration(DURATION)} style={styles.brandName}>
+        AgroPulse
+      </Animated.Text>
     </Animated.View>
   ) : (
     <View
@@ -54,7 +62,10 @@ export function AnimatedSplashOverlay() {
         });
       }}
       style={styles.splashOverlay}>
-      {image}
+      {brand}
+      <Animated.Text entering={logoKeyframe.duration(DURATION)} style={styles.brandName}>
+        AgroPulse
+      </Animated.Text>
     </View>
   );
 }
@@ -104,7 +115,10 @@ export function AnimatedIcon() {
 
       <Animated.View entering={keyframe.duration(DURATION)} style={styles.background} />
       <Animated.View style={styles.imageContainer} entering={logoKeyframe.duration(DURATION)}>
-        <Image style={styles.image} source={require('@/assets/images/expo-logo.png')} />
+        <View style={styles.brandMark}>
+          <View style={styles.brandLeaf} />
+          <View style={styles.brandStem} />
+        </View>
       </Animated.View>
     </View>
   );
@@ -127,10 +141,10 @@ const styles = StyleSheet.create({
     height: 128,
     zIndex: 100,
   },
-  image: {
-    width: 76,
-    height: 71,
-  },
+  brandName: { color: '#f2f5ec', fontSize: 28, fontWeight: '800', letterSpacing: 0.5, marginTop: 18 },
+  brandMark: { width: 92, height: 92, borderRadius: 46, backgroundColor: '#b9f36b', alignItems: 'center', justifyContent: 'center' },
+  brandLeaf: { width: 36, height: 52, borderRadius: 36, backgroundColor: '#0d1715', transform: [{ rotate: '35deg' }], marginLeft: 12 },
+  brandStem: { position: 'absolute', width: 4, height: 58, backgroundColor: '#0d1715', transform: [{ rotate: '-25deg' }], bottom: 17, left: 43 },
   background: {
     borderRadius: 40,
     experimental_backgroundImage: `linear-gradient(180deg, #3C9FFE, #0274DF)`,

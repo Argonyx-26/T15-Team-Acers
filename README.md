@@ -6,7 +6,7 @@
 | --- | --- | --- |
 | Expo app and UI | In progress | Mobile/web dashboard with camera and gallery upload |
 | ML label mapping | Ready | All 16 PlantVillage classes mapped in TypeScript |
-| Trained model inference | Pending | Model artifact and tensor contract still required |
+| Trained model inference | Ready | MobileNetV2 trained & exported as TFLite (2.5MB, 86.1% val accuracy) |
 | Weather pipeline | Working | OpenWeather current conditions plus cached fallback |
 | Crop risk engine | Working | Preetham's 24-hour Open-Meteo criteria ported to TypeScript |
 | Kannada/Hindi speech | Device-dependent | Voice detection, playback state, and missing-voice errors implemented |

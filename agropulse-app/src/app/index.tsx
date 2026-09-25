@@ -1,4 +1,5 @@
 import { CameraView, useCameraPermissions, type CameraView as CameraViewType } from 'expo-camera';
+import * as ImagePicker from 'expo-image-picker';
 import * as Speech from 'expo-speech';
 import axios from 'axios';
 import { useEffect, useRef, useState } from 'react';
@@ -9,6 +10,7 @@ import advisories from '@/assets/data/advisories.json';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { BottomTabInset, Spacing } from '@/constants/theme';
+import { MODEL_CLASS_LABELS } from '@/services/model-mapping';
 import { evaluateRisk, fetchRiskReport, type RiskReport } from '@/services/risk-engine';
 
 type DiseaseKey = keyof typeof advisories;
@@ -46,66 +48,135 @@ export default function HomeScreen() {
   const [permission, requestPermission] = useCameraPermissions();
   const [isScanning, setIsScanning] = useState(false);
   const [photoUri, setPhotoUri] = useState<string>();
-  const [disease, setDisease] = useState<DiseaseKey>('healthy');
+  const disease: DiseaseKey = 'healthy';
   const [weather, setWeather] = useState<Weather>({ temperature: 24, humidity: 85, source: 'cached' });
   const [riskReport, setRiskReport] = useState<RiskReport>(() => evaluateRisk('tomato', [24], [85], [0]));
   const [weatherLoading, setWeatherLoading] = useState(false);
-  const modelReady = Boolean(MODEL_URL);
+  const [voices, setVoices] = useState<Speech.Voice[]>([]);
+  const [speakingLanguage, setSpeakingLanguage] = useState<'kn' | 'hi'>();
+  const [speechMessage, setSpeechMessage] = useState('');
+  const [diagnosisMessage, setDiagnosisMessage] = useState('Upload a leaf image to begin.');
+  const [actionError, setActionError] = useState('');
+  const modelConfigured = Boolean(MODEL_URL);
 
   useEffect(() => { refreshWeather(); }, []);
 
+  useEffect(() => {
+    let mounted = true;
+    Speech.getAvailableVoicesAsync().then((availableVoices) => {
+      if (mounted) setVoices(availableVoices);
+    }).catch(() => {
+      if (mounted) setSpeechMessage('Voice list unavailable. Check your device speech settings.');
+    });
+    return () => { mounted = false; };
+  }, []);
+
   async function refreshWeather() {
     setWeatherLoading(true);
-    const [currentWeather, nextRiskReport] = await Promise.all([
-      fetchWeather(),
-      fetchRiskReport('tomato').catch(() => undefined),
-    ]);
-    setWeather(currentWeather);
-    if (nextRiskReport) setRiskReport(nextRiskReport);
-    setWeatherLoading(false);
+    setActionError('');
+    try {
+      const [currentWeather, nextRiskReport] = await Promise.all([
+        fetchWeather(),
+        fetchRiskReport('tomato').catch(() => undefined),
+      ]);
+      setWeather(currentWeather);
+      if (nextRiskReport) setRiskReport(nextRiskReport);
+    } catch {
+      setActionError('Weather is unavailable right now. Showing the last saved reading.');
+    } finally {
+      setWeatherLoading(false);
+    }
   }
 
-  async function scanPlant() {
-    if (!cameraRef.current || isScanning) return;
+  async function diagnosePhoto(uri: string) {
     setIsScanning(true);
+    setActionError('');
     try {
-      const picture = await cameraRef.current.takePictureAsync({ quality: 0.7 });
-      if (picture?.uri) setPhotoUri(picture.uri);
-      setDisease(modelReady ? 'tomato_early_blight' : 'healthy');
+      setPhotoUri(uri);
+      if (modelConfigured) {
+        setDiagnosisMessage('Model configured. Native inference will run in the development build.');
+      } else {
+        setDiagnosisMessage('Photo captured. Connect the trained TFLite model to enable AI diagnosis.');
+      }
+    } catch {
+      setActionError('The image could not be prepared. Please try another photo.');
     } finally {
       setIsScanning(false);
     }
   }
 
-  function speakAdvisory(language: 'kn' | 'hi') {
+  async function capturePhoto() {
+    if (!cameraRef.current || isScanning) return;
+    try {
+      const picture = await cameraRef.current.takePictureAsync({ quality: 0.7 });
+      if (picture?.uri) await diagnosePhoto(picture.uri);
+    } catch {
+      setActionError('Camera capture failed. Check camera permission and try again.');
+    }
+  }
+
+  async function uploadPhoto() {
+    if (isScanning) return;
+    try {
+      const result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ['images'],
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 0.85,
+      });
+      if (!result.canceled && result.assets[0]) await diagnosePhoto(result.assets[0].uri);
+    } catch {
+      setActionError('Gallery access failed. Check your browser or device permission.');
+    }
+  }
+
+  async function speakAdvisory(language: 'kn' | 'hi') {
+    if (speakingLanguage === language) {
+      Speech.stop();
+      setSpeakingLanguage(undefined);
+      setSpeechMessage('Playback stopped.');
+      return;
+    }
     const advisory = advisories[disease];
+    const languageCode = language === 'kn' ? 'kn-IN' : 'hi-IN';
+    const availableVoices = voices.length ? voices : await Speech.getAvailableVoicesAsync();
+    if (!voices.length) setVoices(availableVoices);
+    const voice = availableVoices.find((candidate) => candidate.language.toLowerCase() === languageCode.toLowerCase())
+      ?? availableVoices.find((candidate) => candidate.language.toLowerCase().startsWith(language));
     Speech.stop();
-    Speech.speak(advisory[`advisory_${language}`], { language: language === 'kn' ? 'kn-IN' : 'hi-IN', rate: 0.86 });
+    setSpeechMessage(voice ? `Playing ${language === 'kn' ? 'Kannada' : 'Hindi'} advisory` : `${language === 'kn' ? 'Kannada' : 'Hindi'} voice not installed on this device`);
+    setSpeakingLanguage(language);
+    Speech.speak(advisory[`advisory_${language}`], {
+      language: languageCode,
+      voice: voice?.identifier,
+      rate: 0.82,
+      onDone: () => setSpeakingLanguage(undefined),
+      onStopped: () => setSpeakingLanguage(undefined),
+      onError: () => {
+        setSpeakingLanguage(undefined);
+        setSpeechMessage(`Could not play ${language === 'kn' ? 'Kannada' : 'Hindi'} speech. Install that voice in device settings.`);
+      },
+    });
   }
 
   const advisory = advisories[disease];
 
   if (!permission) return <View style={styles.loading}><ActivityIndicator color="#b9f36b" /></View>;
 
-  if (!permission.granted) {
-    return <ThemedView style={styles.container}><SafeAreaView style={styles.permission}>
-      <ThemedText style={styles.eyebrow}>AGROPULSE / EDGE KIT</ThemedText>
-      <ThemedText style={styles.title}>Scan the leaf. Protect the harvest.</ThemedText>
-      <ThemedText themeColor="textSecondary" style={styles.body}>Camera access keeps disease classification on the device, even when the field has no signal.</ThemedText>
-      <Pressable style={styles.primaryButton} onPress={requestPermission}><ThemedText style={styles.buttonText}>Enable camera</ThemedText></Pressable>
-    </SafeAreaView></ThemedView>;
-  }
-
   return <ThemedView style={styles.container}><SafeAreaView style={styles.safeArea}>
     <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
-      <View style={styles.header}><View><ThemedText style={styles.eyebrow}>AGROPULSE / FIELD 01</ThemedText><ThemedText style={styles.title}>Crop health, at the edge.</ThemedText></View><View style={styles.status}><View style={styles.statusDot} /><ThemedText style={styles.statusText}>OFFLINE READY</ThemedText></View></View>
-      <View style={styles.cameraFrame}>{photoUri ? <Image source={{ uri: photoUri }} style={styles.camera} /> : <CameraView ref={cameraRef} style={styles.camera} facing="back" />}<View style={styles.cameraOverlay}><ThemedText style={styles.cameraHint}>{isScanning ? 'ANALYZING LEAF...' : 'CENTER LEAF IN FRAME'}</ThemedText><View style={styles.scanCorners} /></View></View>
-      <Pressable style={[styles.primaryButton, isScanning && styles.disabled]} onPress={scanPlant} disabled={isScanning}><ThemedText style={styles.buttonText}>{isScanning ? 'Running edge scan' : 'Capture & diagnose'}</ThemedText></Pressable>
-      <View style={styles.sectionHeader}><ThemedText style={styles.sectionLabel}>LATEST DIAGNOSIS</ThemedText><ThemedText style={styles.modelLabel}>{modelReady ? 'MODEL ONLINE' : 'MODEL PENDING'}</ThemedText></View>
-      <View style={styles.resultCard}><View><ThemedText style={styles.disease}>{advisory.name}</ThemedText><ThemedText themeColor="textSecondary">{advisory.crop} / {modelReady ? 'edge inference' : 'demo result'}</ThemedText></View><View style={styles.confidence}><ThemedText style={styles.confidenceValue}>{modelReady ? '92' : '--'}%</ThemedText><ThemedText style={styles.confidenceLabel}>CONFIDENCE</ThemedText></View></View>
+      <View style={styles.header}><View><ThemedText style={styles.eyebrow}>AGROPULSE / FIELD 01</ThemedText><ThemedText style={styles.title}>A calmer way to read the field.</ThemedText><ThemedText style={styles.subtitle}>Private, practical crop intelligence for the next decision.</ThemedText></View><View style={styles.status}><View style={styles.statusDot} /><ThemedText style={styles.statusText}>{modelConfigured ? 'MODEL READY' : 'MVP MODE'}</ThemedText></View></View>
+      <View style={styles.signalRow}><ThemedText style={styles.signalTitle}>FIELD SIGNAL</ThemedText><ThemedText style={styles.signalText}>CAMERA  ·  WEATHER  ·  ADVISORY AUDIO</ThemedText></View>
+      <View style={styles.cameraFrame}>{photoUri ? <Image source={{ uri: photoUri }} style={styles.camera} /> : permission?.granted ? <CameraView ref={cameraRef} style={styles.camera} facing="back" /> : <View style={styles.cameraPlaceholder}><ThemedText style={styles.placeholderTitle}>Camera is off</ThemedText><ThemedText style={styles.placeholderText}>Enable camera access to scan live, or upload a leaf photo below.</ThemedText><Pressable style={styles.outlineButton} onPress={requestPermission}><ThemedText style={styles.outlineButtonText}>Enable camera</ThemedText></Pressable></View>}<View style={styles.cameraOverlay}><ThemedText style={styles.cameraHint}>{isScanning ? 'ANALYZING LEAF...' : photoUri ? 'PHOTO READY' : 'CENTER LEAF IN FRAME'}</ThemedText><View style={styles.scanCorners} /></View></View>
+      <View style={styles.captureActions}><Pressable style={[styles.primaryButton, styles.actionButton, isScanning && styles.disabled]} onPress={capturePhoto} disabled={isScanning || !permission?.granted}><ThemedText style={styles.buttonText}>{isScanning ? 'Reading leaf...' : 'Take photo'}</ThemedText></Pressable><Pressable style={[styles.uploadButton, isScanning && styles.disabled]} onPress={uploadPhoto} disabled={isScanning}><ThemedText style={styles.uploadButtonText}>Choose from gallery</ThemedText></Pressable></View>
+      {photoUri && <Pressable style={styles.retakeButton} onPress={() => setPhotoUri(undefined)}><ThemedText style={styles.retakeText}>Use another image</ThemedText></Pressable>}
+      <View style={styles.sectionHeader}><ThemedText style={styles.sectionLabel}>LATEST DIAGNOSIS</ThemedText><ThemedText style={styles.modelLabel}>{modelConfigured ? 'MODEL CONFIGURED' : `${MODEL_CLASS_LABELS.length} LABELS MAPPED`}</ThemedText></View>
+      <View style={styles.resultCard}><View style={styles.resultCopy}><ThemedText style={styles.disease}>{photoUri && modelConfigured ? advisory.name : 'Awaiting trained model'}</ThemedText><ThemedText themeColor="textSecondary">{photoUri ? diagnosisMessage : 'No diagnosis has been claimed'}</ThemedText></View><View style={styles.confidence}><ThemedText style={styles.confidenceValue}>{photoUri && modelConfigured ? '—' : 'N/A'}</ThemedText><ThemedText style={styles.confidenceLabel}>CONFIDENCE</ThemedText></View></View>
       <ThemedText style={styles.advisory}>{advisory.advisory_en}</ThemedText>
-      <View style={styles.audioRow}><Pressable style={styles.audioButton} onPress={() => speakAdvisory('kn')}><ThemedText style={styles.audioText}>ಕನ್ನಡ / PLAY</ThemedText></Pressable><Pressable style={styles.audioButton} onPress={() => speakAdvisory('hi')}><ThemedText style={styles.audioText}>हिन्दी / PLAY</ThemedText></Pressable></View>
-      <View style={styles.sectionHeader}><ThemedText style={styles.sectionLabel}>MICROCLIMATE RISK</ThemedText><Pressable onPress={refreshWeather}><ThemedText style={styles.refresh}>{weatherLoading ? 'SYNCING' : 'REFRESH'}</ThemedText></Pressable></View>
+      <View style={styles.audioRow}><Pressable style={[styles.audioButton, speakingLanguage === 'kn' && styles.audioButtonActive]} onPress={() => speakAdvisory('kn')}><ThemedText style={styles.audioText}>{speakingLanguage === 'kn' ? 'ಕನ್ನಡ / PLAYING' : 'ಕನ್ನಡ / PLAY'}</ThemedText></Pressable><Pressable style={[styles.audioButton, speakingLanguage === 'hi' && styles.audioButtonActive]} onPress={() => speakAdvisory('hi')}><ThemedText style={styles.audioText}>{speakingLanguage === 'hi' ? 'हिन्दी / PLAYING' : 'हिन्दी / PLAY'}</ThemedText></Pressable></View>
+      {!!speechMessage && <View style={styles.speechStatus}><View style={styles.speechDot} /><ThemedText style={styles.speechMessage}>{speechMessage}</ThemedText></View>}
+      {!!actionError && <View style={styles.errorStatus}><ThemedText style={styles.errorMessage}>{actionError}</ThemedText></View>}
+      <View style={styles.sectionHeader}><ThemedText style={styles.sectionLabel}>MICROCLIMATE RISK</ThemedText><Pressable onPress={refreshWeather} disabled={weatherLoading} style={weatherLoading && styles.disabled}><ThemedText style={styles.refresh}>{weatherLoading ? 'SYNCING' : 'REFRESH'}</ThemedText></Pressable></View>
       <View style={styles.weatherCard}><View><ThemedText style={styles.riskValue}>{riskReport.riskScore}<ThemedText style={styles.riskUnit}> / 100</ThemedText></ThemedText><ThemedText style={styles.riskCaption}>{riskReport.alertLevel}</ThemedText></View><View style={styles.weatherStats}><ThemedText style={styles.stat}>TEMP  <ThemedText style={styles.statValue}>{weather.temperature.toFixed(1)}°C</ThemedText></ThemedText><ThemedText style={styles.stat}>HUMIDITY  <ThemedText style={styles.statValue}>{weather.humidity}%</ThemedText></ThemedText><ThemedText style={styles.stat}>WET HOURS  <ThemedText style={styles.statValue}>{riskReport.consecutiveWetHours}</ThemedText></ThemedText><ThemedText style={styles.source}>{weather.source === 'live' ? 'LIVE + 24H RISK' : 'CACHED + 24H RISK'}</ThemedText></View></View>
     </ScrollView>
   </SafeAreaView></ThemedView>;
@@ -115,21 +186,35 @@ const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#0d1715' },
   safeArea: { flex: 1, paddingBottom: BottomTabInset + Spacing.three },
   content: { padding: Spacing.four, gap: Spacing.three, paddingBottom: Spacing.six },
-  permission: { flex: 1, padding: Spacing.four, justifyContent: 'center', gap: Spacing.three },
   loading: { flex: 1, backgroundColor: '#0d1715', justifyContent: 'center', alignItems: 'center' },
   header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start' },
   eyebrow: { color: '#b9f36b', fontSize: 11, letterSpacing: 1.4, fontWeight: '700' },
   title: { color: '#f2f5ec', fontSize: 30, lineHeight: 34, fontWeight: '700', marginTop: 6, maxWidth: 260 },
+  subtitle: { color: '#9aada3', fontSize: 13, lineHeight: 19, marginTop: 10, maxWidth: 290 },
   body: { fontSize: 16, lineHeight: 24 },
   status: { flexDirection: 'row', alignItems: 'center', gap: 6, paddingTop: 3 },
   statusDot: { width: 7, height: 7, borderRadius: 4, backgroundColor: '#b9f36b' },
   statusText: { color: '#b9f36b', fontSize: 10, fontWeight: '700' },
+  signalRow: { borderTopWidth: 1, borderBottomWidth: 1, borderColor: '#294138', paddingVertical: 11, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
+  signalTitle: { color: '#f5a65b', fontSize: 10, fontWeight: '800', letterSpacing: 1.3 },
+  signalText: { color: '#6e877b', fontSize: 9, letterSpacing: 0.7 },
   cameraFrame: { height: 300, borderRadius: 4, overflow: 'hidden', backgroundColor: '#182822', marginTop: Spacing.two },
   camera: { flex: 1 },
+  cameraPlaceholder: { flex: 1, alignItems: 'center', justifyContent: 'center', padding: Spacing.four, gap: Spacing.two },
+  placeholderTitle: { color: '#f2f5ec', fontSize: 18, fontWeight: '700' },
+  placeholderText: { color: '#9aada3', fontSize: 13, lineHeight: 19, textAlign: 'center', maxWidth: 250 },
+  outlineButton: { borderWidth: 1, borderColor: '#b9f36b', paddingHorizontal: 16, paddingVertical: 10, marginTop: 4 },
+  outlineButtonText: { color: '#b9f36b', fontSize: 12, fontWeight: '800' },
   cameraOverlay: { ...StyleSheet.absoluteFill, justifyContent: 'space-between', alignItems: 'center', padding: Spacing.three },
   cameraHint: { color: '#f2f5ec', fontSize: 10, letterSpacing: 1.4, fontWeight: '700', backgroundColor: '#0d1715cc', padding: 8 },
   scanCorners: { width: 170, height: 210, borderWidth: 1, borderColor: '#b9f36b88', marginBottom: 20 },
   primaryButton: { backgroundColor: '#b9f36b', minHeight: 52, alignItems: 'center', justifyContent: 'center', borderRadius: 3 },
+  captureActions: { flexDirection: 'row', gap: Spacing.two },
+  actionButton: { flex: 1 },
+  uploadButton: { flex: 1, minHeight: 52, alignItems: 'center', justifyContent: 'center', borderRadius: 3, borderWidth: 1, borderColor: '#b9f36b' },
+  uploadButtonText: { color: '#b9f36b', fontSize: 15, fontWeight: '800', letterSpacing: 0.3 },
+  retakeButton: { alignItems: 'center', paddingVertical: 2 },
+  retakeText: { color: '#9aada3', fontSize: 12, textDecorationLine: 'underline' },
   disabled: { opacity: 0.55 },
   buttonText: { color: '#0d1715', fontSize: 15, fontWeight: '800', letterSpacing: 0.3 },
   sectionHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: Spacing.two },
@@ -138,13 +223,20 @@ const styles = StyleSheet.create({
   refresh: { color: '#b9f36b', fontSize: 10, fontWeight: '800' },
   resultCard: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#17241f', padding: Spacing.three, borderLeftWidth: 3, borderLeftColor: '#b9f36b' },
   disease: { color: '#f2f5ec', fontSize: 21, fontWeight: '700', marginBottom: 3 },
+  resultCopy: { flex: 1, paddingRight: Spacing.two },
   confidence: { alignItems: 'flex-end' },
   confidenceValue: { color: '#b9f36b', fontSize: 24, fontWeight: '800' },
   confidenceLabel: { color: '#7e9187', fontSize: 9, letterSpacing: 1 },
   advisory: { color: '#d3ddd5', fontSize: 14, lineHeight: 21 },
   audioRow: { flexDirection: 'row', gap: Spacing.two },
   audioButton: { flex: 1, borderWidth: 1, borderColor: '#456052', padding: 12, alignItems: 'center' },
+  audioButtonActive: { backgroundColor: '#253c31', borderColor: '#b9f36b' },
   audioText: { color: '#d3e9a9', fontSize: 11, fontWeight: '700' },
+  speechStatus: { flexDirection: 'row', alignItems: 'center', gap: 7, paddingHorizontal: 2 },
+  speechDot: { width: 6, height: 6, borderRadius: 3, backgroundColor: '#f5a65b' },
+  speechMessage: { color: '#9aada3', fontSize: 11 },
+  errorStatus: { backgroundColor: '#3b2820', borderLeftWidth: 3, borderLeftColor: '#f5a65b', padding: 12 },
+  errorMessage: { color: '#ffd6b2', fontSize: 12, lineHeight: 18 },
   weatherCard: { flexDirection: 'row', justifyContent: 'space-between', backgroundColor: '#17241f', padding: Spacing.three },
   riskValue: { color: '#f5a65b', fontSize: 38, fontWeight: '800' },
   riskUnit: { color: '#7e9187', fontSize: 13, fontWeight: '500' },

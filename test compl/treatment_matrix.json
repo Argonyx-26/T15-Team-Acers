@@ -1,0 +1,56 @@
+"Ragi___Blast": {
+    "crop": "Ragi",
+    "disease_en": "Finger Millet Blast (Pyricularia grisea)",
+    "disease_kn": "ರಾಗಿ ಬೆಂಕಿ ರೋಗ",
+    "disease_hi": "रागी झुलसा रोग",
+    "preventive_organic": "Spray Pseudomonas fluorescens @ 10g/L or 10% cow urine extract.",
+    "chemical_curative": "Kitazin 48% EC @ 1ml/L or Carbendazim 50% WP @ 1g/L."
+  },
+  "Sugarcane___Red_Rot": {
+    "crop": "Sugarcane",
+    "disease_en": "Red Rot (Colletotrichum falcatum)",
+    "disease_kn": "ಕಬ್ಬಿನ ಕೆಂಪು ಕೊಳೆ ರೋಗ",
+    "disease_hi": "गन्ने की लाल सड़न",
+    "preventive_organic": "Dip setts in Trichoderma viride culture (10g/L); practice crop rotation.",
+    "chemical_curative": "Thiophanate-methyl 70% WP @ 1g/L."
+  },
+  "Banana___Sigatoka": {
+    "crop": "Banana",
+    "disease_en": "Sigatoka Leaf Spot",
+    "disease_kn": "ಬಾಳೆ ಎಲೆ ಚುಕ್ಕೆ ರೋಗ",
+    "disease_hi": "केले का सिगाटोका रोग",
+    "preventive_organic": "Spray 1% Bordeaux mixture or petroleum-based mineral oils.",
+    "chemical_curative": "Propiconazole 25% EC @ 1ml/L or Propineb 70% WP @ 2g/L."
+  },
+  "Coconut___Leaf_Spot": {
+    "crop": "Coconut",
+    "disease_en": "Grey Leaf Spot / Blight",
+    "disease_kn": "ತೆಂಗಿನ ಎಲೆ ಕರಕಲು ರೋಗ",
+    "disease_hi": "नारियल पत्ती धब्बा",
+    "preventive_organic": "Apply root feeding with neem cake and copper oxychloride paste.",
+    "chemical_curative": "Hexaconazole 5% EC @ 2ml/L water."
+  },
+  "Onion___Purple_Blotch": {
+    "crop": "Onion",
+    "disease_en": "Purple Blotch (Alternaria porri)",
+    "disease_kn": "ಈರುಳ್ಳಿ ನೇರಳೆ ಮಚ್ಚೆ ರೋಗ",
+    "disease_hi": "प्याज का बैंगनी धब्बा रोग",
+    "preventive_organic": "Foliar spray with Trichoderma viride @ 5g/L with sticker.",
+    "chemical_curative": "Difenoconazole 25% EC @ 1ml/L or Mancozeb @ 2.5g/L."
+  },
+  "Spices___Black_Pepper_Quick_Wilt": {
+    "crop": "Black Pepper",
+    "disease_en": "Quick Wilt / Foot Rot (Phytophthora capsici)",
+    "disease_kn": "ಕಾಳುಮೆಣಸಿನ ಸೊರಗು ರೋಗ",
+    "disease_hi": "काली मिर्च का द्रुत उकठा",
+    "preventive_organic": "Trichoderma harzianum enriched farmyard manure applied at root basin.",
+    "chemical_curative": "Drench basin with Potassium Phosphonate @ 3ml/L or Metalaxyl @ 2g/L."
+  },
+  "Rubber___Leaf_Fall": {
+    "crop": "Rubber",
+    "disease_en": "Abnormal Leaf Fall (Phytophthora meadii)",
+    "disease_kn": "ರಬ್ಬರ್ ಎಲೆ ಉದುರುವಿಕೆ ರೋಗ",
+    "disease_hi": "रबर पत्ती पतन रोग",
+    "preventive_organic": "Pre-monsoon crown spraying with 1% Bordeaux mixture.",
+    "chemical_curative": "Copper Oxychloride dispersion in oil using micron sprayers."
+  }

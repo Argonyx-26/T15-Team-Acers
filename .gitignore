@@ -1,0 +1,32 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.keras
+*.h5
+
+# Node / JS
+node_modules/
+dist/
+web-build/
+.expo/
+*.tsbuildinfo
+npm-debug.*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Large raw datasets & archives (keep repo lightweight, code + TFLite models only)
+*.zip
+test vector/
+curated_dataset/
+agropulse-app/risk-engine/curated_dataset/train/
+agropulse-app/risk-engine/curated_dataset/val/
+agropulse-app/risk-engine/extracted_test_vectors/
+test compl/raw_banana/
+test compl/raw_coconut/
+test compl/curated_dataset/

@@ -31,6 +31,12 @@
           "cameraPermission": "Allow AgroPulse to scan crop leaves"
         }
       ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Allow AgroPulse to use crop photos for diagnosis"
+        }
+      ],
       "react-native-fast-tflite",
       [
         "expo-splash-screen",

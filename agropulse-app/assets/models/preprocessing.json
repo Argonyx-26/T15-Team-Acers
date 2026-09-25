@@ -1,0 +1,14 @@
+{
+  "input_size": [
+    224,
+    224
+  ],
+  "color_order": "RGB",
+  "input_dtype": "float32",
+  "normalization": "pixel / 127.5 - 1",
+  "output": "softmax scores in class_mapping.json order",
+  "num_classes": 17,
+  "ood_rejection_class": "Background_without_leaves",
+  "recommended_min_confidence": 0.65,
+  "entropy_uncertainty_threshold": 1.75
+}
