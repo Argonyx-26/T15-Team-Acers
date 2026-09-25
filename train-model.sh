@@ -74,6 +74,11 @@ if [[ -f artifacts/preprocessing.json ]]; then
   cp -u artifacts/preprocessing.json "$WEB_MODELS_DIR/"
 fi
 
+if [[ -f artifacts/farmer_chat_model.json ]]; then
+  cp -u artifacts/farmer_chat_model.json "$APP_MODELS_DIR/"
+  cp -u artifacts/farmer_chat_model.json "$WEB_MODELS_DIR/"
+fi
+
 echo "======================================================================"
 echo " [✓] Training complete! TFLite models synchronized."
 echo "     • agropulse-app/assets/models/agropulse_leaf_classifier.tflite"

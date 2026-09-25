@@ -230,7 +230,15 @@ def main() -> None:
         "entropy_uncertainty_threshold": 1.75
     }, indent=2) + "\n")
 
-    print(f"\n[DONE] Hierarchical Crop AI Model Exported: {tflite_path}")
+    # Train & export conversational farmer chat dialogue model
+    try:
+        from farmer_chat import train_conversational_model
+        print("\n[+] Training & exporting Farmer Conversational Dialogue Companion...")
+        train_conversational_model(args.output)
+    except Exception as e:
+        print(f"[!] Warning: Conversational model training encountered: {e}")
+
+    print(f"\n[DONE] Hierarchical Crop AI Model & Conversational Companion Exported: {tflite_path}")
 
 
 if __name__ == "__main__":

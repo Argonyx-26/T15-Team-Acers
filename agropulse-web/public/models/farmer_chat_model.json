@@ -1,0 +1,120 @@
+{
+  "version": "2.5.0",
+  "intents": [
+    "knapsack_dilution",
+    "weather_spray_timing",
+    "organic_alternative",
+    "pre_harvest_interval",
+    "safety_ppe",
+    "symptoms_diagnosis",
+    "soil_drainage",
+    "fertilizer_adjustment",
+    "general_greeting"
+  ],
+  "crop_pathologies": {
+    "Rice___Bacterial_leaf_blight": {
+      "crop": "Rice",
+      "disease_en": "Bacterial Leaf Blight (Xanthomonas oryzae)",
+      "disease_kn": "ಭತ್ತದ ಬ್ಯಾಕ್ಟೀರಿಯಲ್ ಎಲೆ ರೋಗ",
+      "disease_hi": "धान का जीवाणु झुलसा",
+      "chemical": "Streptocycline 90:10 + Copper Oxychloride 50% WP",
+      "dose_acre": "20 g Streptocycline + 500 g Copper Oxychloride in 200 L water",
+      "knapsack_16l": "1.6 g Streptocycline + 40 g Copper Oxychloride per 16L tank",
+      "phi_days": "15 to 20 days",
+      "organic": "Spray 5% Neem Seed Kernel Extract (NSKE) or fresh cow dung slurry supernatant (20 kg in 200 L water).",
+      "cultural": "Drain excess water from paddies; suspend topdressing of urea / nitrogen fertilizers immediately.",
+      "safety": "Keep cattle and grazing animals out of treated paddies for at least 7 days. Wear gloves."
+    },
+    "Rice___Brown_spot": {
+      "crop": "Rice",
+      "disease_en": "Brown Spot (Bipolaris oryzae)",
+      "disease_kn": "ಭತ್ತದ ಕಂದು ಮಚ್ಚೆ ರೋಗ",
+      "disease_hi": "धान का भूरा धब्बा रोग",
+      "chemical": "Mancozeb 75% WP or Propiconazole 25% EC",
+      "dose_acre": "500 g Mancozeb or 200 ml Propiconazole in 200 L water",
+      "knapsack_16l": "40 g Mancozeb or 16 ml Propiconazole per 16L tank",
+      "phi_days": "21 to 30 days",
+      "organic": "Foliar spray with Pseudomonas fluorescens @ 10 g/L or 10% cow urine extract.",
+      "cultural": "Apply muriate of potash (K) to correct potassium deficiency in light soils.",
+      "safety": "Avoid spraying against wind. Wash hands and face with soap after spraying."
+    },
+    "Sugarcane___RedRot": {
+      "crop": "Sugarcane",
+      "disease_en": "Red Rot (Colletotrichum falcatum)",
+      "disease_kn": "ಕಬ್ಬಿನ ಕೆಂಪು ಕೊಳೆ ರೋಗ",
+      "disease_hi": "गन्ने की लाल सड़न",
+      "chemical": "Carbendazim 50% WP sett dip / Thiophanate-Methyl 70% WP",
+      "dose_acre": "1.0 g/L sett dip solution; 250 g/acre whorl drench",
+      "knapsack_16l": "20 g Carbendazim 50% WP per 16L tank",
+      "phi_days": "45 to 60 days",
+      "organic": "Dip setts in Trichoderma viride culture (10 g/L) for 20 minutes before planting.",
+      "cultural": "Uproot and burn diseased clumps immediately; ensure drainage trenches to eliminate standing water.",
+      "safety": "Wear protective apron and face shield; do not inhale chemical powder."
+    },
+    "Banana___Sigatoka": {
+      "crop": "Banana",
+      "disease_en": "Sigatoka Leaf Spot (Mycosphaerella musicola)",
+      "disease_kn": "ಬಾಳೆ ಎಲೆ ಸಿಗಾಟೋಕ ರೋಗ",
+      "disease_hi": "केले का सिगाटोका रोग",
+      "chemical": "Propiconazole 25% EC or Propineb 70% WP with mineral oil",
+      "dose_acre": "200 ml Propiconazole in 200 L water with 1% spray oil",
+      "knapsack_16l": "16 ml Propiconazole + 15 ml mineral oil per 16L tank",
+      "phi_days": "30 days",
+      "organic": "Pre-monsoon spraying with 1% Bordeaux mixture or 5% neem oil emulsion.",
+      "cultural": "De-leaf spotted lower leaves and bury them outside the plantation.",
+      "safety": "Wear face visor and waterproof gloves; suspend spraying in dense shade during high winds."
+    },
+    "Coconut___Leaf_Spot": {
+      "crop": "Coconut",
+      "disease_en": "Grey Leaf Spot & Blight (Pestalotiopsis palmarum)",
+      "disease_kn": "ತೆಂಗಿನ ಬೂದು ಎಲೆ ರೋಗ",
+      "disease_hi": "नारियल का पत्ती धब्बा",
+      "chemical": "Hexaconazole 5% EC (Root Feeding) or Copper Oxychloride 50% WP",
+      "dose_acre": "Root feeding with 10 ml Hexaconazole in 100 ml water per palm",
+      "knapsack_16l": "32 ml Hexaconazole per 16L tank for crown drench",
+      "phi_days": "45 days for tender coconut harvest",
+      "organic": "Root feeding with Pseudomonas fluorescens (10 g/100 ml water) + Neem cake 5 kg/palm.",
+      "cultural": "Apply balanced fertilizers: 500g N, 320g P, 1200g K per palm annually.",
+      "safety": "Use climbing safety harness for crown operations; do not harvest tender coconuts during waiting period."
+    },
+    "Tomato___Early_blight": {
+      "crop": "Tomato",
+      "disease_en": "Early Blight (Alternaria solani)",
+      "disease_kn": "ಟೊಮ್ಯಾಟೊ ಮುಂಚಿನ ಎಲೆ ಕರಕಲು ರೋಗ",
+      "disease_hi": "टमाटर का अगेती झুলसा",
+      "chemical": "Mancozeb 75% WP or Azoxystrobin + Difenoconazole SC",
+      "dose_acre": "500 g Mancozeb or 200 ml Azoxystrobin combo in 200 L water",
+      "knapsack_16l": "40 g Mancozeb per 16L tank",
+      "phi_days": "7 to 10 days",
+      "organic": "Foliar spray with Trichoderma viride @ 5 g/L or 1% Bordeaux mixture.",
+      "cultural": "Prune lower leaves touching wet soil; stake tomato vines; avoid overhead irrigation.",
+      "safety": "Do not spray in morning hours when honeybees are pollinating flowers."
+    },
+    "Tomato___Late_blight": {
+      "crop": "Tomato",
+      "disease_en": "Late Blight (Phytophthora infestans)",
+      "disease_kn": "ಟೊಮ್ಯಾಟೊ ತಡವಾದ ಅಂಗಮಾರಿ ರೋಗ",
+      "disease_hi": "टमाटर का पछेती झुलसा",
+      "chemical": "Metalaxyl 8% + Mancozeb 64% WP",
+      "dose_acre": "500 g to 600 g in 200 L water",
+      "knapsack_16l": "40 g per 16L tank",
+      "phi_days": "7 days",
+      "organic": "Prophylactic 1% Bordeaux mixture before cool, foggy weather.",
+      "cultural": "Remove and incinerate blighted haulms immediately.",
+      "safety": "Wear respirator mask and chemical eye goggles."
+    },
+    "Potato___Late_blight": {
+      "crop": "Potato",
+      "disease_en": "Potato Late Blight (Phytophthora infestans)",
+      "disease_kn": "ಆಲೂಗಡ್ಡೆ ತಡವಾದ ಅಂಗಮಾರಿ ರೋಗ",
+      "disease_hi": "आलू का पछेती झुलसा",
+      "chemical": "Cymoxanil 8% + Mancozeb 64% WP",
+      "dose_acre": "500 g in 200 L water",
+      "knapsack_16l": "40 g per 16L tank",
+      "phi_days": "14 days",
+      "organic": "Trichoderma seed tuber treatment before planting.",
+      "cultural": "Earth up soil high around ridges to prevent rainwash from carrying spores to tubers.",
+      "safety": "Wear chemical-proof gloves and boots."
+    }
+  }
+}

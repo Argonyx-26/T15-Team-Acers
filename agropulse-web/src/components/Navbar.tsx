@@ -27,37 +27,38 @@ export const Navbar: React.FC = () => {
         <div className="flex items-center gap-3">
           <div className="hidden md:flex items-center gap-2 bg-[#222222] border border-[#333333] px-3 py-1.5 rounded-full text-xs font-mono text-[#AEA79F]">
             <span className="w-2 h-2 rounded-full bg-[#E95420]" />
-            <span>Offline TFLite (2.8 MB)</span>
+            <span>TFLite + AI Farmer Chat</span>
           </div>
 
           <a
-            href="#scanner"
+            href="#image-capture"
             className="text-xs font-medium text-[#CCCCCC] hover:text-[#E95420] transition-colors hidden sm:block px-2"
           >
-            Leaf Scanner
+            Camera (Box 1)
           </a>
 
           <a
-            href="#weather"
+            href="#weather-location"
             className="text-xs font-medium text-[#CCCCCC] hover:text-[#E95420] transition-colors hidden sm:block px-2"
           >
-            Weather Risk
+            Weather & Map (Box 2)
           </a>
 
           <a
-            href="#testing-studio"
+            href="#ai-companion"
+            className="text-xs font-medium text-[#CCCCCC] hover:text-[#E95420] transition-colors hidden sm:block px-2"
+          >
+            AI Companion & Chat (Box 3)
+          </a>
+
+          <a
+            href="#ai-companion"
             className="text-xs font-medium text-white hover:bg-[#ff6332] transition-colors hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-[#E95420] shadow-sm font-semibold"
           >
             <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
-            <span>AI Testing Lab</span>
+            <span>Farmer Chat</span>
           </a>
 
-          <a
-            href="#districts"
-            className="text-xs font-medium text-[#CCCCCC] hover:text-[#E95420] transition-colors hidden lg:block px-2"
-          >
-            Districts
-          </a>
 
           <div className="h-4 w-px bg-[#333333] hidden sm:block" />
 

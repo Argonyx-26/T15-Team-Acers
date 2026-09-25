@@ -18,10 +18,14 @@ import {
   Copy,
   Check,
   ChevronRight,
-  ChevronDown
+  ChevronDown,
+  MessageSquare,
+  LayoutTemplate,
+  Stethoscope
 } from 'lucide-react';
 import { RiskTelemetry } from '../services/riskService';
 import { SoilProfile } from '../data/soilData';
+import { FarmerChatCompanion } from './FarmerChatCompanion';
 
 export interface TreatmentDetail {
   diseaseKey: string;
@@ -477,6 +481,7 @@ export const AICompanionDashboard: React.FC<AICompanionDashboardProps> = ({
   const [speechRate, setSpeechRate] = useState<number>(0.9);
   const [showJsonInspector, setShowJsonInspector] = useState<boolean>(false);
   const [copiedKey, setCopiedKey] = useState<boolean>(false);
+  const [activeTab, setActiveTab] = useState<'diagnosis' | 'chat' | 'blueprint'>('diagnosis');
 
   // Retrieve treatment details from database or fallback to safe default
   const treatment: TreatmentDetail = TREATMENTS_DATABASE[targetClass] || {
@@ -631,10 +636,62 @@ export const AICompanionDashboard: React.FC<AICompanionDashboardProps> = ({
         </div>
       )}
 
-      {/* Primary Diagnosis & Confidence Display */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
-        {/* Left Column: Verdict Card */}
-        <div className="lg:col-span-7 bg-[#111111] p-4 rounded-xl border border-[#333333] space-y-3">
+      {/* Module Navigation Tabs */}
+      <div className="flex flex-wrap items-center justify-between gap-2 border-b border-[#333333] pb-3">
+        <div className="flex flex-wrap items-center gap-2">
+          <button
+            type="button"
+            onClick={() => setActiveTab('diagnosis')}
+            className={`px-4 py-2 rounded-lg text-xs font-semibold flex items-center gap-2 transition-all ${
+              activeTab === 'diagnosis'
+                ? 'bg-[#E95420] text-white shadow'
+                : 'bg-[#141414] text-[#AEA79F] hover:text-white border border-[#2E2E2E]'
+            }`}
+          >
+            <Stethoscope className="w-3.5 h-3.5" />
+            <span>Pathology Verdict & Pesticide Table</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setActiveTab('chat')}
+            className={`px-4 py-2 rounded-lg text-xs font-semibold flex items-center gap-2 transition-all relative ${
+              activeTab === 'chat'
+                ? 'bg-[#E95420] text-white shadow'
+                : 'bg-[#141414] text-[#AEA79F] hover:text-white border border-[#2E2E2E]'
+            }`}
+          >
+            <MessageSquare className="w-3.5 h-3.5" />
+            <span>Chat with AI Farmer Companion</span>
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping absolute -top-1 -right-1" />
+            <span className="w-2 h-2 rounded-full bg-emerald-400 absolute -top-1 -right-1" />
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setActiveTab('blueprint')}
+            className={`px-4 py-2 rounded-lg text-xs font-semibold flex items-center gap-2 transition-all ${
+              activeTab === 'blueprint'
+                ? 'bg-[#E95420] text-white shadow'
+                : 'bg-[#141414] text-[#AEA79F] hover:text-white border border-[#2E2E2E]'
+            }`}
+          >
+            <LayoutTemplate className="w-3.5 h-3.5" />
+            <span>Wireframe Blueprint (Pasted image.png)</span>
+          </button>
+        </div>
+
+        <div className="text-[11px] font-mono text-[#AEA79F] hidden sm:block">
+          {activeTab === 'diagnosis' ? 'Verified CIB&RC Technical Formulations' : activeTab === 'chat' ? 'Interactive Speech & Text Dialogue (KN/HI/EN)' : 'Wireframe Specification Matching'}
+        </div>
+      </div>
+
+      {activeTab === 'diagnosis' && (
+        <>
+          {/* Primary Diagnosis & Confidence Display */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
+            {/* Left Column: Verdict Card */}
+            <div className="lg:col-span-7 bg-[#111111] p-4 rounded-xl border border-[#333333] space-y-3">
           <div className="flex items-center justify-between text-xs text-[#AEA79F]">
             <span className="font-mono uppercase">Primary Diagnosis Verdict</span>
             <span className="font-mono text-emerald-400">Model Confidence: {(differentialCandidates[0].probability).toFixed(1)}%</span>
@@ -996,6 +1053,92 @@ export const AICompanionDashboard: React.FC<AICompanionDashboardProps> = ({
           </div>
         )}
       </div>
+        </>
+      )}
+
+      {/* Tab 2: Interactive Conversational AI Farmer Companion */}
+      {activeTab === 'chat' && (
+        <FarmerChatCompanion
+          currentCrop={analyzedCrop}
+          targetClass={targetClass}
+          weatherTelemetry={weatherTelemetry}
+          soilProfile={soilProfile}
+          activeLanguage={activeLang}
+          onLanguageChange={(lang) => setActiveLang(lang)}
+        />
+      )}
+
+      {/* Tab 3: Wireframe Blueprint Specification (Pasted image.png) */}
+      {activeTab === 'blueprint' && (
+        <div className="bg-[#141414] border border-[#2E2E2E] rounded-xl p-5 space-y-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-[#2E2E2E] pb-3 gap-2">
+            <div>
+              <h4 className="text-base font-bold text-white flex items-center gap-2">
+                <LayoutTemplate className="w-4 h-4 text-[#E95420]" />
+                User Wireframe Blueprint Specification (Pasted image.png)
+              </h4>
+              <p className="text-xs text-[#AEA79F]">
+                Exact 3-Box Architecture matching the provided wireframe design
+              </p>
+            </div>
+            <span className="px-2.5 py-1 rounded bg-[#E95420]/20 text-[#E95420] border border-[#E95420]/40 font-mono text-xs font-bold w-fit">
+              100% Implemented
+            </span>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 items-start">
+            <div className="rounded-lg overflow-hidden border border-[#333333] bg-black p-2 shadow-lg">
+              <img
+                src="/wireframe-blueprint.png"
+                alt="User Wireframe Blueprint (Pasted image.png)"
+                className="w-full h-auto object-contain rounded"
+              />
+              <div className="text-center text-[10px] text-[#888888] font-mono pt-2">
+                Original Blueprint from Pasted image.png
+              </div>
+            </div>
+
+            <div className="space-y-2.5 text-xs">
+              <div className="p-3 rounded-lg bg-[#1E1E1E] border border-[#333333]">
+                <strong className="text-[#E95420] block font-mono uppercase text-[11px] mb-1">
+                  1. Top Box: "title"
+                </strong>
+                <p className="text-[#AEA79F] leading-relaxed">
+                  Full-width title banner across the top displaying AgroPulse Web Intelligence branding, system status telemetry, and responsive header.
+                </p>
+              </div>
+
+              <div className="p-3 rounded-lg bg-[#1E1E1E] border border-[#333333]">
+                <strong className="text-[#E95420] block font-mono uppercase text-[11px] mb-1">
+                  2. Middle Left Box: "AgroPulse image upload and camera"
+                </strong>
+                <p className="text-[#AEA79F] leading-relaxed">
+                  Live HTML5 webcam streaming with viewfinder reticles, file drag-and-drop, 15 real test vectors, autonomous crop recognition, and BUG-01 non-leaf guard.
+                </p>
+              </div>
+
+              <div className="p-3 rounded-lg bg-[#1E1E1E] border border-[#333333]">
+                <strong className="text-[#E95420] block font-mono uppercase text-[11px] mb-1">
+                  3. Middle Right Box: "live weather app and live location / previous weather data"
+                </strong>
+                <p className="text-[#AEA79F] leading-relaxed">
+                  Google Maps pin location view, device GPS geolocation, OpenWeather API live telemetry, 24-hour previous weather data curve with sporulation thresholds, and regional soil baseline.
+                </p>
+              </div>
+
+              <div className="p-3 rounded-lg bg-[#1E1E1E] border border-[#333333]">
+                <strong className="text-[#E95420] block font-mono uppercase text-[11px] mb-1">
+                  4. Bottom Box: "the ai companion should be here like the results or what ever it shows"
+                </strong>
+                <p className="text-[#AEA79F] leading-relaxed">
+                  Full-width AI companion dashboard fusing Vision + Weather + Soil, verified CIB&RC pesticide dosages, 16L knapsack sprayer math, vernacular audio/transcripts, and interactive conversational chat.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
+

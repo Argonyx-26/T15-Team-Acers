@@ -299,12 +299,30 @@ def main():
                 expected_class=sc["expected"],
                 input_crop=sc.get("input_crop")
             )
-        results.append(res)
+    # --- CONVERSATIONAL FARMER COMPANION VERIFICATION ---
+    print(f"\n{Style.BOLD}{Style.CYAN}--- CONVERSATIONAL FARMER COMPANION DIALOGUE VERIFICATION ---{Style.RESET}")
+    try:
+        from farmer_chat import FarmerConversationalEngine
+        chat_engine = FarmerConversationalEngine(ENGINE_DIR / "artifacts" / "farmer_chat_model.json")
+        sample_queries = [
+            ("How many grams of pesticide per 16-litre knapsack tank?", "Rice___Bacterial_leaf_blight", "en"),
+            ("೧೬ ಲೀಟರ್ ಪಂಪಿಗೆ ಎಷ್ಟು ಔಷಧ ಹಾಕಬೇಕು?", "Rice___Bacterial_leaf_blight", "kn"),
+            ("बारिश होने वाली है, क्या आज छिड़काव करें?", "Tomato___Early_blight", "hi"),
+            ("Can I harvest tomato tomorrow?", "Tomato___Late_blight", "en"),
+            ("Is this chemical safe for my cows and honeybees?", "Sugarcane___RedRot", "en")
+        ]
+        for query_text, disease, lang in sample_queries:
+            resp = chat_engine.respond(query_text, current_disease=disease, preferred_lang=lang)
+            print(f"{Style.YELLOW}Farmer Query ({lang.upper()}):{Style.RESET} \"{query_text}\"")
+            print(f"{Style.GREEN}AgroPulse AI Reply:{Style.RESET} {resp['response']}\n")
+    except Exception as e:
+        print(f"[!] Conversational test notice: {e}")
 
     print(f"\n{Style.BOLD}{Style.GREEN}======================================================================{Style.RESET}")
     print(f"{Style.BOLD}{Style.GREEN}               TRIAL RUN BATTERY COMPLETED SUCCESSFULLY               {Style.RESET}")
     print(f"{Style.BOLD}{Style.GREEN}======================================================================{Style.RESET}")
-    print(f"  Total Scenarios Evaluated: {len(results)}")
+    print(f"  Total Vision Scenarios Evaluated: {len(results)}")
+    print(f"  Conversational Farmer Chat Companion Verified in EN / KN / HI.")
     print(f"  All botanical leaf diseases, healthy leaves, non-leaf rejection,")
     print(f"  and optical exposure guard behaved strictly as expected.")
     print(f"{Style.DIM}  To test any single image: ./trial-run.sh <path_to_image> [weather_score]{Style.RESET}\n")

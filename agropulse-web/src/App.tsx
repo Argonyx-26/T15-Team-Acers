@@ -157,7 +157,7 @@ export function App() {
         {/* Left Box: Image Upload and Camera | Right Box: Live Weather and Location */}
         <section className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
           {/* Wireframe Box 1: AgroPulse Image Upload & Camera */}
-          <div className="lg:col-span-6 flex flex-col">
+          <div id="image-capture" className="lg:col-span-6 flex flex-col scroll-mt-20">
             <LeafCameraCapture
               onImageSelected={(img, crop) => {
                 setSelectedCrop(crop);
@@ -172,7 +172,7 @@ export function App() {
           </div>
 
           {/* Wireframe Box 2: Live Weather App & Field Location */}
-          <div className="lg:col-span-6 flex flex-col">
+          <div id="weather-location" className="lg:col-span-6 flex flex-col scroll-mt-20">
             <LiveWeatherAndLocation
               currentCrop={effectiveCrop}
               selectedDistrict={selectedDistrict}
