@@ -1,0 +1,40 @@
+{
+    "idx_to_class": {
+        "0": "Background_without_leaves",
+        "1": "Banana___Cordana",
+        "2": "Banana___Healthy",
+        "3": "Banana___Pestalotiopsis",
+        "4": "Banana___Sigatoka",
+        "5": "Coconut___Healthy",
+        "6": "Coconut___Leaf_Spot",
+        "7": "Coconut___Pest_Damage",
+        "8": "Coconut___Yellowing",
+        "9": "Rice___Bacterial_leaf_blight",
+        "10": "Rice___Brown_spot",
+        "11": "Rice___Leaf_smut",
+        "12": "Sugarcane___Healthy",
+        "13": "Sugarcane___Mosaic",
+        "14": "Sugarcane___RedRot",
+        "15": "Sugarcane___Rust",
+        "16": "Sugarcane___Yellow"
+    },
+    "class_to_idx": {
+        "Background_without_leaves": 0,
+        "Banana___Cordana": 1,
+        "Banana___Healthy": 2,
+        "Banana___Pestalotiopsis": 3,
+        "Banana___Sigatoka": 4,
+        "Coconut___Healthy": 5,
+        "Coconut___Leaf_Spot": 6,
+        "Coconut___Pest_Damage": 7,
+        "Coconut___Yellowing": 8,
+        "Rice___Bacterial_leaf_blight": 9,
+        "Rice___Brown_spot": 10,
+        "Rice___Leaf_smut": 11,
+        "Sugarcane___Healthy": 12,
+        "Sugarcane___Mosaic": 13,
+        "Sugarcane___RedRot": 14,
+        "Sugarcane___Rust": 15,
+        "Sugarcane___Yellow": 16
+    }
+}

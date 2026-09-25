@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # ==============================================================================
-# AgroPulse — Neural Diagnostic & Bayesian Risk Trial Battery
-# Validates 17-class vision inference, autonomous crop identification,
-# Bayesian microclimate priors, and BUG-01 out-of-distribution rejection.
+# AgroPulse — FastAPI Inference Server Launcher
+# Runs the on-device TFLite inference server with microclimate prior integration.
+# Runs in the foreground and terminates cleanly on Ctrl+C.
 # ==============================================================================
 
 set -euo pipefail
@@ -26,5 +26,16 @@ if [[ ! -f "$PYTHON_BIN" ]]; then
   python -m pip install --quiet -r "$ENGINE_DIR/requirements-training.txt"
 fi
 
+PORT="${PORT:-8000}"
+
+echo "======================================================================"
+echo " [AgroPulse] Starting FastAPI Inference Backend"
+echo " Endpoint:   http://localhost:$PORT"
+echo " Docs:       http://localhost:$PORT/docs"
+echo " Health:     http://localhost:$PORT/api/health"
+echo ""
+echo " Note: Running in foreground. Press Ctrl+C anytime to stop."
+echo "======================================================================"
+
 cd "$ENGINE_DIR"
-"$PYTHON_BIN" "$ENGINE_DIR/trial_run.py" "$@"
+"$PYTHON_BIN" -m uvicorn server:app --host 0.0.0.0 --port "$PORT"
