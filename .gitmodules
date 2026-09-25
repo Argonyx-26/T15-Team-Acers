@@ -1,0 +1,3 @@
+[submodule "agropulse-app/Argonyx26-Crop-Risk-Engine"]
+	path = agropulse-app/Argonyx26-Crop-Risk-Engine
+	url = https://github.com/preetham220Code/Argonyx26-Crop-Risk-Engine

@@ -1,0 +1,23 @@
+{
+  "healthy": {
+    "name": "No visible stress",
+    "crop": "Plant health",
+    "advisory_en": "No treatment is needed. Keep monitoring after rain and avoid unnecessary spraying.",
+    "advisory_kn": "ಸಸ್ಯವು ಆರೋಗ್ಯಕರವಾಗಿದೆ. ಅನಗತ್ಯ ಸಿಂಪಡಿಸುವಿಕೆಯನ್ನು ತಪ್ಪಿಸಿ ಮತ್ತು ಮಳೆಯ ನಂತರ ಗಮನಿಸಿ.",
+    "advisory_hi": "पौधा स्वस्थ है। अनावश्यक छिड़काव से बचें और बारिश के बाद निगरानी रखें।"
+  },
+  "tomato_early_blight": {
+    "name": "Tomato early blight",
+    "crop": "Tomato",
+    "advisory_en": "Remove affected leaves, improve airflow, and use a registered low-toxicity fungicide only as directed on its label.",
+    "advisory_kn": "ಬಾಧಿತ ಎಲೆಗಳನ್ನು ತೆಗೆದುಹಾಕಿ, ಗಾಳಿಯ ಹರಿವನ್ನು ಸುಧಾರಿಸಿ ಮತ್ತು ಲೇಬಲ್ ಸೂಚನೆಯಂತೆ ಕಡಿಮೆ ವಿಷಕಾರಿ ಶಿಲೀಂಧ್ರನಾಶಕ ಬಳಸಿ.",
+    "advisory_hi": "प्रभावित पत्तियों को हटाएं, हवा का प्रवाह बढ़ाएं और लेबल के अनुसार कम विषाक्त फफूंदनाशक का उपयोग करें।"
+  },
+  "potato_late_blight": {
+    "name": "Potato late blight",
+    "crop": "Potato",
+    "advisory_en": "Remove infected foliage, avoid overhead irrigation, and ask a local agronomist about an approved protectant.",
+    "advisory_kn": "ಸೋಂಕಿತ ಎಲೆಗಳನ್ನು ತೆಗೆದುಹಾಕಿ, ಮೇಲಿನಿಂದ ನೀರು ಹಾಕುವುದನ್ನು ತಪ್ಪಿಸಿ ಮತ್ತು ಅನುಮೋದಿತ ರಕ್ಷಣಾ ಔಷಧಿಗೆ ಕೃಷಿ ತಜ್ಞರನ್ನು ಸಂಪರ್ಕಿಸಿ.",
+    "advisory_hi": "संक्रमित पत्तियों को हटाएं, ऊपर से सिंचाई न करें और स्वीकृत सुरक्षात्मक दवा के लिए कृषि विशेषज्ञ से पूछें।"
+  }
+}
