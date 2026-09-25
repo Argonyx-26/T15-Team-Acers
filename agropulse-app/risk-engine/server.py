@@ -15,9 +15,11 @@ from PIL import Image
 
 from smart_inference import SmartCropDiagnosticEngine
 from risk_engine import CropRiskEngine
+from farmer_chat import FarmerConversationalEngine
 
 ROOT_DIR = Path(__file__).resolve().parent.parent.parent
 ENGINE_DIR = Path(__file__).resolve().parent
+chat_engine = FarmerConversationalEngine(str(ENGINE_DIR / "artifacts" / "farmer_chat_model.json"))
 
 app = FastAPI(
     title="AgroPulse Regional Diagnostic & Risk API",
@@ -86,7 +88,7 @@ def read_root():
         "status": "online",
         "classes_count": len(engine.idx_to_class),
         "target_regions": ["Karnataka", "Kerala", "Tamil Nadu"],
-        "endpoints": ["/api/predict", "/api/weather-risk", "/api/health"]
+        "endpoints": ["/api/predict", "/api/weather-risk", "/api/chat", "/api/health"]
     }
 
 
@@ -201,8 +203,38 @@ def get_weather_risk(req: WeatherRiskRequest):
         }
 
 
+class ChatRequest(BaseModel):
+    query: str
+    disease: Optional[str] = "Rice___Bacterial_leaf_blight"
+    weather: Optional[dict] = None
+    soil: Optional[dict] = None
+    language: Optional[str] = "en"
+
+
+@app.post("/api/chat")
+def chat_with_companion(req: ChatRequest):
+    try:
+        reply = chat_engine.respond(
+            query=req.query,
+            current_disease=req.disease,
+            weather_telemetry=req.weather,
+            soil_profile=req.soil,
+            preferred_lang=req.language or "en"
+        )
+        return {
+            "status": "success",
+            "query": req.query,
+            "disease": req.disease,
+            "response": reply.get("response", ""),
+            "intent": reply.get("intent", "general_advisory"),
+            "language": reply.get("language", req.language or "en")
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
 if __name__ == "__main__":
     import uvicorn
-    port = int(os.environ.get("PORT", 8081))
+    port = int(os.environ.get("PORT", 8000))
     print(f"Starting AgroPulse API Server on port {port}...")
     uvicorn.run(app, host="0.0.0.0", port=port)

@@ -142,6 +142,58 @@ class FarmerConversationalEngine:
                     "organic": "Trichoderma seed tuber treatment before planting.",
                     "cultural": "Earth up soil high around ridges to prevent rainwash from carrying spores to tubers.",
                     "safety": "Wear chemical-proof gloves and boots."
+                },
+                "Rice___Leaf_smut": {
+                    "crop": "Rice",
+                    "disease_en": "Rice Leaf Smut (Entyloma oryzae)",
+                    "disease_kn": "ಭತ್ತದ ಎಲೆ ಕಾಡಿಗೆ ರೋಗ",
+                    "disease_hi": "धान का पत्ती स्मट रोग",
+                    "chemical": "Copper Oxychloride 50% WP or Mancozeb 75% WP",
+                    "dose_acre": "500 g in 200 L water",
+                    "knapsack_16l": "40 g per 16L tank",
+                    "phi_days": "15 days",
+                    "organic": "Foliar spray with botanical neem oil 0.3% (3 ml/L with soap emulsifier).",
+                    "cultural": "Avoid excess nitrogen; remove infected stubbles after harvest.",
+                    "safety": "Standard knapsack protective clothing, goggles, and dust mask."
+                },
+                "Sugarcane___Rust": {
+                    "crop": "Sugarcane",
+                    "disease_en": "Sugarcane Common Rust (Puccinia melanocephala)",
+                    "disease_kn": "ಕಬ್ಬಿನ ತುಕ್ಕು ರೋಗ",
+                    "disease_hi": "गन्ने का रतुआ रोग",
+                    "chemical": "Mancozeb 75% WP or Propiconazole 25% EC",
+                    "dose_acre": "500 g Mancozeb or 200 ml Propiconazole in 200 L water",
+                    "knapsack_16l": "40 g Mancozeb per 16L tank",
+                    "phi_days": "30 days",
+                    "organic": "Foliar spray of 5% cow urine extract + 1% neem seed oil.",
+                    "cultural": "Plant rust-resistant cultivars; ensure proper furrow drainage.",
+                    "safety": "Wear protective glasses and gloves."
+                },
+                "Banana___Cordana": {
+                    "crop": "Banana",
+                    "disease_en": "Cordana Leaf Spot (Cordana musae)",
+                    "disease_kn": "ಬಾಳೆ ಕೊರ್ಡಾನಾ ಎಲೆ ಮಚ್ಚೆ ರೋಗ",
+                    "disease_hi": "केले का कोरडाना पत्ती धब्बा",
+                    "chemical": "Mancozeb 75% WP or Carbendazim 50% WP",
+                    "dose_acre": "500 g Mancozeb or 200 g Carbendazim in 200 L water",
+                    "knapsack_16l": "40 g Mancozeb per 16L tank",
+                    "phi_days": "21 days",
+                    "organic": "Spray 1% Bordeaux mixture before monsoon onset.",
+                    "cultural": "Remove infected lower leaves; widen plant spacing for aeration.",
+                    "safety": "Wear eye protection and face respirator mask."
+                },
+                "Background_without_leaves": {
+                    "crop": "Non-Crop",
+                    "disease_en": "Non-Leaf Object / Background Clutter",
+                    "disease_kn": "ಎಲೆ ರಹಿತ ವಸ್ತು",
+                    "disease_hi": "गैर-पत्ती वस्तु / पृष्ठभूमि",
+                    "chemical": "No chemical treatment applicable (Non-plant object).",
+                    "dose_acre": "N/A",
+                    "knapsack_16l": "N/A",
+                    "phi_days": "N/A",
+                    "organic": "Please point camera at a real agricultural crop leaf.",
+                    "cultural": "Ensure leaf is centered and well lit in the viewfinder.",
+                    "safety": "Keep fingers and clutter out of the camera frame."
                 }
             }
         }

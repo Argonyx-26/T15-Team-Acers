@@ -9,8 +9,11 @@ import {
   Sliders,
   Image as ImageIcon,
   Zap,
-  StopCircle
+  StopCircle,
+  Brain,
+  ScanLine,
 } from 'lucide-react';
+import { useVisionClassifier } from '../hooks/useVisionClassifier';
 
 export interface TestVectorSpecimen {
   id: string;
@@ -132,6 +135,7 @@ export const TEST_VECTORS: TestVectorSpecimen[] = [
 
 interface LeafCameraCaptureProps {
   onImageSelected: (imageSrc: string, selectedCrop: string, isFileUpload?: boolean) => void;
+  onVisionResult?: (targetClass: string, crop: string, confidence: number, isBug01?: boolean) => void;
   isAnalyzing: boolean;
   detectedCrop: string;
   cropConfidence: number;
@@ -141,6 +145,7 @@ interface LeafCameraCaptureProps {
 
 export const LeafCameraCapture: React.FC<LeafCameraCaptureProps> = ({
   onImageSelected,
+  onVisionResult,
   isAnalyzing,
   detectedCrop,
   cropConfidence,
@@ -152,9 +157,15 @@ export const LeafCameraCapture: React.FC<LeafCameraCaptureProps> = ({
   const [activeVectorId, setActiveVectorId] = useState<string>(TEST_VECTORS[0].id);
   const [isCameraActive, setIsCameraActive] = useState<boolean>(false);
   const [cameraError, setCameraError] = useState<string | null>(null);
+  const [visionLabel, setVisionLabel] = useState<string>('Rice: Bacterial Leaf Blight');
+  const [visionConfidence, setVisionConfidence] = useState<number>(0.96);
+  const [inferenceSource, setInferenceSource] = useState<string>('Preset Vector');
 
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const streamRef = useRef<MediaStream | null>(null);
+
+  // Vision AI hook — loads on demand
+  const { classify, status: visionStatus, isClassifying } = useVisionClassifier();
 
   // Stop camera stream cleanly
   const stopCamera = () => {
@@ -185,6 +196,59 @@ export const LeafCameraCapture: React.FC<LeafCameraCaptureProps> = ({
     }
   };
 
+  // Run autonomous classification: checks FastAPI backend (:8000) first, falls back to WebWorker
+  const runClassification = async (dataOrSrc: string) => {
+    // 1. Try FastAPI backend (port 8000)
+    try {
+      const res = await fetch(dataOrSrc);
+      const blob = await res.blob();
+      const formData = new FormData();
+      formData.append('file', blob, 'leaf.jpg');
+      if (selectedCrop !== 'Auto') {
+        formData.append('user_crop', selectedCrop);
+      }
+
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), 1200);
+      const resp = await fetch('http://localhost:8000/api/predict', {
+        method: 'POST',
+        body: formData,
+        signal: controller.signal
+      });
+      clearTimeout(timer);
+
+      if (resp.ok) {
+        const data = await resp.json();
+        const conf = data.confidence_fraction ?? (data.confidence ? data.confidence / 100 : 0.95);
+        const crop = data.detected_crop ?? (data.class_name ? data.class_name.split('___')[0] : 'Rice');
+        const cond = data.condition_name ?? (data.class_name ? data.class_name.split('___')[1]?.replace(/_/g, ' ') : 'Diagnosis');
+        const targetCls = data.class_name ?? 'Rice___Bacterial_leaf_blight';
+        const isBug = data.status === 'REJECTED_NON_LEAF';
+
+        setVisionLabel(`${crop}: ${cond}`);
+        setVisionConfidence(conf);
+        setInferenceSource('FastAPI Neural Engine (:8000)');
+
+        if (onVisionResult) {
+          onVisionResult(targetCls, crop, conf, isBug);
+        }
+        return;
+      }
+    } catch {
+      // Backend not running -> fall back to browser WebWorker
+    }
+
+    // 2. Browser MobileNetV2 Vision AI WebWorker
+    setInferenceSource('MobileNetV2 Browser Vision');
+    classify(dataOrSrc, (result) => {
+      setVisionLabel(`${result.crop}: ${result.disease}`);
+      setVisionConfidence(result.confidence);
+      if (onVisionResult) {
+        onVisionResult(result.targetClass, result.crop, result.confidence, result.isBug01);
+      }
+    });
+  };
+
   // Capture frame from webcam
   const captureFrame = () => {
     if (!videoRef.current) return;
@@ -197,8 +261,10 @@ export const LeafCameraCapture: React.FC<LeafCameraCaptureProps> = ({
       const dataUrl = canvas.toDataURL('image/jpeg', 0.9);
       setImagePreview(dataUrl);
       setActiveVectorId('');
+      setVisionLabel('');
       stopCamera();
       onImageSelected(dataUrl, selectedCrop, true);
+      runClassification(dataUrl);
     }
   };
 
@@ -218,8 +284,10 @@ export const LeafCameraCapture: React.FC<LeafCameraCaptureProps> = ({
         const src = event.target?.result as string;
         setImagePreview(src);
         setActiveVectorId('');
+        setVisionLabel('');
         stopCamera();
         onImageSelected(src, selectedCrop, true);
+        runClassification(src);
       };
       reader.readAsDataURL(file);
     }
@@ -230,7 +298,13 @@ export const LeafCameraCapture: React.FC<LeafCameraCaptureProps> = ({
     stopCamera();
     setActiveVectorId(specimen.id);
     setImagePreview(specimen.imageSrc);
+    setVisionLabel(`${specimen.crop}: ${specimen.name}`);
+    setVisionConfidence(specimen.isBug01 ? 0.99 : 0.96);
+    setInferenceSource('Preset Vector');
     onImageSelected(specimen.imageSrc, selectedCrop, false);
+    if (onVisionResult) {
+      onVisionResult(specimen.targetClass, specimen.crop, specimen.isBug01 ? 0.99 : 0.96, specimen.isBug01);
+    }
   };
 
   return (
@@ -277,7 +351,30 @@ export const LeafCameraCapture: React.FC<LeafCameraCaptureProps> = ({
             <div className="absolute inset-x-0 h-1 bg-gradient-to-r from-transparent via-[#E95420] to-transparent shadow-[0_0_15px_#E95420] animate-[bounce_1.4s_infinite]" />
           )}
 
-          {/* Viewfinder Overlay Pill */}
+          {/* Vision AI classifying indicator */}
+          {isClassifying && (
+            <div className="absolute top-3 right-3 bg-[#111111]/90 backdrop-blur-md px-2.5 py-1 rounded text-[11px] font-mono border border-[#E95420]/40 text-[#E95420] flex items-center gap-1.5 animate-pulse">
+              <Brain className="w-3 h-3" />
+              <span>Vision AI running…</span>
+            </div>
+          )}
+
+          {/* Vision result badge (shown after classification) */}
+          {visionLabel && !isClassifying && (
+            <div className="absolute bottom-3 left-3 right-3 bg-[#111111]/92 backdrop-blur-md px-3 py-2 rounded-lg border border-emerald-700/50 flex items-center justify-between shadow-lg">
+              <div className="flex items-center gap-2">
+                <ScanLine className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                <div>
+                  <div className="text-[12px] font-mono text-emerald-300 font-bold leading-tight">{visionLabel}</div>
+                  <div className="text-[9px] text-[#888] font-mono">{inferenceSource}</div>
+                </div>
+              </div>
+              <div className="text-right">
+                <span className="text-[11px] font-mono text-emerald-400 font-bold">{(visionConfidence * 100).toFixed(1)}%</span>
+                <div className="text-[8px] text-[#666] uppercase">Confidence</div>
+              </div>
+            </div>
+          )}
           <div className="absolute top-3 left-3 bg-[#111111]/85 backdrop-blur-md px-2.5 py-1 rounded text-[11px] font-mono border border-[#2E2E2E] text-white flex items-center gap-1.5">
             {isAnalyzing ? (
               <>

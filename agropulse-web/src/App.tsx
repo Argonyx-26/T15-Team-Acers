@@ -36,32 +36,48 @@ export function App() {
   const [showAuxiliaryStudio, setShowAuxiliaryStudio] = useState<boolean>(false);
 
   // Autonomous Crop Recognition & Target Classifier Handler
+  const handleVisionResult = (
+    newTargetClass: string,
+    autoCrop: string,
+    confidence: number,
+    isBug01?: boolean
+  ) => {
+    setTargetClass(newTargetClass);
+    setDetectedCrop(autoCrop);
+    setCropConfidence(confidence);
+
+    if (isBug01 || autoCrop === 'Non-Crop') {
+      setCropVerification('AUTO_DETECTED');
+      setMismatchWarning('Non-leaf clutter detected. Please frame a real agricultural crop leaf inside the viewfinder.');
+    } else if (selectedCrop !== 'Auto' && selectedCrop !== autoCrop) {
+      setCropVerification('CROP_MISMATCH_DETECTED');
+      setMismatchWarning(
+        `Farmer selected '${selectedCrop}', but AI foliage computer vision identified leaf morphology as '${autoCrop}' (Confidence: ${(confidence * 100).toFixed(1)}%). Fusing diagnosis based on verified leaf histology.`
+      );
+    } else if (selectedCrop === 'Auto') {
+      setCropVerification('AUTO_DETECTED');
+      setMismatchWarning(null);
+    } else {
+      setCropVerification('VERIFIED_MATCH');
+      setMismatchWarning(null);
+    }
+    setIsAnalyzing(false);
+  };
+
   const handleImageSelected = (imageSrc: string, userChoiceCrop: string, isFileUpload?: boolean) => {
     setIsAnalyzing(true);
 
-    // Determine target vector
     const matchedVector = TEST_VECTORS.find((v) => v.imageSrc === imageSrc);
-    const newTargetClass = matchedVector ? matchedVector.targetClass : 'Rice___Bacterial_leaf_blight';
-    const autoIdentifiedCrop = matchedVector ? matchedVector.crop : (userChoiceCrop !== 'Auto' ? userChoiceCrop : 'Rice');
-
-    setTimeout(() => {
-      setTargetClass(newTargetClass);
-      setDetectedCrop(autoIdentifiedCrop);
-      setCropConfidence(matchedVector?.isBug01 ? 0.99 : 0.94);
-
-      if (userChoiceCrop !== 'Auto' && userChoiceCrop !== autoIdentifiedCrop && autoIdentifiedCrop !== 'Non-Crop') {
-        setCropVerification('CROP_MISMATCH_DETECTED');
-        setMismatchWarning(`Farmer selected '${userChoiceCrop}', but AI foliage computer vision identified leaf morphology as '${autoIdentifiedCrop}' (Confidence: 94.2%). Fusing diagnosis based on verified leaf histology.`);
-      } else if (userChoiceCrop === 'Auto') {
-        setCropVerification('AUTO_DETECTED');
-        setMismatchWarning(null);
-      } else {
-        setCropVerification('VERIFIED_MATCH');
-        setMismatchWarning(null);
-      }
-
-      setIsAnalyzing(false);
-    }, 400);
+    if (matchedVector) {
+      setTimeout(() => {
+        handleVisionResult(
+          matchedVector.targetClass,
+          matchedVector.crop,
+          matchedVector.isBug01 ? 0.99 : 0.96,
+          matchedVector.isBug01
+        );
+      }, 250);
+    }
   };
 
   const handleTelemetryUpdate = (telemetry: RiskTelemetry, soil: SoilProfile) => {
@@ -88,6 +104,7 @@ export function App() {
                 setSelectedCrop(crop);
                 handleImageSelected(img, crop);
               }}
+              onVisionResult={handleVisionResult}
               isAnalyzing={isAnalyzing}
               detectedCrop={detectedCrop}
               cropConfidence={cropConfidence}

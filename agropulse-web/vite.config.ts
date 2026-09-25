@@ -10,5 +10,16 @@ export default defineConfig({
   server: {
     port: 5173,
     host: true,
+    headers: {
+      // Required for SharedArrayBuffer used by ONNX Runtime threading
+      'Cross-Origin-Opener-Policy': 'same-origin',
+      'Cross-Origin-Embedder-Policy': 'require-corp',
+    },
+  },
+  worker: {
+    format: 'es',
+  },
+  optimizeDeps: {
+    exclude: ['@huggingface/transformers'],
   },
 });
