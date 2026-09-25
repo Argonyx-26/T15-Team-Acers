@@ -1,5 +1,22 @@
 # T15-Team-Acers
 
+## AgroPulse Status
+
+| Area | Status | Current state |
+| --- | --- | --- |
+| Expo app and UI | In progress | Mobile/web dashboard with camera and gallery upload |
+| ML label mapping | Ready | All 16 PlantVillage classes mapped in TypeScript |
+| Trained model inference | Pending | Model artifact and tensor contract still required |
+| Weather pipeline | Working | OpenWeather current conditions plus cached fallback |
+| Crop risk engine | Working | Preetham's 24-hour Open-Meteo criteria ported to TypeScript |
+| Kannada/Hindi speech | Device-dependent | Voice detection, playback state, and missing-voice errors implemented |
+| Ishan advisory data | Draft | Advisory CSV/JSON and dosage draft exist; verification is pending |
+| Offline behavior | In progress | Weather cache is active; verified advisory/model assets remain to be connected |
+| Physical-device release | Pending | Development build required for native TFLite inference |
+
+The detailed implementation handoff is documented in
+[`agropulse-app/PROJECT_STATUS.md`](agropulse-app/PROJECT_STATUS.md).
+
 ## Agri-Logic & Content Manager MVP
 
 This repository contains the content and data contract for the AgriPulse advisory
