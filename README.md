@@ -14,6 +14,7 @@ the Word-document intake and its gaps are tracked in
 - `data/README.md` - field definitions, validation rules, and dosage-calculation rules
 - `data/kerala-tamilnadu-crop-sources.csv` - source and package register for the additional states
 - `data/kerala-tamilnadu-packages.md` - package-of-practices collection guide
+- `data/target-districts.csv` - all districts in Karnataka, Kerala, and Tamil Nadu
 - `content/audio-scripts.md` - short English, Kannada, and Hindi scripts for audio testing
 
 ### Safety rule

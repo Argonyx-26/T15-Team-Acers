@@ -36,6 +36,10 @@ The Kerala and Tamil Nadu source register is in
 `kerala-tamilnadu-crop-sources.csv`, with package references in
 `kerala-tamilnadu-packages.md`.
 
+The initial geography list for all districts in the three states is in
+`target-districts.csv`. District coverage does not mean that every product is
+approved, stocked, or priced identically in every district.
+
 ## Dosage calculation
 
 Only calculate a quantity after the label dose and the required field units are

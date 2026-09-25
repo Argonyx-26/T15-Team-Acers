@@ -1,7 +1,7 @@
 # Hack-project information review
 
 **Intake file:** `hackprojectinfo.docx`  
-**Received scope:** Karnataka, Kerala, and Tamil Nadu  
+**Received scope:** All districts of Karnataka, Kerala, and Tamil Nadu
 **Current status:** Useful draft; not yet production-safe
 
 ## Captured scope
@@ -41,8 +41,10 @@ explicit fields instead of treating all recommendations as interchangeable.
 
 ### Required from the team
 
-1. **District or demonstration location** for each state. "All districts" is too
-   broad for local availability and advisory wording.
+1. **District or demonstration location** is not required for the initial scope:
+   all districts are included in `data/target-districts.csv`. Local product
+   availability and prices still need district-level evidence before being
+   displayed.
 2. **Demo district or location**. No district has been selected yet.
 3. **Language reviewer names and capabilities** for Kannada, Hindi, Tamil, and
    Malayalam. Blank reviewer fields remain unapproved.
@@ -111,6 +113,9 @@ These are **not** being treated as verified recommendations:
 - `ready_for_app`: all required technical, safety, price, and language checks
   are complete.
 
-The Word-document entries should remain `needs_source_verification`. The
+The Word-document entries should remain `needs_source_verification`. CPCRI's
+official coconut bud-rot page is recorded as `source_backed_needs_label_check`,
+but its guidance still needs current product-label and worker-safety checks
+before it becomes an app recommendation. The
 Tamil Nadu rice row is not included in the app-ready crop-problem scope until
 the team defines a problem for it.
