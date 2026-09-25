@@ -16,8 +16,6 @@ import {
   ExternalLink,
   ShieldAlert
 } from 'lucide-react';
-import L from 'leaflet';
-import 'leaflet/dist/leaflet.css';
 import { DISTRICTS, DistrictInfo } from '../data/districts';
 import { RiskTelemetry, fetchLiveRiskTelemetry } from '../services/riskService';
 import { getSoilProfileForDistrict, SoilProfile } from '../data/soilData';
@@ -74,10 +72,6 @@ export const LiveWeatherAndLocation: React.FC<LiveWeatherAndLocationProps> = ({
     loadWeatherData(lat, lon, selectedDistrict.name);
   }, [selectedDistrict, currentCrop, openWeatherKey, customCoords]);
 
-  const mapContainerRef = React.useRef<HTMLDivElement | null>(null);
-  const mapInstanceRef = React.useRef<L.Map | null>(null);
-  const markerRef = React.useRef<L.Marker | null>(null);
-
   // GPS Geolocation Handler with robust network fallback
   const handleGpsAcquisition = () => {
     if (!navigator.geolocation) {
@@ -132,67 +126,14 @@ export const LiveWeatherAndLocation: React.FC<LiveWeatherAndLocationProps> = ({
   const activeLat = customCoords?.lat ?? selectedDistrict.lat;
   const activeLon = customCoords?.lon ?? selectedDistrict.lon;
 
-  // Initialize and update Leaflet Map
-  useEffect(() => {
-    if (!mapContainerRef.current) return;
-
-    if (!mapInstanceRef.current) {
-      const map = L.map(mapContainerRef.current, {
-        center: [activeLat, activeLon],
-        zoom: 11,
-        zoomControl: true,
-        attributionControl: false,
-      });
-
-      // CartoDB Dark Matter tiles: open CORS, reliable, matches dark theme
-      L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-        subdomains: 'abcd',
-        maxZoom: 19,
-      }).addTo(map);
-
-      // Custom glowing map pin
-      const customPin = L.divIcon({
-        className: 'custom-map-pin',
-        html: `
-          <div style="position: relative; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center;">
-            <div style="position: absolute; width: 22px; height: 22px; border-radius: 50%; background: rgba(233, 84, 32, 0.4); animation: ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;"></div>
-            <div style="width: 12px; height: 12px; border-radius: 50%; background: #E95420; border: 2px solid #ffffff; box-shadow: 0 0 10px #E95420;"></div>
-          </div>
-        `,
-        iconSize: [22, 22],
-        iconAnchor: [11, 11]
-      });
-
-      const marker = L.marker([activeLat, activeLon], { icon: customPin }).addTo(map);
-      marker.bindPopup(`<b>${selectedDistrict.name}</b><br/>${activeLat.toFixed(4)}°N, ${activeLon.toFixed(4)}°E`);
-
-      mapInstanceRef.current = map;
-      markerRef.current = marker;
-
-      setTimeout(() => {
-        map.invalidateSize();
-      }, 150);
-    } else {
-      mapInstanceRef.current.setView([activeLat, activeLon], 11, { animate: true });
-      if (markerRef.current) {
-        markerRef.current.setLatLng([activeLat, activeLon]);
-        markerRef.current.setPopupContent(`<b>${selectedDistrict.name}</b><br/>${activeLat.toFixed(4)}°N, ${activeLon.toFixed(4)}°E`);
-      }
-      setTimeout(() => {
-        mapInstanceRef.current?.invalidateSize();
-      }, 150);
-    }
-  }, [activeLat, activeLon, selectedDistrict.name]);
-
-  // Clean up Leaflet on unmount
-  useEffect(() => {
-    return () => {
-      if (mapInstanceRef.current) {
-        mapInstanceRef.current.remove();
-        mapInstanceRef.current = null;
-      }
-    };
-  }, []);
+  // Google Maps zero-redirect direct embed URL
+  const locationQuery = customCoords
+    ? `${activeLat},${activeLon}`
+    : `${selectedDistrict.name}, ${selectedDistrict.state}`;
+  const gmapsEmbedUrl = `https://www.google.com/maps/embed?origin=mfe&pb=!1m3!2m1!1s${encodeURIComponent(locationQuery)}!6i12`;
+  const gmapsExternalUrl = customCoords
+    ? `https://www.google.com/maps/search/?api=1&query=${activeLat},${activeLon}`
+    : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${selectedDistrict.name}, ${selectedDistrict.state}`)}`;
 
   // Spray drift safety assessment based on wind speed
   const windSpeed = telemetry?.windSpeedKmH || 11.5;
@@ -270,15 +211,18 @@ export const LiveWeatherAndLocation: React.FC<LiveWeatherAndLocationProps> = ({
         </div>
       )}
 
-      {/* Interactive High-Reliability Field Map */}
+      {/* Embedded Google Maps View & Coordinates Info */}
       <div className="relative rounded-lg overflow-hidden border border-[#3A3A3A] bg-[#111111] h-48 mb-4">
-        <div
-          ref={mapContainerRef}
-          className="w-full h-full"
-          style={{ minHeight: '12rem', zIndex: 1 }}
+        <iframe
+          key={`${locationQuery}-${activeLat}-${activeLon}`}
+          title="Google Maps Field Location"
+          src={gmapsEmbedUrl}
+          className="w-full h-full border-0"
+          loading="eager"
+          referrerPolicy="no-referrer-when-downgrade"
         />
         {/* Floating Coordinates overlay */}
-        <div className="absolute bottom-2 left-2 right-2 z-[400] bg-[#111111]/92 backdrop-blur-md border border-[#333333] px-3 py-1.5 rounded-md flex items-center justify-between text-[11px] font-mono shadow-md">
+        <div className="absolute bottom-2 left-2 right-2 z-10 bg-[#111111]/92 backdrop-blur-md border border-[#333333] px-3 py-1.5 rounded-md flex items-center justify-between text-[11px] font-mono shadow-md">
           <div className="flex items-center gap-1.5 text-white">
             <MapPin className="w-3 h-3 text-[#E95420]" />
             <span className="font-semibold">{selectedDistrict.name}, {selectedDistrict.state}</span>
@@ -291,12 +235,12 @@ export const LiveWeatherAndLocation: React.FC<LiveWeatherAndLocationProps> = ({
           <div className="text-[#AEA79F] flex items-center gap-2">
             <span>{activeLat.toFixed(4)}°N, {activeLon.toFixed(4)}°E</span>
             <a
-              href={`https://www.openstreetmap.org/?mlat=${activeLat}&mlon=${activeLon}#map=12/${activeLat}/${activeLon}`}
+              href={gmapsExternalUrl}
               target="_blank"
               rel="noreferrer"
               className="text-[#E95420] hover:underline text-[10px]"
             >
-              Open Map ↗
+              Open Google Maps ↗
             </a>
           </div>
         </div>
