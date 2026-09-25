@@ -5,6 +5,7 @@
 The current MVP includes:
 
 - Expo Router mobile/web shell with camera capture and permission handling.
+- Leaf capture supports both live camera photos and existing gallery uploads.
 - OpenWeather current conditions with AsyncStorage fallback for offline use.
 - Preetham's 24-hour crop risk engine ported to `src/services/risk-engine.ts`.
 - Open-Meteo hourly telemetry for temperature, humidity, rainfall probability, and wet-hour streaks.
@@ -16,7 +17,7 @@ The current MVP includes:
 - `assets/data/advisories.json` currently contains three starter advisories: healthy plant, tomato early blight, and potato late blight.
 - `risk-engine/curated_dataset/class_mapping.json` contains 16 PlantVillage classes for potato, rice, and tomato.
 - `risk-engine/risk_engine.py` is the source Python implementation for the weather risk criteria.
-- No separate Ishan advisory handoff is present yet. Dosages, application frequency, generic alternatives, and complete Kannada/Hindi coverage remain pending.
+- Ishan's draft advisory handoff is in the workspace-level `data/` directory. Dosages, application frequency, generic alternatives, source verification, and complete Kannada/Hindi coverage remain pending; see `PROJECT_STATUS.md`.
 
 ### Run locally
 
