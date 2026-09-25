@@ -14,8 +14,8 @@ The current MVP includes:
 ### Data inventory
 
 - `assets/data/advisories.json` currently contains three starter advisories: healthy plant, tomato early blight, and potato late blight.
-- `Argonyx26-Crop-Risk-Engine/curated_dataset/class_mapping.json` contains 16 PlantVillage classes for potato, rice, and tomato.
-- `Argonyx26-Crop-Risk-Engine/risk_engine.py` is the source Python implementation for the weather risk criteria.
+- `risk-engine/curated_dataset/class_mapping.json` contains 16 PlantVillage classes for potato, rice, and tomato.
+- `risk-engine/risk_engine.py` is the source Python implementation for the weather risk criteria.
 - No separate Ishan advisory handoff is present yet. Dosages, application frequency, generic alternatives, and complete Kannada/Hindi coverage remain pending.
 
 ### Run locally
@@ -56,7 +56,7 @@ Expo exposes only variables prefixed with `EXPO_PUBLIC_` to the app. Restart `np
 after changing `.env`; never commit `.env` or place secret keys in source code. Weather continues
 using the last cached telemetry when the key is missing or the request fails.
 
-Preetham's risk engine is in `Argonyx26-Crop-Risk-Engine/risk_engine.py`, with the same criteria
+Preetham's risk engine is in `risk-engine/risk_engine.py`, with the same criteria
 ported to `src/services/risk-engine.ts`. It uses Open-Meteo hourly data and does not require an
 OpenWeather key; the current screen uses the OpenWeather key for current conditions and the
 ported engine for the 24-hour risk report.

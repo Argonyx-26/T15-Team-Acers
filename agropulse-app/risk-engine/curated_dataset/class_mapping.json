@@ -1,0 +1,38 @@
+{
+    "idx_to_class": {
+        "0": "Potato___Early_blight",
+        "1": "Potato___Late_blight",
+        "2": "Potato___healthy",
+        "3": "Rice___Bacterial_leaf_blight",
+        "4": "Rice___Brown_spot",
+        "5": "Rice___Leaf_smut",
+        "6": "Tomato___Bacterial_spot",
+        "7": "Tomato___Early_blight",
+        "8": "Tomato___Late_blight",
+        "9": "Tomato___Leaf_Mold",
+        "10": "Tomato___Septoria_leaf_spot",
+        "11": "Tomato___Spider_mites Two-spotted_spider_mite",
+        "12": "Tomato___Target_Spot",
+        "13": "Tomato___Tomato_Yellow_Leaf_Curl_Virus",
+        "14": "Tomato___Tomato_mosaic_virus",
+        "15": "Tomato___healthy"
+    },
+    "class_to_idx": {
+        "Potato___Early_blight": 0,
+        "Potato___Late_blight": 1,
+        "Potato___healthy": 2,
+        "Rice___Bacterial_leaf_blight": 3,
+        "Rice___Brown_spot": 4,
+        "Rice___Leaf_smut": 5,
+        "Tomato___Bacterial_spot": 6,
+        "Tomato___Early_blight": 7,
+        "Tomato___Late_blight": 8,
+        "Tomato___Leaf_Mold": 9,
+        "Tomato___Septoria_leaf_spot": 10,
+        "Tomato___Spider_mites Two-spotted_spider_mite": 11,
+        "Tomato___Target_Spot": 12,
+        "Tomato___Tomato_Yellow_Leaf_Curl_Virus": 13,
+        "Tomato___Tomato_mosaic_virus": 14,
+        "Tomato___healthy": 15
+    }
+}

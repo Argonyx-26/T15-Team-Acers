@@ -1,0 +1,25 @@
+# Ignore raw downloads and large zip files
+*.zip
+raw_plantvillage/
+raw_rice/
+
+# Ignore the heavy extracted image datasets
+# Visweshwara will train locally or pull datasets via script
+curated_dataset/train/
+curated_dataset/val/
+
+# Keep the metadata JSON in git!
+!curated_dataset/class_mapping.json
+
+# Ignore Python runtime artifacts
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+env/
+.env
+
+# Ignore Kaggle credentials
+.kaggle/
+kaggle.json
+access_token
