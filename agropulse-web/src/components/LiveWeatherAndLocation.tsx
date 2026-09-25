@@ -135,14 +135,11 @@ export const LiveWeatherAndLocation: React.FC<LiveWeatherAndLocationProps> = ({
             <Compass className="w-4 h-4" />
           </div>
           <div>
-            <h3 className="font-bold text-base text-white flex items-center gap-2">
-              Live Weather & Field Location
-              <span className="text-[10px] uppercase font-mono px-2 py-0.5 rounded bg-[#E95420]/20 text-[#E95420] border border-[#E95420]/30">
-                Wireframe Box 2
-              </span>
+            <h3 className="font-bold text-base text-white">
+              Live Weather &amp; Field Location
             </h3>
             <p className="text-xs text-[#AEA79F]">
-              Google Maps geolocation, OpenWeather telemetry, and 24h previous microclimate curve
+              Google Maps geolocation, OpenWeather telemetry, and 24h microclimate curve
             </p>
           </div>
         </div>
@@ -393,14 +390,10 @@ export const LiveWeatherAndLocation: React.FC<LiveWeatherAndLocationProps> = ({
           </div>
         </div>
 
-        <div className="bg-[#262626]/50 p-2 rounded text-[11px] text-[#AEA79F] border border-[#333333] space-y-1">
+        <div className="bg-[#262626]/50 p-2 rounded text-[11px] text-[#AEA79F] border border-[#333333]">
           <div>
             <strong className="text-white">Water Behavior: </strong>
             {soilProfile.waterBehavior}
-          </div>
-          <div>
-            <strong className="text-[#E95420]">Management Signal: </strong>
-            {soilProfile.managementSignal}
           </div>
         </div>
       </div>

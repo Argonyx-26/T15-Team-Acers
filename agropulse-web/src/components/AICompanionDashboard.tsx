@@ -1,14 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   Sparkles,
   ShieldAlert,
-  Volume2,
-  VolumeX,
-  Play,
-  Square,
   AlertTriangle,
   CheckCircle2,
-  FileText,
   Activity,
   Layers,
   Droplets,
@@ -477,8 +472,6 @@ export const AICompanionDashboard: React.FC<AICompanionDashboardProps> = ({
   soilProfile
 }) => {
   const [activeLang, setActiveLang] = useState<'en' | 'kn' | 'hi'>('en');
-  const [isPlayingAudio, setIsPlayingAudio] = useState<boolean>(false);
-  const [speechRate, setSpeechRate] = useState<number>(0.9);
   const [showJsonInspector, setShowJsonInspector] = useState<boolean>(false);
   const [copiedKey, setCopiedKey] = useState<boolean>(false);
   const [activeTab, setActiveTab] = useState<'diagnosis' | 'chat' | 'blueprint'>('diagnosis');
@@ -516,51 +509,6 @@ export const AICompanionDashboard: React.FC<AICompanionDashboardProps> = ({
   const isHighHumidityRisk = consecutiveWet >= 6 || (weatherTelemetry?.currentHumidity ?? 75) >= 85;
   const isWindDriftRisk = (weatherTelemetry?.windSpeedKmH ?? 10) > 18;
   const isSoilWaterlogged = soilProfile?.waterRetentionRisk === 'High Waterlogging Risk';
-
-  // Audio Playback via HTML5 SpeechSynthesis
-  const handlePlayAudio = () => {
-    if (!('speechSynthesis' in window)) {
-      alert('Text-to-Speech is not supported by your browser.');
-      return;
-    }
-
-    if (isPlayingAudio) {
-      window.speechSynthesis.cancel();
-      setIsPlayingAudio(false);
-      return;
-    }
-
-    window.speechSynthesis.cancel(); // clear previous
-    const scriptToRead = treatment.scripts[activeLang];
-    const utterance = new SpeechSynthesisUtterance(scriptToRead);
-    utterance.rate = speechRate;
-
-    // Pick appropriate language code
-    if (activeLang === 'kn') utterance.lang = 'kn-IN';
-    else if (activeLang === 'hi') utterance.lang = 'hi-IN';
-    else utterance.lang = 'en-US';
-
-    utterance.onend = () => setIsPlayingAudio(false);
-    utterance.onerror = () => setIsPlayingAudio(false);
-
-    window.speechSynthesis.speak(utterance);
-    setIsPlayingAudio(true);
-  };
-
-  const handleStopAudio = () => {
-    if ('speechSynthesis' in window) {
-      window.speechSynthesis.cancel();
-      setIsPlayingAudio(false);
-    }
-  };
-
-  useEffect(() => {
-    // Stop audio if target disease or language changes
-    if ('speechSynthesis' in window) {
-      window.speechSynthesis.cancel();
-      setIsPlayingAudio(false);
-    }
-  }, [targetClass, activeLang]);
 
   // Differential diagnosis probabilities
   const differentialCandidates = [
@@ -808,44 +756,28 @@ export const AICompanionDashboard: React.FC<AICompanionDashboardProps> = ({
       {/* Complete Verified Pesticide Details Table */}
       {treatment.pathogenType !== 'Non-Crop Clutter' && treatment.pathogenType !== 'Healthy' && (
         <div className="bg-[#111111] p-5 rounded-xl border border-[#333333] space-y-4">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-2 border-b border-[#262626] gap-2">
-            <div>
-              <h3 className="text-base font-bold text-white flex items-center gap-2">
-                <Flame className="w-4 h-4 text-[#E95420]" />
-                Prescribed Pesticide / Fungicide Technical Formulation
-              </h3>
-              <p className="text-xs text-[#AEA79F]">
-                Verified CIB&RC Label Dosage, Knapsack Tank Dilution Math, and Pre-Harvest Interval (PHI)
-              </p>
-            </div>
-            <div className="text-xs font-mono text-[#E95420] px-2 py-1 rounded bg-[#E95420]/15 border border-[#E95420]/30">
+          <div className="flex items-center gap-2 pb-2 border-b border-[#262626]">
+            <Flame className="w-4 h-4 text-[#E95420]" />
+            <h3 className="text-base font-bold text-white">
+              Pesticide Formulation &amp; Dosage
+            </h3>
+            <span className="ml-auto text-xs font-mono text-[#E95420] px-2 py-0.5 rounded bg-[#E95420]/10 border border-[#E95420]/20">
               PHI: {treatment.waitingPeriodDays}
-            </div>
+            </span>
           </div>
 
-          {/* Formulations & Calculations Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+          {/* Simplified Formulations Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div className="bg-[#1E1E1E] p-3 rounded-lg border border-[#3A3A3A]">
-              <span className="text-[10px] text-[#AEA79F] uppercase font-mono block">Recommended Product</span>
-              <span className="text-white font-semibold text-sm">{treatment.chemicalName}</span>
-              <span className="text-[10px] text-[#AEA79F] block mt-1">Formulation: {treatment.formulation}</span>
+              <span className="text-[10px] text-[#AEA79F] uppercase font-mono block mb-1">Recommended Product</span>
+              <span className="text-white font-semibold text-sm block">{treatment.chemicalName}</span>
+              <span className="text-[10px] text-[#AEA79F] block mt-1">{treatment.activeIngredient}</span>
             </div>
 
             <div className="bg-[#1E1E1E] p-3 rounded-lg border border-[#3A3A3A]">
-              <span className="text-[10px] text-[#AEA79F] uppercase font-mono block">Active Molecule & Conc.</span>
-              <span className="text-white font-semibold text-xs leading-snug">{treatment.activeIngredient}</span>
-            </div>
-
-            <div className="bg-[#1E1E1E] p-3 rounded-lg border border-[#3A3A3A]">
-              <span className="text-[10px] text-[#AEA79F] uppercase font-mono block">Dose Per Acre & Water</span>
-              <span className="text-white font-bold text-sm text-[#E95420]">{treatment.dosePerAcre}</span>
-              <span className="text-[10px] text-[#AEA79F] block mt-1">in {treatment.waterPerAcre}</span>
-            </div>
-
-            <div className="bg-[#1E1E1E] p-3 rounded-lg border border-[#3A3A3A]">
-              <span className="text-[10px] text-[#AEA79F] uppercase font-mono block">16-Litre Knapsack Sprayer</span>
-              <span className="text-white font-bold text-sm text-emerald-400">{treatment.dosePer16LKnapsack}</span>
-              <span className="text-[10px] text-[#AEA79F] block mt-1">Need {treatment.knapsackTanksPerAcre}</span>
+              <span className="text-[10px] text-[#AEA79F] uppercase font-mono block mb-1">16-Litre Knapsack Dose</span>
+              <span className="text-emerald-400 font-bold text-sm block">{treatment.dosePer16LKnapsack}</span>
+              <span className="text-[10px] text-[#AEA79F] block mt-1">{treatment.dosePerAcre} · {treatment.waterPerAcre}</span>
             </div>
           </div>
 
@@ -872,147 +804,6 @@ export const AICompanionDashboard: React.FC<AICompanionDashboardProps> = ({
         </div>
       )}
 
-      {/* Vernacular Audio Guidance & Full Readable Transcripts */}
-      <div className="bg-[#111111] p-5 rounded-xl border border-[#333333] space-y-4">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-3 border-b border-[#262626] gap-3">
-          <div className="flex items-center space-x-2">
-            <div className="w-8 h-8 rounded-lg bg-[#E95420]/15 flex items-center justify-center text-[#E95420]">
-              <Volume2 className="w-4 h-4" />
-            </div>
-            <div>
-              <h3 className="text-base font-bold text-white">
-                Vernacular Voice Audio & Full Transcripts
-              </h3>
-              <p className="text-xs text-[#AEA79F]">
-                Listen to voice advisory or read complete transcribed text in Kannada, Hindi, and English
-              </p>
-            </div>
-          </div>
-
-          {/* Language Selector Buttons */}
-          <div className="flex items-center gap-1.5 bg-[#1E1E1E] p-1 rounded-lg border border-[#3A3A3A]">
-            <button
-              onClick={() => setActiveLang('en')}
-              className={`px-3 py-1 rounded text-xs font-medium transition-colors ${
-                activeLang === 'en'
-                  ? 'bg-[#E95420] text-white'
-                  : 'text-[#AEA79F] hover:text-white'
-              }`}
-            >
-              English
-            </button>
-            <button
-              onClick={() => setActiveLang('kn')}
-              className={`px-3 py-1 rounded text-xs font-medium transition-colors ${
-                activeLang === 'kn'
-                  ? 'bg-[#E95420] text-white'
-                  : 'text-[#AEA79F] hover:text-white'
-              }`}
-            >
-              ಕನ್ನಡ (Kannada)
-            </button>
-            <button
-              onClick={() => setActiveLang('hi')}
-              className={`px-3 py-1 rounded text-xs font-medium transition-colors ${
-                activeLang === 'hi'
-                  ? 'bg-[#E95420] text-white'
-                  : 'text-[#AEA79F] hover:text-white'
-              }`}
-            >
-              हिन्दी (Hindi)
-            </button>
-          </div>
-        </div>
-
-        {/* Audio Player Controls */}
-        <div className="flex flex-wrap items-center justify-between gap-3 p-3 bg-[#1E1E1E] rounded-lg border border-[#3A3A3A]">
-          <div className="flex items-center gap-3">
-            <button
-              onClick={handlePlayAudio}
-              className="flex items-center gap-2 px-4 py-2 bg-[#E95420] hover:bg-[#77216F] text-white rounded-lg text-xs font-semibold shadow-md transition-all"
-            >
-              {isPlayingAudio ? (
-                <>
-                  <Square className="w-3.5 h-3.5 fill-current" />
-                  <span>Pause Audio</span>
-                </>
-              ) : (
-                <>
-                  <Play className="w-3.5 h-3.5 fill-current" />
-                  <span>Play {activeLang === 'kn' ? 'ಕನ್ನಡ' : activeLang === 'hi' ? 'हिन्दी' : 'English'} Audio</span>
-                </>
-              )}
-            </button>
-
-            {isPlayingAudio && (
-              <button
-                onClick={handleStopAudio}
-                className="px-3 py-2 bg-[#262626] hover:bg-[#333333] text-[#AEA79F] hover:text-white rounded-lg text-xs font-medium border border-[#3A3A3A]"
-              >
-                Stop
-              </button>
-            )}
-
-            <div className="flex items-center gap-1.5 text-xs text-[#AEA79F]">
-              <span className="text-[11px]">Speed:</span>
-              <select
-                aria-label="Audio playback speed"
-                value={speechRate}
-                onChange={(e) => setSpeechRate(parseFloat(e.target.value))}
-                className="bg-[#111111] border border-[#3A3A3A] rounded px-2 py-1 text-xs text-white focus:outline-none"
-              >
-                <option value="0.8">0.8x (Slow)</option>
-                <option value="0.9">0.9x (Natural)</option>
-                <option value="1.0">1.0x (Normal)</option>
-              </select>
-            </div>
-          </div>
-
-          <div className="text-[11px] font-mono text-[#AEA79F] flex items-center gap-1.5">
-            <span className={`w-2 h-2 rounded-full ${isPlayingAudio ? 'bg-emerald-400 animate-ping' : 'bg-[#AEA79F]'}`} />
-            <span>{isPlayingAudio ? 'Speaking...' : 'Ready for playback'}</span>
-          </div>
-        </div>
-
-        {/* Complete Readable Transcript Box */}
-        <div className="p-4 bg-[#1E1E1E] rounded-lg border border-[#3A3A3A] space-y-2">
-          <div className="flex items-center justify-between text-xs text-[#AEA79F]">
-            <span className="font-mono uppercase flex items-center gap-1">
-              <FileText className="w-3.5 h-3.5 text-[#E95420]" />
-              Official Vernacular Audio Transcript ({activeLang.toUpperCase()})
-            </span>
-            <span className="text-[10px] text-[#AEA79F]">
-              Verified by Agricultural Extension Officers
-            </span>
-          </div>
-
-          <p className="text-sm text-white leading-relaxed font-sans bg-[#111111] p-3 rounded border border-[#2E2E2E]">
-            {treatment.scripts[activeLang]}
-          </p>
-        </div>
-
-        {/* Side-by-Side Transcripts Accordion for Multi-Lingual Farmers */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 pt-2 text-xs">
-          <div className="p-2.5 bg-[#1E1E1E] rounded border border-[#2E2E2E]">
-            <span className="text-[#E95420] font-bold block mb-1">English Transcript</span>
-            <p className="text-[#AEA79F] text-[11px] line-clamp-3 hover:line-clamp-none transition-all">
-              {treatment.scripts.en}
-            </p>
-          </div>
-          <div className="p-2.5 bg-[#1E1E1E] rounded border border-[#2E2E2E]">
-            <span className="text-[#E95420] font-bold block mb-1">ಕನ್ನಡ ಲಿಪ್ಯಂತರ (Kannada)</span>
-            <p className="text-[#AEA79F] text-[11px] line-clamp-3 hover:line-clamp-none transition-all">
-              {treatment.scripts.kn}
-            </p>
-          </div>
-          <div className="p-2.5 bg-[#1E1E1E] rounded border border-[#2E2E2E]">
-            <span className="text-[#E95420] font-bold block mb-1">हिन्दी प्रतिलेख (Hindi)</span>
-            <p className="text-[#AEA79F] text-[11px] line-clamp-3 hover:line-clamp-none transition-all">
-              {treatment.scripts.hi}
-            </p>
-          </div>
-        </div>
-      </div>
 
       {/* Raw Model Contract & JSON Telemetry Inspector */}
       <div className="pt-2 border-t border-[#333333]">

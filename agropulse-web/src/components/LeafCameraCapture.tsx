@@ -241,12 +241,9 @@ export const LeafCameraCapture: React.FC<LeafCameraCaptureProps> = ({
           <div className="flex items-center gap-2">
             <span className="w-2.5 h-2.5 rounded-full bg-[#E95420]" />
             <h3 className="font-serif font-bold text-lg text-white">
-              Leaf Vision & Optical Capture
+              Leaf Vision &amp; Optical Capture
             </h3>
           </div>
-          <span className="text-[10px] font-mono text-[#AEA79F] uppercase tracking-wider bg-[#141414] px-2 py-0.5 rounded border border-[#2E2E2E]">
-            MobileNetV2 · 224×224 Float32
-          </span>
         </div>
 
         {/* Viewfinder / Camera Area */}
@@ -398,44 +395,6 @@ export const LeafCameraCapture: React.FC<LeafCameraCaptureProps> = ({
             </div>
           </div>
         )}
-      </div>
-
-      {/* Quick Test Vector Presets Grid */}
-      <div className="pt-3 border-t border-[#2E2E2E]">
-        <div className="flex items-center justify-between mb-2">
-          <span className="text-[11px] font-mono text-[#AEA79F] uppercase tracking-wider font-semibold">
-            Field Test Vectors & Stress Presets
-          </span>
-          <span className="text-[10px] font-mono text-[#888888]">Tap to evaluate</span>
-        </div>
-
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5">
-          {TEST_VECTORS.map((v) => {
-            const isSelected = activeVectorId === v.id;
-            return (
-              <button
-                key={v.id}
-                type="button"
-                onClick={() => handleSelectVector(v)}
-                className={`p-2 rounded text-left border transition-all text-xs flex flex-col justify-between ${
-                  isSelected
-                    ? 'bg-[#2A160F] border-[#E95420] text-white font-semibold'
-                    : 'bg-[#141414] border-[#2E2E2E] text-[#CCCCCC] hover:border-[#444444]'
-                }`}
-              >
-                <div className="flex items-center justify-between gap-1 mb-1">
-                  <span className="text-[10px] font-mono font-bold text-[#E95420] truncate">{v.crop}</span>
-                  {v.isBug01 && (
-                    <span className="text-[8px] font-mono px-1 rounded bg-[#E95420] text-white font-bold">
-                      BUG-01
-                    </span>
-                  )}
-                </div>
-                <div className="text-[11px] text-[#E5E5E5] line-clamp-1">{v.name.split('—')[1] || v.name}</div>
-              </button>
-            );
-          })}
-        </div>
       </div>
     </div>
   );
