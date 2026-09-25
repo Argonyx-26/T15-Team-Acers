@@ -45,6 +45,14 @@ export const Navbar: React.FC = () => {
           </a>
 
           <a
+            href="#testing-studio"
+            className="text-xs font-medium text-[#9ed871] hover:text-[#b4ee84] transition-colors hidden md:flex items-center gap-1.5 px-2 bg-[#1b3124] py-1 rounded-md border border-[#2d523c]"
+          >
+            <span className="w-1.5 h-1.5 rounded-full bg-[#9ed871] animate-pulse" />
+            <span>AI Testing Lab</span>
+          </a>
+
+          <a
             href="#districts"
             className="text-xs font-medium text-[#cfdec4] hover:text-[#9ed871] transition-colors hidden lg:block px-2"
           >

@@ -3,6 +3,7 @@ import { Navbar } from './components/Navbar';
 import { HeroSection } from './components/HeroSection';
 import { DiagnosticScanner } from './components/DiagnosticScanner';
 import { WeatherRiskCard } from './components/WeatherRiskCard';
+import { ModelTestingStudio } from './components/ModelTestingStudio';
 import { RegionalPackagesExplorer } from './components/RegionalPackagesExplorer';
 import { SafetyProtocolsSection } from './components/SafetyProtocolsSection';
 import { Footer } from './components/Footer';
@@ -66,7 +67,12 @@ export function App() {
           />
         </section>
 
-        {/* Section 3: Safety & Responsible AI Protocol */}
+        {/* Section 3: AI Model Testing Studio & Benchmark Workbench */}
+        <section id="testing-studio" className="scroll-mt-20">
+          <ModelTestingStudio />
+        </section>
+
+        {/* Section 4: Safety & Responsible AI Protocol */}
         <section>
           <SafetyProtocolsSection />
         </section>
