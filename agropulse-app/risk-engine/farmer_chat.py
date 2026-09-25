@@ -233,6 +233,81 @@ class FarmerConversationalEngine:
         rain_prob = weather_telemetry.get("maxRainProbability", 20) if weather_telemetry else 20
         consecutive_wet = weather_telemetry.get("consecutiveWetHours", 4) if weather_telemetry else 4
 
+        # 0. Greetings & Friendly Conversation
+        if any(w == q_lower.strip() or q_lower.startswith(w + " ") or q_lower.endswith(" " + w) for w in ["hi", "hello", "hey", "namaste", "good morning", "good evening", "ನಮಸ್ಕಾರ", "ಹಲೋ", "नमस्ते", "प्रणाम"]):
+            if lang == "kn":
+                reply = (
+                    f"ನಮಸ್ಕಾರ! ನಾನು ನಿಮ್ಮ ಆಗ್ರೋಪಲ್ಸ್ ಎಐ ಕೃಷಿ ಮಿತ್ರ. ನಿಮ್ಮ {target_info['crop']} ಬೆಳೆಯಲ್ಲಿ {target_info['disease_kn']} ರೋಗವನ್ನು ಪರಿಶೀಲಿಸಿದ್ದೇನೆ. "
+                    f"ಔಷಧ ಪ್ರಮಾಣ ({target_info['knapsack_16l']}), ಸಿಂಪರಣಾ ಹವಾಮಾನ, ಸಾವಯವ ನಿಯಂತ್ರಣ ಅಥವಾ ಖರೀದಿ ಅಂಗಡಿಗಳ ಬಗ್ಗೆ ಯಾವುದೇ ಪ್ರಶ್ನೆ ಕೇಳಿ!"
+                )
+            elif lang == "hi":
+                reply = (
+                    f"नमस्ते! मैं आपका एग्रोपल्स एआई कृषि मित्र हूँ। आपकी {target_info['crop']} फसल में {target_info['disease_hi']} पाया गया है। "
+                    f"दवा की सटीक मात्रा ({target_info['knapsack_16l']}), आज स्प्रे करने का मौसम, जैविक उपचार या दवा कहाँ से खरीदें, इसके बारे में पूछें।"
+                )
+            else:
+                reply = (
+                    f"Hello! I am your AgroPulse AI Agricultural Companion. I have analyzed your {target_info['crop']} foliage ({target_info['disease_en']}). "
+                    f"How can I assist you today? You can ask me about 16L knapsack mixing ratios ({target_info['knapsack_16l']}), today's spray weather window, organic alternatives, or where to buy certified formulations."
+                )
+            return {"intent": "greeting", "language": lang, "response": reply}
+
+        # 0.1 Where to buy / Certified Retailers / Sourcing
+        if any(w in q_lower for w in ["where should i buy", "where to buy", "where can i buy", "where buy", "buy this", "buy", "purchase", "shop", "dealer", "store", "vendor", "get this", "find this", "where can i get", "ಖರೀದಿ", "ಎಲ್ಲಿ ಸಿಗುತ್ತದೆ", "ಅಂಗಡಿ", "ಕೊಳ್ಳುವುದು", "कहाँ खरीदें", "दुकान", "कहाँ मिलेगी", "खरीदना"]):
+            if lang == "kn":
+                reply = (
+                    f"ನೀವು ಅಧಿಕೃತ {target_info['chemical']} ಅನ್ನು ಇಲ್ಲಿ ಖರೀದಿಸಬಹುದು:\n"
+                    f"೧. ನಿಮ್ಮ ತಾಲ್ಲೂಕಿನ **ರೈತ ಸಂಪರ್ಕ ಕೇಂದ್ರ (RSK)** ಅಥವಾ ಕೃಷಿ ಇಲಾಖೆ ಕಚೇರಿ.\n"
+                    f"೨. **ಪ್ರಾಥಮಿಕ ಕೃಷಿ ಪತ್ತಿನ ಸಹಕಾರ ಸಂಘಗಳು (PACS)** ಮತ್ತು ತಾಲೂಕು TAPCMS ಮಳಿಗೆಗಳು.\n"
+                    f"೩. ಕೃಷಿ ಇಲಾಖೆ ಪರವಾನಗಿ ಹೊಂದಿರುವ ನೋಂದಾಯಿತ ಕೀಟನಾಶಕ/ರಸಗೊಬ್ಬರ ಡೀಲರ್‌ಗಳು.\n"
+                    f"೪. ಜಿಲ್ಲಾ ಕೃಷಿ ವಿಜ್ಞಾನ ಕೇಂದ್ರ (KVK).\n\n"
+                    f"💡 ಪ್ರಮುಖ ಸಲಹೆ: ಕಡ್ಡಾಯವಾಗಿ ಅಧಿಕೃತ ಜಿಎಸ್‌ಟಿ ಬಿಲ್ ಪಡೆಯಿರಿ, ಬ್ಯಾಚ್ ಸಂಖ್ಯೆ ಮತ್ತು ಸಿಐಬಿ&ಆರ್‌ಸಿ (CIB&RC) ಅನುಮೋದಿತ ಲೇಬಲ್ ಪರಿಶೀಲಿಸಿ. ಹತ್ತಿರದ ಕೇಂದ್ರಕ್ಕೆ ಕಿಸಾನ್ ಉಚಿತ ಸಹಾಯವಾಣಿ: ೧೮೦೦-೧೮೦-೧೫೫೧."
+                )
+            elif lang == "hi":
+                reply = (
+                    f"आप प्रमाणित {target_info['chemical']} निम्न स्थानों से खरीद सकते हैं:\n"
+                    f"1. आपके ब्लॉक/तहसील का **किसान सेवा केंद्र (कृषि विभाग / RSK)**।\n"
+                    f"2. **प्राथमिक कृषि ऋण सहकारी समितियां (PACS)** एवं साधन सहकारी समितियां।\n"
+                    f"3. राज्य कृषि विभाग द्वारा लाइसेंस प्राप्त अधिकृत कृषि रक्षा केंद्र / कीटनाशक विक्रेता।\n"
+                    f"4. निकटतम **कृषि विज्ञान केंद्र (KVK)**।\n\n"
+                    f"💡 सलाह: हमेशा पक्का जीएसटी बिल लें, निर्माण तिथि व CIB&RC होलोग्राम अवश्य जांचें। टोल-फ्री किसान कॉल सेंटर: 1800-180-1551 पर संपर्क करें।"
+                )
+            else:
+                reply = (
+                    f"You can purchase certified {target_info['chemical']} at:\n"
+                    f"1. Your local **Raitha Samparka Kendra (RSK)** / Block Agricultural Office (often available with government input subsidies).\n"
+                    f"2. **Primary Agricultural Credit Societies (PACS)** and farmer cooperative depots (TAPCMS).\n"
+                    f"3. State Department of Agriculture **licensed agrochemical retail dealerships**.\n"
+                    f"4. The nearest **Krishi Vigyan Kendra (KVK)** agricultural input counter.\n\n"
+                    f"💡 Farmer Tip: Always demand an authorized GST cash bill, verify the CIB&RC registration hologram, and check the expiration date. For nearest verified input dealer, dial toll-free **1800-180-1551**."
+                )
+            return {"intent": "where_to_buy", "language": lang, "response": reply}
+
+        # 0.2 Spray Technique & Application Method
+        if any(w in q_lower for w in ["how to apply", "how to spray", "how to use", "technique", "method", "nozzle", "application", "ಹೇಗೆ ಸಿಂಪಡಿಸಬೇಕು", "ಬಳಸುವುದು ಹೇಗೆ", "ಕ್ರಮ", "कैसे इस्तेमाल करें", "छिड़काव कैसे करें", "तरीका"]):
+            if lang == "kn":
+                reply = (
+                    f"ಸಿಂಪಡಿಸುವ ಸರಿಯಾದ ವಿಧಾನ:\n"
+                    f"೧. **ಹಾಲೋ ಕೋನ್ ನಳಿಕೆ (Hollow Cone Nozzle)** ಬಳಸಿ ನಯವಾದ ಮಂಜಿನಂತೆ ಸಿಂಪಡಿಸಿ.\n"
+                    f"೨. ಔಷಧವನ್ನು ಎಲೆಯ ಕೆಳಭಾಗಕ್ಕೂ ತಲುಪುವಂತೆ ಸಿಂಪಡಿಸಿ (ಶಿಲೀಂಧ್ರ ಮತ್ತು ಬ್ಯಾಕ್ಟೀರಿಯಾಗಳು ಎಲೆಯ ಕೆಳಭಾಗದಲ್ಲಿ ಬೆಳೆಯುತ್ತವೆ).\n"
+                    f"೩. ಬೆಳಗಿನ ಇಬ್ಬನಿ ಒಣಗಿದ ಮೇಲೆ (ಬೆಳಿಗ್ಗೆ ೮ ರಿಂದ ೧೦:೩೦) ಅಥವಾ ಸಂಜೆ ೪ ಗಂಟೆಯ ನಂತರ ಗಾಳಿ ಕಡಿಮೆಯಾದಾಗ ಸಿಂಪಡಿಸಿ."
+                )
+            elif lang == "hi":
+                reply = (
+                    f"छिड़काव का सही तरीका:\n"
+                    f"1. **हॉलो कोन नोजल** का प्रयोग करें ताकि बारीक धुंध (mist) बने।\n"
+                    f"2. पत्तियों की निचली सतह पर भी अच्छी तरह स्प्रे करें, क्योंकि रोगकारक फफूंद नीचे ही पनपते हैं।\n"
+                    f"3. सुबह ओस सूखने के बाद (8 से 10:30 बजे) या शाम 4 बजे के बाद शांत मौसम में छिड़काव करें।"
+                )
+            else:
+                reply = (
+                    f"Optimal Spray Application Technique for {target_info['disease_en']}:\n"
+                    f"1. Use a **hollow-cone nozzle** calibrated for fine droplets to achieve 100% foliar coverage.\n"
+                    f"2. Direct spray toward both upper and **undersides of leaves** where stomatal pathogen penetration occurs.\n"
+                    f"3. Spray in early morning after dew evaporates (08:00 – 10:30 AM) or late afternoon. Never spray in midday heat."
+                )
+            return {"intent": "how_to_apply", "language": lang, "response": reply}
+
         # 1. Knapsack Sprayer Tank Dilution Query
         if any(w in q_lower for w in ["knapsack", "tank", "16l", "16 l", "litre", "liter", "scoop", "dosage", "dose", "ಪಂಪ್", "ನ್ಯಾಪ್", "ಪಂಪಿಗೆ", "ಪ್ರಮಾಣ", "पंप", "टैंक", "मात्रा", "खुराक"]):
             if lang == "kn":

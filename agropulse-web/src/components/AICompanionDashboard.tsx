@@ -458,6 +458,7 @@ interface AICompanionDashboardProps {
   isAnalyzing: boolean;
   weatherTelemetry: RiskTelemetry | null;
   soilProfile: SoilProfile | null;
+  hasImage?: boolean;
 }
 
 export const AICompanionDashboard: React.FC<AICompanionDashboardProps> = ({
@@ -469,7 +470,8 @@ export const AICompanionDashboard: React.FC<AICompanionDashboardProps> = ({
   targetClass,
   isAnalyzing,
   weatherTelemetry,
-  soilProfile
+  soilProfile,
+  hasImage = false
 }) => {
   const [activeLang, setActiveLang] = useState<'en' | 'kn' | 'hi'>('en');
   const [showJsonInspector, setShowJsonInspector] = useState<boolean>(false);
@@ -636,8 +638,22 @@ export const AICompanionDashboard: React.FC<AICompanionDashboardProps> = ({
 
       {activeTab === 'diagnosis' && (
         <>
-          {/* Primary Diagnosis & Confidence Display */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
+          {!hasImage && !targetClass ? (
+            <div className="bg-[#111111] border border-dashed border-[#3A3A3A] rounded-xl p-8 text-center space-y-3">
+              <div className="w-12 h-12 rounded-full bg-[#E95420]/10 border border-[#E95420]/30 flex items-center justify-center mx-auto text-[#E95420]">
+                <Stethoscope className="w-6 h-6" />
+              </div>
+              <div>
+                <h3 className="text-base font-bold text-white">Awaiting Foliage Specimen</h3>
+                <p className="text-xs text-[#AEA79F] max-w-md mx-auto mt-1">
+                  Upload a leaf photograph or capture live using Box 1 above. The AI will immediately run deep vision inference, fuse with local weather, and generate exact dosage calculations here.
+                </p>
+              </div>
+            </div>
+          ) : (
+            <>
+              {/* Primary Diagnosis & Confidence Display */}
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
             {/* Left Column: Verdict Card */}
             <div className="lg:col-span-7 bg-[#111111] p-4 rounded-xl border border-[#333333] space-y-3">
           <div className="flex items-center justify-between text-xs text-[#AEA79F]">
@@ -844,6 +860,8 @@ export const AICompanionDashboard: React.FC<AICompanionDashboardProps> = ({
           </div>
         )}
       </div>
+            </>
+          )}
         </>
       )}
 

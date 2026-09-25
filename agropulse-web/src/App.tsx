@@ -17,14 +17,16 @@ import {
 } from 'lucide-react';
 
 export function App() {
-  // Farm & Specimen State
+  // Farm & Specimen State — starts BLANK, waits for farmer to upload/capture a leaf
   const [selectedCrop, setSelectedCrop] = useState<string>('Auto');
-  const [detectedCrop, setDetectedCrop] = useState<string>('Rice');
-  const [cropConfidence, setCropConfidence] = useState<number>(0.96);
+  const [detectedCrop, setDetectedCrop] = useState<string>('');
+  const [cropConfidence, setCropConfidence] = useState<number>(0);
   const [cropVerification, setCropVerification] = useState<'VERIFIED_MATCH' | 'CROP_MISMATCH_DETECTED' | 'AUTO_DETECTED'>('AUTO_DETECTED');
   const [mismatchWarning, setMismatchWarning] = useState<string | null>(null);
-  const [targetClass, setTargetClass] = useState<string>('Rice___Bacterial_leaf_blight');
+  const [targetClass, setTargetClass] = useState<string>('');
   const [isAnalyzing, setIsAnalyzing] = useState<boolean>(false);
+  // hasImage: true once the farmer has uploaded/captured OR selected a test vector
+  const [hasImage, setHasImage] = useState<boolean>(false);
 
   // Geo & Climate State (Default: Mandya, Karnataka - major sugarcane/rice belt)
   const defaultDistrict = DISTRICTS.find((d) => d.name === 'Mandya') || DISTRICTS[0];
@@ -45,6 +47,7 @@ export function App() {
     setTargetClass(newTargetClass);
     setDetectedCrop(autoCrop);
     setCropConfidence(confidence);
+    setHasImage(true);
 
     if (isBug01 || autoCrop === 'Non-Crop') {
       setCropVerification('AUTO_DETECTED');
@@ -66,18 +69,23 @@ export function App() {
 
   const handleImageSelected = (imageSrc: string, userChoiceCrop: string, isFileUpload?: boolean) => {
     setIsAnalyzing(true);
+    setHasImage(true);
 
-    const matchedVector = TEST_VECTORS.find((v) => v.imageSrc === imageSrc);
-    if (matchedVector) {
-      setTimeout(() => {
-        handleVisionResult(
-          matchedVector.targetClass,
-          matchedVector.crop,
-          matchedVector.isBug01 ? 0.99 : 0.96,
-          matchedVector.isBug01
-        );
-      }, 250);
+    // Preset test vectors: resolve immediately from built-in map
+    if (!isFileUpload) {
+      const matchedVector = TEST_VECTORS.find((v) => v.imageSrc === imageSrc);
+      if (matchedVector) {
+        setTimeout(() => {
+          handleVisionResult(
+            matchedVector.targetClass,
+            matchedVector.crop,
+            matchedVector.isBug01 ? 0.99 : 0.96,
+            matchedVector.isBug01
+          );
+        }, 250);
+      }
     }
+    // Real file / camera captures: vision result arrives via onVisionResult from runClassification
   };
 
   const handleTelemetryUpdate = (telemetry: RiskTelemetry, soil: SoilProfile) => {
@@ -94,15 +102,14 @@ export function App() {
 
       {/* Main Container */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
-        {/* Middle Wireframe Row: 2 Parallel Interactive Columns */}
-        {/* Left Box: Image Upload and Camera | Right Box: Live Weather and Location */}
+        {/* Two-column interactive row */}
         <section className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
-          {/* Wireframe Box 1: AgroPulse Image Upload & Camera */}
+          {/* Box 1: Leaf Camera & Image Upload */}
           <div id="image-capture" className="lg:col-span-6 flex flex-col scroll-mt-20">
             <LeafCameraCapture
-              onImageSelected={(img, crop) => {
+              onImageSelected={(img, crop, isFileUpload) => {
                 setSelectedCrop(crop);
-                handleImageSelected(img, crop);
+                handleImageSelected(img, crop, isFileUpload);
               }}
               onVisionResult={handleVisionResult}
               isAnalyzing={isAnalyzing}
@@ -113,10 +120,10 @@ export function App() {
             />
           </div>
 
-          {/* Wireframe Box 2: Live Weather App & Field Location */}
+          {/* Box 2: Live Weather & Location */}
           <div id="weather-location" className="lg:col-span-6 flex flex-col scroll-mt-20">
             <LiveWeatherAndLocation
-              currentCrop={effectiveCrop}
+              currentCrop={effectiveCrop || 'your crop'}
               selectedDistrict={selectedDistrict}
               onDistrictChange={(dist) => setSelectedDistrict(dist)}
               onTelemetryUpdate={handleTelemetryUpdate}
@@ -124,7 +131,7 @@ export function App() {
           </div>
         </section>
 
-        {/* Bottom Wireframe Box: AI Companion Dashboard */}
+        {/* AI Companion Dashboard — shows landing prompt until farmer uploads a leaf */}
         <section id="ai-companion" className="scroll-mt-20">
           <AICompanionDashboard
             analyzedCrop={effectiveCrop}
@@ -136,10 +143,11 @@ export function App() {
             isAnalyzing={isAnalyzing}
             weatherTelemetry={weatherTelemetry}
             soilProfile={soilProfile}
+            hasImage={hasImage}
           />
         </section>
 
-        {/* Auxiliary Toggle: Model Testing Studio & Agricultural Regional Benchmarks */}
+        {/* Auxiliary Toggle: Developer Benchmarks, Regional Directory & Safety Protocols */}
         <section className="pt-4 border-t border-[#262626]">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
@@ -159,15 +167,10 @@ export function App() {
 
           {showAuxiliaryStudio && (
             <div className="mt-6 space-y-12">
-              {/* AI Model Testing Studio */}
               <div id="testing-studio" className="scroll-mt-20">
                 <ModelTestingStudio />
               </div>
-
-              {/* Safety & Responsible AI Protocols */}
               <SafetyProtocolsSection />
-
-              {/* Regional Agricultural Authorities Explorer */}
               <div id="districts" className="scroll-mt-20">
                 <RegionalPackagesExplorer />
               </div>
@@ -176,7 +179,6 @@ export function App() {
         </section>
       </main>
 
-      {/* Footer */}
       <Footer />
     </div>
   );

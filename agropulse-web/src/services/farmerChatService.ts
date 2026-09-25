@@ -89,6 +89,115 @@ export class FarmerChatService {
     const rainProb = weather?.maxRainProbability ?? 20;
     const consecutiveWet = weather?.consecutiveWetHours ?? 0;
 
+    // 0. Greetings (check early so "hi" doesn't fall through to wrong intent)
+    const greetWords = ['hi', 'hello', 'hey', 'namaste', 'good morning', 'good evening', 'ನಮಸ್ಕಾರ', 'ಹಲೋ', 'नमस्ते', 'प्रणाम'];
+    if (greetWords.some(w => q === w || q.startsWith(w + ' ') || q.endsWith(' ' + w) || q.includes(w))) {
+      if (lang === 'kn') {
+        return `ನಮಸ್ಕಾರ! ನಾನು ನಿಮ್ಮ **ಆಗ್ರೋಪಲ್ಸ್ ಎಐ ಕೃಷಿ ಮಿತ್ರ**. ನಿಮ್ಮ **${treatment.crop}** ಬೆಳೆಯಲ್ಲಿ **${treatment.diseaseKn}** ಪತ್ತೆಯಾಗಿದೆ.\n\nಔಷಧ ಪ್ರಮಾಣ, ಸಿಂಪರಣಾ ಹವಾಮಾನ, ಸಾವಯವ ಪರಿಹಾರ, **ಎಲ್ಲಿ ಖರೀದಿಸಬೇಕು**, ಅಥವಾ ಸಿಂಪಡಿಸುವ ವಿಧಾನ — ಯಾವುದೇ ಪ್ರಶ್ನೆ ಕೇಳಿ!`;
+      }
+      if (lang === 'hi') {
+        return `नमस्ते! मैं आपका **एग्रोपल्स एआई कृषि मित्र** हूँ। आपकी **${treatment.crop}** फसल में **${treatment.diseaseHi}** पाया गया है।\n\nदवा की सटीक मात्रा, स्प्रे का मौसम, जैविक उपचार, **दवा कहाँ से खरीदें**, या छिड़काव का सही तरीका — कोई भी सवाल पूछें!`;
+      }
+      return `Hello! I am your **AgroPulse AI Agricultural Companion**. I have evaluated your **${treatment.crop}** foliage and identified **${treatment.diseaseEn}**.\n\nAsk me about the 16L knapsack dilution ratio, today's spray weather window, organic biocontrol alternatives, **where to buy certified ${treatment.chemicalName}**, or how to apply it correctly!`;
+    }
+
+    // 0.1 Where to Buy / Certified Retailers / Sourcing
+    if (
+      q.includes('where should i buy') ||
+      q.includes('where to buy') ||
+      q.includes('where can i buy') ||
+      q.includes('where buy') ||
+      q.includes('purchase') ||
+      q.includes('shop') ||
+      q.includes('dealer') ||
+      q.includes('vendor') ||
+      q.includes('get this') ||
+      q.includes('find this') ||
+      q.includes('buy this') ||
+      q.includes('store') ||
+      q.includes('ಖರೀದಿ') ||
+      q.includes('ಎಲ್ಲಿ ಸಿಗುತ್ತದೆ') ||
+      q.includes('ಅಂಗಡಿ') ||
+      q.includes('ಕೊಳ್ಳುವುದು') ||
+      q.includes('कहाँ खरीदें') ||
+      q.includes('दुकान') ||
+      q.includes('कहाँ मिलेगी') ||
+      q.includes('खरीदना')
+    ) {
+      if (lang === 'kn') {
+        return (
+          `🏪 **ಅಧಿಕೃತ ${treatment.chemicalName} ಖರೀದಿ ಮಾಡಲು ಉತ್ತಮ ಸ್ಥಳಗಳು:**\n\n` +
+          `1. ನಿಮ್ಮ ತಾಲ್ಲೂಕಿನ **ರೈತ ಸಂಪರ್ಕ ಕೇಂದ್ರ (RSK)** ಅಥವಾ ಕೃಷಿ ಇಲಾಖೆ ಕಚೇರಿ\n` +
+          `2. **ಪ್ರಾಥಮಿಕ ಕೃಷಿ ಪತ್ತಿನ ಸಹಕಾರ ಸಂಘಗಳು (PACS)** ಮತ್ತು TAPCMS ಮಳಿಗೆಗಳು\n` +
+          `3. ಕೃಷಿ ಇಲಾಖೆ ಪರವಾನಗಿ ಹೊಂದಿರುವ ನೋಂದಾಯಿತ ಕೀಟನಾಶಕ ಡೀಲರ್‌ಗಳು\n` +
+          `4. ಜಿಲ್ಲಾ **ಕೃಷಿ ವಿಜ್ಞಾನ ಕೇಂದ್ರ (KVK)**\n\n` +
+          `💡 **ಪ್ರಮುಖ ಸಲಹೆ:** ಅಧಿಕೃತ ಜಿಎಸ್‌ಟಿ ಬಿಲ್ ಪಡೆಯಿರಿ, CIB&RC ಅನುಮೋದಿತ ಲೇಬಲ್ ಪರಿಶೀಲಿಸಿ.\nಕಿಸಾನ್ ಉಚಿತ ಸಹಾಯವಾಣಿ: **1800-180-1551**`
+        );
+      }
+      if (lang === 'hi') {
+        return (
+          `🏪 **प्रमाणित ${treatment.chemicalName} कहाँ से खरीदें:**\n\n` +
+          `1. आपके ब्लॉक/तहसील का **किसान सेवा केंद्र (कृषि विभाग / RSK)**\n` +
+          `2. **प्राथमिक कृषि ऋण सहकारी समितियां (PACS)** एवं साधन सहकारी समितियां\n` +
+          `3. राज्य कृषि विभाग द्वारा लाइसेंस प्राप्त **अधिकृत कीटनाशक विक्रेता**\n` +
+          `4. निकटतम **कृषि विज्ञान केंद्र (KVK)**\n\n` +
+          `💡 **सलाह:** पक्का जीएसटी बिल लें, CIB&RC होलोग्राम अवश्य जांचें।\nटोल-फ्री किसान कॉल सेंटर: **1800-180-1551**`
+        );
+      }
+      return (
+        `🏪 **WHERE TO BUY CERTIFIED ${treatment.chemicalName.toUpperCase()}:**\n\n` +
+        `1. Your local **Raitha Samparka Kendra (RSK)** / Block Agricultural Office (government-subsidised inputs available)\n` +
+        `2. **Primary Agricultural Credit Societies (PACS)** and TAPCMS farmer cooperative depots\n` +
+        `3. State Dept. of Agriculture **licensed agrochemical retail dealerships**\n` +
+        `4. Nearest **Krishi Vigyan Kendra (KVK)** agricultural input counter\n\n` +
+        `💡 **Farmer Tip:** Always demand an authorized GST cash bill, verify the CIB&RC registration hologram, and check the expiry date.\nDial toll-free **1800-180-1551** for nearest verified input dealer.`
+      );
+    }
+
+    // 0.2 How to Apply / Spray Technique
+    if (
+      q.includes('how to apply') ||
+      q.includes('how to spray') ||
+      q.includes('how to use') ||
+      q.includes('technique') ||
+      q.includes('nozzle') ||
+      q.includes('application') ||
+      q.includes('method') ||
+      q.includes('apply it') ||
+      q.includes('ಹೇಗೆ ಸಿಂಪಡಿಸಬೇಕು') ||
+      q.includes('ಬಳಸುವುದು ಹೇಗೆ') ||
+      q.includes('ಕ್ರಮ') ||
+      q.includes('कैसे इस्तेमाल') ||
+      q.includes('छिड़काव कैसे') ||
+      q.includes('तरीका')
+    ) {
+      if (lang === 'kn') {
+        return (
+          `💧 **ಸಿಂಪಡಿಸುವ ಸರಿಯಾದ ವಿಧಾನ (${treatment.diseaseKn}):**\n\n` +
+          `1. **ಹಾಲೋ ಕೋನ್ ನಳಿಕೆ (Hollow Cone Nozzle)** ಬಳಸಿ ನಯವಾದ ಮಂಜಿನಂತೆ ಸಿಂಪಡಿಸಿ\n` +
+          `2. ಔಷಧವನ್ನು ಎಲೆಯ **ಕೆಳಭಾಗಕ್ಕೂ** ತಲುಪುವಂತೆ ಸಿಂಪಡಿಸಿ (ಶಿಲೀಂಧ್ರಗಳು ಎಲೆಯ ಕೆಳಭಾಗದಲ್ಲಿ ಬೆಳೆಯುತ್ತವೆ)\n` +
+          `3. ಬೆಳಗಿನ ಇಬ್ಬನಿ ಒಣಗಿದ ನಂತರ **(ಬೆಳಿಗ್ಗೆ ೮–೧೦:೩೦)** ಅಥವಾ ಸಂಜೆ ೪ ಗಂಟೆಯ ನಂತರ ಸಿಂಪಡಿಸಿ\n` +
+          `4. ಮಧ್ಯಾಹ್ನದ ತೀವ್ರ ಬಿಸಿಲಿನಲ್ಲಿ **ಸಿಂಪಡಿಸಬೇಡಿ** — ಔಷಧ ಬೇಗ ಆವಿಯಾಗುತ್ತದೆ`
+        );
+      }
+      if (lang === 'hi') {
+        return (
+          `💧 **छिड़काव का सही तरीका (${treatment.diseaseHi}):**\n\n` +
+          `1. **हॉलो कोन नोजल** का प्रयोग करें ताकि बारीक धुंध बने और पत्तियों पर अच्छी तरह फैले\n` +
+          `2. पत्तियों की **निचली सतह पर भी** अच्छी तरह स्प्रे करें, क्योंकि रोगाणु वहीं रहते हैं\n` +
+          `3. सुबह ओस सूखने के बाद **(8 से 10:30 बजे)** या शाम 4 बजे के बाद करें\n` +
+          `4. **दोपहर की तेज धूप में छिड़काव न करें** — दवा वाष्पित हो जाती है`
+        );
+      }
+      return (
+        `💧 **OPTIMAL SPRAY TECHNIQUE FOR ${treatment.diseaseEn.toUpperCase()}:**\n\n` +
+        `1. Use a **hollow-cone nozzle** calibrated for fine droplets (150–250 micron VMD) for uniform foliar coverage\n` +
+        `2. Direct spray toward both upper AND **undersides of leaves** — pathogens colonise stomatal openings on leaf undersides\n` +
+        `3. Spray in **early morning after dew evaporates (08:00–10:30 AM)** or late afternoon (after 4 PM)\n` +
+        `4. **Never spray in midday heat** — evaporation reduces efficacy and increases worker heat-stress risk`
+      );
+    }
+
     // 1. Knapsack Sprayer Tank Dilution & Math Query
     if (
       q.includes('knapsack') ||

@@ -153,13 +153,14 @@ export const LeafCameraCapture: React.FC<LeafCameraCaptureProps> = ({
   mismatchWarning
 }) => {
   const [selectedCrop, setSelectedCrop] = useState<string>('Auto');
-  const [imagePreview, setImagePreview] = useState<string>(TEST_VECTORS[0].imageSrc);
-  const [activeVectorId, setActiveVectorId] = useState<string>(TEST_VECTORS[0].id);
+  // Start blank — no pre-selected image until farmer uploads/captures
+  const [imagePreview, setImagePreview] = useState<string>('');
+  const [activeVectorId, setActiveVectorId] = useState<string>('');
   const [isCameraActive, setIsCameraActive] = useState<boolean>(false);
   const [cameraError, setCameraError] = useState<string | null>(null);
-  const [visionLabel, setVisionLabel] = useState<string>('Rice: Bacterial Leaf Blight');
-  const [visionConfidence, setVisionConfidence] = useState<number>(0.96);
-  const [inferenceSource, setInferenceSource] = useState<string>('Preset Vector');
+  const [visionLabel, setVisionLabel] = useState<string>('');
+  const [visionConfidence, setVisionConfidence] = useState<number>(0);
+  const [inferenceSource, setInferenceSource] = useState<string>('');
 
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const streamRef = useRef<MediaStream | null>(null);
@@ -196,12 +197,22 @@ export const LeafCameraCapture: React.FC<LeafCameraCaptureProps> = ({
     }
   };
 
-  // Run autonomous classification: checks FastAPI backend (:8000) first, falls back to WebWorker
+  // Run autonomous classification on any image: data: URL or HTTP URL
+  // Tries FastAPI backend first, then falls back to in-browser WebWorker
   const runClassification = async (dataOrSrc: string) => {
     // 1. Try FastAPI backend (port 8000)
     try {
-      const res = await fetch(dataOrSrc);
-      const blob = await res.blob();
+      let blob: Blob;
+      if (dataOrSrc.startsWith('data:')) {
+        // data: URL (base64) — convert to blob
+        const res = await fetch(dataOrSrc);
+        blob = await res.blob();
+      } else {
+        // HTTP URL — fetch the image
+        const res = await fetch(dataOrSrc);
+        blob = await res.blob();
+      }
+
       const formData = new FormData();
       formData.append('file', blob, 'leaf.jpg');
       if (selectedCrop !== 'Auto') {
@@ -209,7 +220,7 @@ export const LeafCameraCapture: React.FC<LeafCameraCaptureProps> = ({
       }
 
       const controller = new AbortController();
-      const timer = setTimeout(() => controller.abort(), 1200);
+      const timer = setTimeout(() => controller.abort(), 2000);
       const resp = await fetch('http://localhost:8000/api/predict', {
         method: 'POST',
         body: formData,
@@ -235,7 +246,7 @@ export const LeafCameraCapture: React.FC<LeafCameraCaptureProps> = ({
         return;
       }
     } catch {
-      // Backend not running -> fall back to browser WebWorker
+      // Backend not running or timed out → fall back to in-browser WebWorker
     }
 
     // 2. Browser MobileNetV2 Vision AI WebWorker
@@ -330,12 +341,26 @@ export const LeafCameraCapture: React.FC<LeafCameraCaptureProps> = ({
               muted
               className="w-full h-full object-cover"
             />
-          ) : (
+          ) : imagePreview ? (
             <img
               src={imagePreview}
               alt="Leaf Specimen"
               className="w-full h-full object-contain"
             />
+          ) : (
+            /* Landing state — no image yet */
+            <div className="flex flex-col items-center justify-center gap-4 p-8 text-center">
+              <div className="w-16 h-16 rounded-full bg-[#E95420]/10 border border-[#E95420]/30 flex items-center justify-center">
+                <Upload className="w-7 h-7 text-[#E95420]/70" />
+              </div>
+              <div>
+                <div className="text-sm font-semibold text-white mb-1">Upload a Leaf Image to Begin</div>
+                <div className="text-xs text-[#666]">
+                  Take a photo of your crop leaf or upload from your device.<br />
+                  The AI will identify the disease and give you treatment advice.
+                </div>
+              </div>
+            </div>
           )}
 
           {/* Canonical Reticle Corners */}

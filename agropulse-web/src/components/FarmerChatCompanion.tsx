@@ -155,12 +155,22 @@ export const FarmerChatCompanion: React.FC<Props> = ({
   /* Reset messages on new leaf diagnosis */
   useEffect(() => {
     historyRef.current = [];
-    const welcomeText =
-      activeLanguage === 'kn'
-        ? `ನಮಸ್ಕಾರ! ನಾನು ನಿಮ್ಮ **ಆಗ್ರೋಪಲ್ಸ್ ಎಐ ಕೃಷಿ ಮಿತ್ರ**.\n\nನಿಮ್ಮ **${treatment.crop}** ಬೆಳೆಯಲ್ಲಿ **${treatment.diseaseKn}** ಪತ್ತೆಯಾಗಿದೆ.\n\n೧೬ ಲೀಟರ್ ಪಂಪಿನ ಔಷಧ ಪ್ರಮಾಣ, ಸಿಂಪರಣಾ ಹವಾಮಾನ, ಅಥವಾ ಸಾವಯವ ಪರಿಹಾರಗಳ ಬಗ್ಗೆ ಕೆಳಗೆ ನೇರವಾಗಿ ಕೇಳಿ.`
-        : activeLanguage === 'hi'
-        ? `नमस्ते! मैं आपका **एग्रोपल्स एआई कृषि मित्र** हूँ।\n\nआपकी **${treatment.crop}** फसल में **${treatment.diseaseHi}** पाया गया है।\n\n१६ लीटर पंप की खुराक, स्प्रे के लिए मौसम, या जैविक उपचार के बारे में नीचे बेझिझक पूछें।`
-        : `👋 Welcome! I am your **AgroPulse AI Companion**.\n\nI have analyzed your **${treatment.crop}** foliage and identified **${treatment.diseaseEn}**.\n\nAsk me anytime about 16L knapsack mixing math, today's spray weather window, organic biocontrol alternatives, or safety guidelines.`;
+    let welcomeText = '';
+    if (!targetClass) {
+      welcomeText =
+        activeLanguage === 'kn'
+          ? `ನಮಸ್ಕಾರ! ನಾನು ನಿಮ್ಮ **ಆಗ್ರೋಪಲ್ಸ್ ಎಐ ಕೃಷಿ ಮಿತ್ರ**.\n\nಮೇಲೆ ನಿಮ್ಮ ಬೆಳೆಯ ಎಲೆಯ ಫೋಟೋ ಅಪ್‌ಲೋಡ್ ಮಾಡಿ ಅಥವಾ ಲೈವ್ ಕ್ಯಾಮೆರಾದಿಂದ ಸ್ಕ್ಯಾನ್ ಮಾಡಿ.\n\nನಾನು ರೋಗವನ್ನು ಪತ್ತೆಹಚ್ಚಿ, ನಿಖರವಾದ ಕೀಟನಾಶಕ ಪ್ರಮಾಣ, ಸಿಂಪರಣಾ ಹವಾಮಾನ ಹಾಗೂ ಸಾವಯವ ಸಲಹೆಗಳನ್ನು ನೀಡುತ್ತೇನೆ!`
+          : activeLanguage === 'hi'
+          ? `नमस्ते! मैं आपका **एग्रोपल्स एआई कृषि मित्र** हूँ।\n\nकृपया ऊपर अपनी फसल की पत्ती की फोटो अपलोड करें या लाइव कैमरे से स्कैन करें।\n\nमैं तुरंत रोग पहचानकर कीटनाशक की मात्रा, स्प्रे का मौसम एवं जैविक उपचार बताऊंगा!`
+          : `👋 Welcome! I am your **AgroPulse AI Companion**.\n\nPlease upload or capture a leaf photo above in Box 1.\n\nI will instantly identify your crop, diagnose foliar diseases, calculate 16L knapsack dilution ratios, check local spray weather, and guide you on safe application!`;
+    } else {
+      welcomeText =
+        activeLanguage === 'kn'
+          ? `ನಮಸ್ಕಾರ! ನಾನು ನಿಮ್ಮ **ಆಗ್ರೋಪಲ್ಸ್ ಎಐ ಕೃಷಿ ಮಿತ್ರ**.\n\nನಿಮ್ಮ **${treatment.crop}** ಬೆಳೆಯಲ್ಲಿ **${treatment.diseaseKn}** ಪತ್ತೆಯಾಗಿದೆ.\n\n೧೬ ಲೀಟರ್ ಪಂಪಿನ ಔಷಧ ಪ್ರಮಾಣ, ಸಿಂಪರಣಾ ಹವಾಮಾನ, ಎಲ್ಲಿ ಖರೀದಿಸಬೇಕು ಅಥವಾ ಸಾವಯವ ಪರಿಹಾರಗಳ ಬಗ್ಗೆ ಕೆಳಗೆ ನೇರವಾಗಿ ಕೇಳಿ.`
+          : activeLanguage === 'hi'
+          ? `नमस्ते! मैं आपका **एग्रोपल्स एआई कृषि मित्र** हूँ।\n\nआपकी **${treatment.crop}** फसल में **${treatment.diseaseHi}** पाया गया है।\n\n१६ लीटर पंप की खुराक, स्प्रे के लिए मौसम, दवा कहाँ से खरीदें या जैविक उपचार के बारे में नीचे बेझिझक पूछें।`
+          : `👋 Welcome! I am your **AgroPulse AI Companion**.\n\nI have analyzed your **${treatment.crop}** foliage and identified **${treatment.diseaseEn}**.\n\nAsk me anytime about 16L knapsack mixing math, today's spray weather window, where to buy certified treatments, or organic biocontrol alternatives.`;
+    }
 
     setMessages([
       {
