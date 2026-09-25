@@ -73,7 +73,8 @@ def run_scenario(
     title: str,
     image_path: Path | str | Image.Image,
     weather_score: Optional[float] = None,
-    expected_class: Optional[str] = None
+    expected_class: Optional[str] = None,
+    input_crop: Optional[str] = None
 ) -> Dict[str, Any]:
     print(f"\n{Style.BOLD}======================================================================{Style.RESET}")
     print(f"{Style.CYAN}{Style.BOLD}▶ TRIAL SCENARIO: {title}{Style.RESET}")
@@ -89,8 +90,10 @@ def run_scenario(
         print(f"  {Style.DIM}Weather Risk:{Style.RESET}  {weather_score:.1f} / 100 (Microclimate Bayesian Prior active)")
     if expected_class:
         print(f"  {Style.DIM}Ground Truth:{Style.RESET}  {expected_class}")
+    if input_crop:
+        print(f"  {Style.DIM}Farmer Crop:{Style.RESET}   {input_crop}")
         
-    result = engine.predict(image_path, weather_risk_score=weather_score)
+    result = engine.predict(image_path, weather_risk_score=weather_score, input_crop=input_crop)
     status = result.get("status")
 
     # Status formatting
@@ -122,6 +125,19 @@ def run_scenario(
     entropy = result.get("uncertainty_entropy")
     threat = result.get("fused_threat_level")
     weather_corr = result.get("weather_correlation")
+    detected_crop = result.get("detected_crop")
+    crop_conf = result.get("crop_confidence_percent")
+    crop_verif = result.get("crop_verification")
+    mismatch_warn = result.get("mismatch_warning")
+
+    if detected_crop:
+        print(f"  {Style.BOLD}Autonomous Crop ID:{Style.RESET} {Style.CYAN}{detected_crop}{Style.RESET} ({crop_conf}% confidence)")
+    if crop_verif == "VERIFIED_MATCH":
+        print(f"  {Style.BOLD}Cross-Validation:{Style.RESET}  {badge('VERIFIED MATCH', Style.GREEN)} Farmer input matches visual leaf morphology.")
+    elif crop_verif == "CROP_MISMATCH_DETECTED":
+        print(f"  {Style.BOLD}Cross-Validation:{Style.RESET}  {badge('CROP MISMATCH CAUGHT', Style.YELLOW)} {mismatch_warn}")
+    elif crop_verif == "AUTONOMOUS_DETECTION":
+        print(f"  {Style.BOLD}Cross-Validation:{Style.RESET}  {badge('AUTONOMOUS DETECTION', Style.BLUE)} Visual inference active.")
 
     print(f"  {Style.BOLD}Top Diagnosis:{Style.RESET}  {Style.GREEN}{predicted_class}{Style.RESET}")
     print(f"  {Style.BOLD}Confidence:{Style.RESET}     {conf}%")
@@ -240,6 +256,20 @@ def main():
             "path": "SYNTHETIC_DARK",
             "weather": 60.0,
             "expected": "REJECTED_QUALITY"
+        },
+        {
+            "title": "Cross-Validation Stress Test: Rice Specimen with Conflicting Input 'Sugarcane'",
+            "path": ENGINE_DIR / "extracted_test_vectors" / "rice" / "rice_leaf_diseases" / "Bacterial leaf blight" / "DSC_0365.JPG",
+            "weather": 65.0,
+            "expected": "Rice___Bacterial_leaf_blight",
+            "input_crop": "Sugarcane"
+        },
+        {
+            "title": "Cross-Validation Concordance: Banana Specimen with Matching Input 'Banana'",
+            "path": ENGINE_DIR / "extracted_test_vectors" / "banana" / "BananaLSD" / "AugmentedSet" / "sigatoka" / "53_aug.jpeg",
+            "weather": 65.0,
+            "expected": "Banana___Sigatoka",
+            "input_crop": "Banana"
         }
     ]
 
@@ -253,7 +283,8 @@ def main():
                 title=sc["title"],
                 image_path=synthetic_dark,
                 weather_score=sc["weather"],
-                expected_class=sc["expected"]
+                expected_class=sc["expected"],
+                input_crop=sc.get("input_crop")
             )
         else:
             p = Path(sc["path"])
@@ -265,7 +296,8 @@ def main():
                 title=sc["title"],
                 image_path=p,
                 weather_score=sc["weather"],
-                expected_class=sc["expected"]
+                expected_class=sc["expected"],
+                input_crop=sc.get("input_crop")
             )
         results.append(res)
 

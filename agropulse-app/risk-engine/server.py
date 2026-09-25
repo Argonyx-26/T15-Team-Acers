@@ -105,6 +105,7 @@ def health_check():
 @app.post("/api/predict")
 async def predict_crop_leaf(
     file: UploadFile = File(...),
+    user_crop: Optional[str] = None,
     weather_risk_score: Optional[float] = None
 ):
     try:
@@ -113,13 +114,15 @@ async def predict_crop_leaf(
     except Exception as e:
         raise HTTPException(status_code=400, detail=f"Invalid image file: {str(e)}")
 
-    result = engine.predict(image, weather_risk_score=weather_risk_score)
+    result = engine.predict(image, input_crop=user_crop, weather_risk_score=weather_risk_score)
     status = result.get("status")
 
     if status == "REJECTED_QUALITY":
         return {
             "status": "REJECTED_QUALITY",
             "class_name": "Invalid Quality",
+            "condition_name": "Poor Optical Capture",
+            "detected_crop": "Unknown",
             "confidence": 0.0,
             "message": result.get("message"),
             "requires_retake": True,
@@ -129,6 +132,10 @@ async def predict_crop_leaf(
         return {
             "status": "REJECTED_NON_LEAF",
             "class_name": "Background_without_leaves",
+            "condition_name": "Non-Leaf Clutter",
+            "detected_crop": "Non-Crop Object",
+            "crop_confidence_percent": result.get("crop_confidence_percent", 90.0),
+            "crop_distribution": result.get("crop_distribution", {}),
             "confidence": result.get("confidence", 0.0),
             "message": result.get("message"),
             "entropy": result.get("entropy"),
@@ -144,6 +151,12 @@ async def predict_crop_leaf(
     return {
         "status": status,
         "class_name": top_class,
+        "condition_name": result.get("condition_name"),
+        "detected_crop": result.get("detected_crop"),
+        "crop_confidence_percent": result.get("crop_confidence_percent"),
+        "crop_distribution": result.get("crop_distribution"),
+        "crop_verification": result.get("crop_verification"),
+        "mismatch_warning": result.get("mismatch_warning"),
         "confidence": conf,
         "confidence_fraction": round(conf / 100.0, 4),
         "uncertainty_entropy": result.get("uncertainty_entropy"),

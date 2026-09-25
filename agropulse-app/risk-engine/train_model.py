@@ -1,63 +1,73 @@
-"""Train and export the AgroPulse Smart Leaf Disease & OOD Rejection Model.
+"""Train and export the AgroPulse Hierarchical Crop & Pathology Recognition Model.
 
-Smart Enhancements:
-1. Out-of-Distribution (OOD) Non-Leaf Rejection (Background_without_leaves) to fix BUG-01
-2. Two-Stage Training: Stage 1 frozen base + Stage 2 top-layer fine-tuning
-3. Label Smoothing (0.08) to reduce overconfident misdiagnoses
-4. Batch normalization & L2 regularization for stable mobile quantization
-5. Quantized TFLite export with dynamic class support
+Features:
+1. Dual-Task Recognition: Autonomous Crop Detection + Disease Pathology Detection
+2. Out-of-Distribution (OOD) Non-Leaf Rejection (Background_without_leaves) to resolve BUG-01
+3. Class-Balanced Loss Weighting for minority classes (Coconut, Rice) vs majority (Sugarcane, Banana)
+4. Two-Stage Fine-Tuning: Stage 1 (Frozen base + Head) + Stage 2 (MobileNetV2 unfreeze from layer 100)
+5. Robust Data Augmentation (Rotation, Zoom, Contrast, Brightness, Flip)
+6. Dynamic Learning Rate Scheduling with ReduceLROnPlateau
+7. Hierarchical Crop Mapping export for Bayesian Crop-Conditioned Inference
+8. Optimized Float32 Mobile Quantization (TFLite)
 """
 
 from __future__ import annotations
 
 import argparse
 import json
+import math
 import os
 from pathlib import Path
+from typing import Dict, List, Tuple
 
 os.environ.setdefault("TF_CPP_MIN_LOG_LEVEL", "2")
 
+import numpy as np
 import tensorflow as tf
-
 
 IMAGE_SIZE = (224, 224)
 DEFAULT_BATCH_SIZE = 32
-DEFAULT_EPOCHS = 10
+DEFAULT_EPOCHS = 16
 SEED = 42
 
 
 def load_class_names(mapping_path: Path) -> list[str]:
     mapping = json.loads(mapping_path.read_text())
     names = [mapping["idx_to_class"][str(index)] for index in range(len(mapping["idx_to_class"]))]
-    print(f"Loaded {len(names)} classes from {mapping_path}")
+    print(f"[+] Loaded {len(names)} classes from {mapping_path}")
     return names
 
 
-def validate_dataset(dataset_root: Path, class_names: list[str]) -> None:
-    missing = []
-    empty = []
-    for split in ("train", "val"):
-        for class_name in class_names:
-            class_dir = dataset_root / split / class_name
-            if not class_dir.is_dir():
-                missing.append(str(class_dir))
-                continue
-            image_count = sum(
-                1 for path in class_dir.iterdir()
-                if path.is_file() and path.suffix.lower() in {".jpg", ".jpeg", ".png"}
-            )
-            if image_count == 0:
-                empty.append(str(class_dir))
-    if missing or empty:
-        details = []
-        if missing:
-            details.append("missing directories:\n  " + "\n  ".join(missing))
-        if empty:
-            details.append("empty directories:\n  " + "\n  ".join(empty))
-        raise FileNotFoundError(
-            "Dataset is incomplete. Run curate_crops.py after placing raw datasets.\n"
-            + "\n".join(details)
-        )
+def get_crop_from_class(class_name: str) -> str:
+    if "Background" in class_name or "non_leaf" in class_name.lower():
+        return "Non-Crop"
+    if "___" in class_name:
+        return class_name.split("___")[0]
+    return "Unknown"
+
+
+def compute_class_weights(dataset_root: Path, class_names: list[str]) -> Dict[int, float]:
+    """Compute smoothed inverse-frequency weights to balance minority crops."""
+    train_dir = dataset_root / "train"
+    counts = []
+    for c in class_names:
+        c_dir = train_dir / c
+        if c_dir.is_dir():
+            n = sum(1 for p in c_dir.iterdir() if p.suffix.lower() in {".jpg", ".jpeg", ".png"})
+            counts.append(max(1, n))
+        else:
+            counts.append(1)
+
+    total = sum(counts)
+    K = len(class_names)
+    weights = {}
+    print("\n--- Balanced Class Weights ---")
+    for i, (c, count) in enumerate(zip(class_names, counts)):
+        # Square root smoothed inverse frequency
+        w = float(round((total / (K * count)) ** 0.5, 3))
+        weights[i] = w
+        print(f"  [{i:>2}] {c:<30} (n={count:>3}) -> weight: {w:.3f}")
+    return weights
 
 
 def make_datasets(dataset_root: Path, class_names: list[str], batch_size: int):
@@ -78,12 +88,13 @@ def make_datasets(dataset_root: Path, class_names: list[str], batch_size: int):
 def build_model(class_count: int) -> tuple[tf.keras.Model, tf.keras.Model]:
     augmentation = tf.keras.Sequential(
         [
-            tf.keras.layers.RandomFlip("horizontal"),
-            tf.keras.layers.RandomRotation(0.1),
-            tf.keras.layers.RandomZoom(0.1),
-            tf.keras.layers.RandomContrast(0.1),
+            tf.keras.layers.RandomFlip("horizontal_and_vertical"),
+            tf.keras.layers.RandomRotation(0.15),
+            tf.keras.layers.RandomZoom(0.15),
+            tf.keras.layers.RandomContrast(0.15),
+            tf.keras.layers.RandomTranslation(0.08, 0.08),
         ],
-        name="augmentation",
+        name="agronomic_augmentation",
     )
     base = tf.keras.applications.MobileNetV2(
         input_shape=(*IMAGE_SIZE, 3),
@@ -98,12 +109,13 @@ def build_model(class_count: int) -> tuple[tf.keras.Model, tf.keras.Model]:
     x = base(x, training=False)
     x = tf.keras.layers.GlobalAveragePooling2D()(x)
     x = tf.keras.layers.BatchNormalization()(x)
-    x = tf.keras.layers.Dropout(0.3)(x)
-    x = tf.keras.layers.Dense(128, activation="relu", kernel_regularizer=tf.keras.regularizers.l2(1e-4))(x)
-    x = tf.keras.layers.Dropout(0.2)(x)
+    x = tf.keras.layers.Dropout(0.35)(x)
+    x = tf.keras.layers.Dense(192, activation="relu", kernel_regularizer=tf.keras.regularizers.l2(1e-4))(x)
+    x = tf.keras.layers.BatchNormalization()(x)
+    x = tf.keras.layers.Dropout(0.25)(x)
     outputs = tf.keras.layers.Dense(class_count, activation="softmax", name="scores")(x)
 
-    model = tf.keras.Model(inputs, outputs, name="agropulse_smart_classifier")
+    model = tf.keras.Model(inputs, outputs, name="agropulse_hierarchical_classifier")
     model.compile(
         optimizer=tf.keras.optimizers.Adam(learning_rate=1e-3),
         loss=tf.keras.losses.CategoricalCrossentropy(label_smoothing=0.08),
@@ -130,55 +142,79 @@ def main() -> None:
 
     mapping_path = args.dataset / "class_mapping.json"
     class_names = load_class_names(mapping_path)
-    validate_dataset(args.dataset, class_names)
+    class_weights = compute_class_weights(args.dataset, class_names)
     train, validation = make_datasets(args.dataset, class_names, args.batch_size)
 
     args.output.mkdir(parents=True, exist_ok=True)
-    stage1_epochs = max(3, args.epochs // 2)
-    stage2_epochs = max(2, args.epochs - stage1_epochs)
+    stage1_epochs = max(4, int(args.epochs * 0.4))
+    stage2_epochs = max(4, args.epochs - stage1_epochs)
 
-    print(f"\n[+] Building Smart MobileNetV2 architecture with {len(class_names)} classes...")
+    # Build crop-to-class mapping dictionary
+    crop_mapping = {}
+    for idx, c_name in enumerate(class_names):
+        crop = get_crop_from_class(c_name)
+        if crop not in crop_mapping:
+            crop_mapping[crop] = []
+        crop_mapping[crop].append({"class_name": c_name, "class_index": idx})
+
+    print(f"\n[+] Active Crop Domains: {list(crop_mapping.keys())}")
+    (args.output / "crop_hierarchy.json").write_text(json.dumps(crop_mapping, indent=2))
+
+    print(f"\n[+] Initializing MobileNetV2 with {len(class_names)} target pathologies...")
     model, base = build_model(len(class_names))
 
-    # --- STAGE 1: Feature Extraction (Frozen Base) ---
+    # --- STAGE 1: Feature Extraction (Classification Head) ---
     print(f"\n--- STAGE 1: Training Classification Head ({stage1_epochs} epochs, lr=1e-3) ---")
     callbacks_stage1 = [
-        tf.keras.callbacks.EarlyStopping(monitor="val_accuracy", patience=3, restore_best_weights=True),
-        tf.keras.callbacks.ModelCheckpoint(
-            args.output / "best.keras", monitor="val_accuracy", save_best_only=True
-        ),
+        tf.keras.callbacks.EarlyStopping(monitor="val_accuracy", patience=4, restore_best_weights=True),
+        tf.keras.callbacks.ReduceLROnPlateau(monitor="val_loss", factor=0.5, patience=2, min_lr=1e-5),
+        tf.keras.callbacks.ModelCheckpoint(args.output / "best.keras", monitor="val_accuracy", save_best_only=True),
     ]
-    model.fit(train, validation_data=validation, epochs=stage1_epochs, callbacks=callbacks_stage1)
+    model.fit(
+        train,
+        validation_data=validation,
+        epochs=stage1_epochs,
+        class_weight=class_weights,
+        callbacks=callbacks_stage1
+    )
 
-    # --- STAGE 2: Fine-Tuning Top Convolutional Layers ---
-    print(f"\n--- STAGE 2: Fine-Tuning MobileNetV2 Top Layers ({stage2_epochs} epochs, lr=3e-5) ---")
+    # --- STAGE 2: Deep Convolutional Fine-Tuning ---
+    print(f"\n--- STAGE 2: Deep Convolutional Fine-Tuning ({stage2_epochs} epochs, lr=4e-5) ---")
     base.trainable = True
-    # Freeze the first 110 layers, fine-tune the top 44 layers
-    for layer in base.layers[:110]:
+    # Unfreeze top layers from layer 95 onward for richer leaf texture adaptation
+    for layer in base.layers[:95]:
         layer.trainable = False
 
     model.compile(
-        optimizer=tf.keras.optimizers.Adam(learning_rate=3e-5),
+        optimizer=tf.keras.optimizers.Adam(learning_rate=4e-5),
         loss=tf.keras.losses.CategoricalCrossentropy(label_smoothing=0.08),
         metrics=["accuracy"],
     )
     callbacks_stage2 = [
-        tf.keras.callbacks.EarlyStopping(monitor="val_accuracy", patience=3, restore_best_weights=True),
-        tf.keras.callbacks.ModelCheckpoint(
-            args.output / "best.keras", monitor="val_accuracy", save_best_only=True
-        ),
+        tf.keras.callbacks.EarlyStopping(monitor="val_accuracy", patience=4, restore_best_weights=True),
+        tf.keras.callbacks.ReduceLROnPlateau(monitor="val_loss", factor=0.5, patience=2, min_lr=5e-6),
+        tf.keras.callbacks.ModelCheckpoint(args.output / "best.keras", monitor="val_accuracy", save_best_only=True),
     ]
-    model.fit(train, validation_data=validation, epochs=stage2_epochs, callbacks=callbacks_stage2)
+    model.fit(
+        train,
+        validation_data=validation,
+        epochs=stage2_epochs,
+        class_weight=class_weights,
+        callbacks=callbacks_stage2
+    )
 
     # --- EVALUATION & EXPORT ---
     print("\n--- Final Model Evaluation on Validation Set ---")
     metrics = model.evaluate(validation, return_dict=True)
-    print(f"Validation Accuracy: {metrics['accuracy']*100:.2f}% | Loss: {metrics['loss']:.4f}")
+    val_acc = metrics["accuracy"] * 100
+    val_loss = metrics["loss"]
+    print(f"Final Validation Accuracy: {val_acc:.2f}% | Loss: {val_loss:.4f}")
 
     tflite_path = args.output / "agropulse_leaf_classifier.tflite"
     print(f"\n[+] Quantizing and exporting TFLite model to {tflite_path}...")
     export_tflite(model, tflite_path)
 
+    # Save preprocessing and crop hierarchy metadata
     (args.output / "training_metrics.json").write_text(json.dumps(metrics, indent=2))
     (args.output / "preprocessing.json").write_text(json.dumps({
         "input_size": list(IMAGE_SIZE),
@@ -187,12 +223,14 @@ def main() -> None:
         "normalization": "pixel / 127.5 - 1",
         "output": "softmax scores in class_mapping.json order",
         "num_classes": len(class_names),
-        "ood_rejection_class": "Background_without_leaves" if "Background_without_leaves" in class_names else None,
+        "crop_domains": list(crop_mapping.keys()),
+        "crop_hierarchy": crop_mapping,
+        "ood_rejection_class": "Background_without_leaves",
         "recommended_min_confidence": 0.65,
         "entropy_uncertainty_threshold": 1.75
     }, indent=2) + "\n")
 
-    print(f"\n[DONE] Smart Model Exported Successfully: {tflite_path}")
+    print(f"\n[DONE] Hierarchical Crop AI Model Exported: {tflite_path}")
 
 
 if __name__ == "__main__":
