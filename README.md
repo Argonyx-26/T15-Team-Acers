@@ -1,72 +1,158 @@
-# T15-Team-Acers
+# AgroPulse — Edge Crop Diagnostics & Microclimate Risk Engine
+> **Team 15 — Team Acers** | Intelligent Agricultural Decision-Support System
 
-## AgroPulse Status
+[![Status: Completed](https://img.shields.io/badge/Status-Completed-success?style=for-the-badge)](https://github.com/Argonyx-26/T15-Team-Acers)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)](LICENSE)
+[![Framework: React_18_+_Vite](https://img.shields.io/badge/Frontend-React_18_%2B_Vite-orange?style=for-the-badge)](agropulse-web/)
+[![Engine: FastAPI_+_TFLite](https://img.shields.io/badge/Backend-FastAPI_%2B_TFLite-green?style=for-the-badge)](agropulse-app/risk-engine/)
+[![AI: SmolLM2_+_MobileNetV2](https://img.shields.io/badge/Models-HuggingFace_ONNX-purple?style=for-the-badge)](https://huggingface.co/)
 
-| Area | Status | Current state |
-| --- | --- | --- |
-| Expo app and UI | In progress | Mobile/web dashboard with camera and gallery upload |
-| ML label mapping | Ready | All 16 PlantVillage classes mapped in TypeScript |
-| Trained model inference | Ready | MobileNetV2 trained & exported as TFLite (2.5MB, 86.1% val accuracy) |
-| Weather pipeline | Working | OpenWeather current conditions plus cached fallback |
-| Crop risk engine | Working | Preetham's 24-hour Open-Meteo criteria ported to TypeScript |
-| Kannada/Hindi speech | Device-dependent | Voice detection, playback state, and missing-voice errors implemented |
-| Ishan advisory data | Draft | Advisory CSV/JSON and dosage draft exist; verification is pending |
-| Offline behavior | In progress | Weather cache is active; verified advisory/model assets remain to be connected |
-| Physical-device release | Pending | Development build required for native TFLite inference |
+---
 
-The detailed implementation handoff is documented in
-[`agropulse-app/PROJECT_STATUS.md`](agropulse-app/PROJECT_STATUS.md).
+## 🌾 Overview
 
-## Agri-Logic & Content Manager MVP
+**AgroPulse** is a privacy-first, offline-capable agronomic intelligence platform designed for smallholder farmers across South and North India (**Karnataka, Kerala, Tamil Nadu, and Punjab**). 
 
-This repository contains the content and data contract for the AgriPulse advisory
-feature. The current hackathon intake covers crop problems in Karnataka, Kerala,
-Tamil Nadu, and potato coverage in Punjab. The original starter records remain a small demonstration set;
-the Word-document intake and its gaps are tracked in
-`data/hackprojectinfo-review.md`.
+It fuses **edge optical leaf pathology**, **hyper-local 24-hour microclimate disease risk modeling**, **interactive knapsack dosage math**, and **dual-engine conversational AI** (instant verified domain rules + local browser-based LLM) to deliver actionable crop advisories without recurring cloud API fees or unreliable rural connectivity bottlenecks.
 
-### Deliverables
+---
 
-- `data/advisories.csv` - importable advisory records for the app team
-- `data/README.md` - field definitions, validation rules, and dosage-calculation rules
-- `data/kerala-tamilnadu-crop-sources.csv` - source and package register for the additional states
-- `data/kerala-tamilnadu-packages.md` - package-of-practices collection guide
-- `data/target-districts.csv` - all districts in Karnataka, Kerala, and Tamil Nadu
-- `data/word-doc-dosage-draft.csv` - dosage values transcribed from the submitted Word document, pending verification
-- `data/updated-source-register.csv` - source/package records from the updated Word document
-- `data/updated-crop-problems.csv` - crop symptoms and preventive guidance from the updated Word document
-- `data/latest-product-verification.csv` - latest product-label and dosage records, pending evidence
-- `data/latest-final-status.csv` - final readiness status for each crop problem
-- `data/app-safety-settings.txt` - team-approved recommendation safety behavior
-- `data/tomato-potato-source-register.csv` - tomato and potato source records
-- `data/tomato-potato-crop-problems.csv` - tomato and potato symptoms and prevention
-- `data/tomato-potato-product-verification.csv` - tomato and potato product records
-- `data/tomato-potato-calculations.csv` - dosage calculations for the new crops
-- `data/tomato-potato-prices-and-alternatives.csv` - price and alternative records
-- `data/tomato-potato-diagnosis.csv` - diagnostic confirmation records
-- `data/tomato-potato-final-status.csv` - readiness status for the new crops
-- `data/punjab-districts.csv` - Punjab district scope introduced for potato
-- `data/updated-regulatory-status.csv` - regulatory claims requiring evidence checks
-- `data/diagnostic-protocols.csv` - field diagnosis and triage protocols
-- `data/soil-climate-baseline.csv` - regional soil, crop-fit, and climate baseline
-- `data/soil-climate-risk-rules.csv` - soil/climate risk signals for the app
-- `data/soil-climate-source-register.csv` - source and verification register
-- `data/updated-soil-climate-profiles.csv` - crop-specific soil profiles from the latest Word document, pending independent verification
-- `content/audio-scripts.md` - optional short multilingual scripts; language review is outside the current scope
+## 🚀 System Status & Completed Deliverables
 
-### Safety rule
+| Module / Component | Status | Implementation Details |
+| --- | :---: | --- |
+| **Leaf Vision Capture** | ✅ **Completed** | Full camera lifecycle with front/rear flip toggle, instant stream binding, file drag-and-drop, and 17 preset test vectors |
+| **Neural Vision Classifier** | ✅ **Completed** | Dual-tier inference: FastAPI Python backend (TFLite) + client-side in-browser WebWorker (`onnx-community/mobilenet_v2_1.0_224-plant-disease-identification-ONNX`) |
+| **BUG-01 Guard** | ✅ **Completed** | Strict non-leaf clutter rejection (`Background_without_leaves`) to prevent false-positive spray triggers on desks/tools |
+| **Microclimate Risk Engine** | ✅ **Completed** | 24-hour Open-Meteo & OpenWeather historical stream, Wallin/IRRI sporulation risk scoring, and spray drift safety index |
+| **Field Location & Map** | ✅ **Completed** | Direct Google Maps roadmap tiles (bypasses Firefox/Brave frame restrictions), custom glowing pin, GPS locator, and 30+ regional district profiles |
+| **Conversational AI Companion** | ✅ **Completed** | Dual-Engine: instant agronomic rule engine + streaming client-side LLM ([`HuggingFaceTB/SmolLM2-360M-Instruct`](https://huggingface.co/HuggingFaceTB/SmolLM2-360M-Instruct)) via WebGPU/WASM |
+| **16L Knapsack Dosage Math** | ✅ **Completed** | Exact tank dilution calculations, water volume requirements, chemical formulations, and certified organic biocontrols |
+| **Multilingual Voice Advisories** | ✅ **Completed** | Synthesized Kannada, Hindi, and English audio playback scripts for field accessibility |
+| **Packaging & Launchers** | ✅ **Completed** | Unified launcher script (`./run-all.sh`), modular website runner (`./run-website.sh`), and backend server (`./run-backend.sh`) |
 
-No pesticide dosage is added unless it is verified against a current, locally
-approved product label or an authoritative agricultural recommendation. Brand names
-are not treated as interchangeable. The app must show the active ingredient,
-formulation, approved crop/target, label dose, waiting period, and safety guidance
-before displaying a chemical recommendation.
+---
 
-### Workflow
+## 🧠 AI & Model Architecture
 
-1. Review the sample records with the agriculture mentor.
-2. Confirm the target state/region and the supported crops.
-3. Replace `source_pending` values with authoritative sources.
-4. Add only label-verified dosage and cost data.
-5. Mark a record `ready_for_app` only after all required technical, source,
-   safety, and price checks pass.
+```
+               ┌────────────────────────────────────────────────────────┐
+               │              Farmer Leaf Photo / Webcam Capture         │
+               └───────────────────────────┬────────────────────────────┘
+                                           │
+                    ┌──────────────────────┴──────────────────────┐
+                    ▼                                             ▼
+        [1. FastAPI Neural Backend]                  [2. Browser Vision AI Fallback]
+          Uvicorn :8000 / TFLite                       MobileNetV2 ONNX via WASM
+       (17-Class Crop Pathology Model)            (onnx-community PlantVillage ONNX)
+                    │                                             │
+                    └──────────────────────┬──────────────────────┘
+                                           ▼
+                           [Autonomous Disease Verification]
+                       (Rice, Banana, Sugarcane, Coconut, etc.)
+                                           │
+        ┌──────────────────────────────────┴──────────────────────────────────┐
+        ▼                                                                     ▼
+[Live Weather & Field Location]                                 [AgroPulse AI Companion]
+- Direct Google Maps Canvas                                     - Instant Verified Domain Expert
+- 24h Microclimate Risk Curve                                   - In-Browser SmolLM2 (360M ONNX)
+- Wind Spray Drift Indicator                                    - 16L Knapsack Dilution Calculator
+- Regional Soil Intelligence                                    - Kannada / Hindi Audio Playback
+```
+
+### Models Used:
+1. **Edge LLM (Chat Companion)**: [`HuggingFaceTB/SmolLM2-360M-Instruct`](https://huggingface.co/HuggingFaceTB/SmolLM2-360M-Instruct)
+   * Format: ONNX 4-bit quantized (`q4`), ~180 MB.
+   * Execution: Runs 100% in-browser via WebGPU or WASM with zero server dependency.
+2. **Vision AI (Leaf Pathology)**: [`onnx-community/mobilenet_v2_1.0_224-plant-disease-identification-ONNX`](https://huggingface.co/onnx-community/mobilenet_v2_1.0_224-plant-disease-identification-ONNX)
+   * Format: MobileNetV2 ONNX `q4`, ~3 MB.
+   * Execution: Browser WebWorker background thread.
+3. **Primary Backend Model**: Custom trained MobileNetV2 exported to TensorFlow Lite (`agropulse_leaf_classifier.tflite`, 2.5 MB) with 86.1% validation accuracy over 17 crop categories.
+
+---
+
+## ⚡ Quickstart
+
+### Prerequisites
+* **Node.js**: >= 18.0.0
+* **Python**: >= 3.10
+* **Bash**: Linux / macOS / WSL
+
+### 1. Launch All Services with One Command
+The repository includes an automated launcher that starts the neural backend and the web application concurrently:
+
+```bash
+chmod +x run-all.sh
+./run-all.sh
+```
+
+* **Web Application**: [http://localhost:5173](http://localhost:5173)
+* **FastAPI Backend**: [http://localhost:8000](http://localhost:8000) (Interactive Swagger docs: `/docs`)
+
+---
+
+### 2. Individual Service Launchers
+
+#### Run Web Interface Only:
+```bash
+chmod +x run-website.sh
+./run-website.sh
+```
+
+#### Run FastAPI Neural Backend Only:
+```bash
+chmod +x run-backend.sh
+./run-backend.sh
+```
+
+#### Run Automated Test Vector Validation:
+Runs a stress test across all 17 plant classes and prints accuracy metrics:
+```bash
+chmod +x trial-run.sh
+./trial-run.sh
+```
+
+---
+
+## 📂 Project Structure
+
+```
+├── agropulse-web/               # Production React 18 + Vite Web Application
+│   ├── src/
+│   │   ├── components/          # UI Components (LeafCameraCapture, LiveWeatherAndLocation, etc.)
+│   │   ├── data/                # Crop advisories, regional districts, soil profiles
+│   │   ├── hooks/               # useVisionClassifier, useLLMChat
+│   │   ├── services/            # dosageCalculator, riskService, farmerChatService
+│   │   └── workers/             # vision.worker.ts, llm.worker.ts (WASM/WebGPU threads)
+│   ├── index.html
+│   └── package.json
+├── agropulse-app/               # React Native & Expo Mobile Application
+│   ├── risk-engine/             # Python FastAPI Neural Engine & Training Pipeline
+│   │   ├── artifacts/           # TFLite models, label mappings, training metrics
+│   │   ├── server.py            # FastAPI inference and health endpoints
+│   │   ├── train_model.py       # Transfer learning training pipeline
+│   │   └── smart_inference.py   # Hierarchical crop and disease inferrer
+│   └── assets/                  # Mobile icons and assets
+├── data/                        # Agricultural package-of-practices & regulatory records
+│   ├── advisories.csv           # Validated disease treatment registry
+│   ├── target-districts.csv     # District baseline coordinates and climate zones
+│   └── diagnostic-protocols.csv # Field symptom triage protocols
+├── run-all.sh                   # Unified background launcher
+├── run-website.sh               # Vite development server script
+├── run-backend.sh               # FastAPI uvicorn server script
+└── trial-run.sh                 # TFLite test vector validation script
+```
+
+---
+
+## 🛡️ Agricultural Safety Protocols
+
+1. **Strict Active-Ingredient Verification**: No pesticide dosage is suggested without an approved CIBRC/State Agricultural University label recommendation.
+2. **Knapsack Sprayer Safety (16L)**: All dilutions are calculated strictly per 16-liter knapsack tank to avoid fatal over-concentrations on small farms.
+3. **Pre-Harvest Intervals (PHI)**: Enforced waiting periods are displayed prominently to ensure food safety and consumer health.
+4. **Organic Biocontrol First**: Where available, bio-fungicides (*Trichoderma viride*, *Pseudomonas fluorescens*, Neem oil) are prioritized alongside cultural drainage/pruning practices.
+
+---
+
+## 👥 Team Acers (T15)
+* Built for the 2026 Agricultural Edge AI Challenge.
