@@ -53,3 +53,13 @@
   font-family: var(--font-sans);
 }
 
+/* Leaflet Custom Pin styling */
+.custom-map-pin {
+  background: transparent !important;
+  border: none !important;
+}
+
+.leaflet-container {
+  background-color: #111111 !important;
+}
+

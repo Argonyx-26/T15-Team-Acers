@@ -12,6 +12,7 @@ import {
   StopCircle,
   Brain,
   ScanLine,
+  SwitchCamera,
 } from 'lucide-react';
 import { useVisionClassifier } from '../hooks/useVisionClassifier';
 
@@ -162,6 +163,8 @@ export const LeafCameraCapture: React.FC<LeafCameraCaptureProps> = ({
   const [visionConfidence, setVisionConfidence] = useState<number>(0);
   const [inferenceSource, setInferenceSource] = useState<string>('');
 
+  const [facingMode, setFacingMode] = useState<'environment' | 'user'>('environment');
+
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const streamRef = useRef<MediaStream | null>(null);
 
@@ -174,27 +177,72 @@ export const LeafCameraCapture: React.FC<LeafCameraCaptureProps> = ({
       streamRef.current.getTracks().forEach((track) => track.stop());
       streamRef.current = null;
     }
+    if (videoRef.current) {
+      videoRef.current.srcObject = null;
+    }
     setIsCameraActive(false);
   };
 
+  // Attach stream to video element whenever camera becomes active or video mounts
+  useEffect(() => {
+    if (isCameraActive && videoRef.current && streamRef.current) {
+      if (videoRef.current.srcObject !== streamRef.current) {
+        videoRef.current.srcObject = streamRef.current;
+      }
+      videoRef.current.play().catch((err) => {
+        console.warn('Video playback warning:', err);
+      });
+    }
+  }, [isCameraActive]);
+
   // Start live webcam stream
-  const startCamera = async () => {
+  const startCamera = async (targetFacing: 'environment' | 'user' = facingMode) => {
     setCameraError(null);
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({
-        video: { facingMode: 'environment', width: { ideal: 1280 }, height: { ideal: 720 } },
-        audio: false
-      });
+      let stream: MediaStream;
+      try {
+        // Try requested facing mode (ideal, non-strict to avoid OverconstrainedError on PCs)
+        stream = await navigator.mediaDevices.getUserMedia({
+          video: {
+            facingMode: { ideal: targetFacing },
+            width: { ideal: 1280 },
+            height: { ideal: 720 },
+          },
+          audio: false,
+        });
+      } catch (firstErr) {
+        // Fallback for laptops/desktops with standard webcam
+        console.warn('Environment facing failed, falling back to any camera:', firstErr);
+        stream = await navigator.mediaDevices.getUserMedia({
+          video: true,
+          audio: false,
+        });
+      }
+
       streamRef.current = stream;
+      setIsCameraActive(true);
+
+      // Attach immediately if video element is already mounted
       if (videoRef.current) {
         videoRef.current.srcObject = stream;
-        videoRef.current.play();
+        videoRef.current.play().catch(() => {});
       }
-      setIsCameraActive(true);
-    } catch {
-      setCameraError('Webcam access was denied or is unavailable on this device. Use file upload or test vectors below.');
+    } catch (err: any) {
+      console.error('Camera access failed:', err);
+      setCameraError('Webcam access was denied or is unavailable on this device. Please grant camera permission or use file upload.');
       setIsCameraActive(false);
     }
+  };
+
+  // Flip front/back camera
+  const toggleCameraFacing = async () => {
+    const nextFacing = facingMode === 'environment' ? 'user' : 'environment';
+    setFacingMode(nextFacing);
+    if (streamRef.current) {
+      streamRef.current.getTracks().forEach((track) => track.stop());
+      streamRef.current = null;
+    }
+    await startCamera(nextFacing);
   };
 
   // Run autonomous classification on any image: data: URL or HTTP URL
@@ -335,7 +383,13 @@ export const LeafCameraCapture: React.FC<LeafCameraCaptureProps> = ({
         <div className="relative aspect-video w-full rounded-lg overflow-hidden bg-[#111111] border border-[#2E2E2E] flex items-center justify-center group mb-4">
           {isCameraActive ? (
             <video
-              ref={videoRef}
+              ref={(el) => {
+                videoRef.current = el;
+                if (el && streamRef.current && el.srcObject !== streamRef.current) {
+                  el.srcObject = streamRef.current;
+                  el.play().catch(() => {});
+                }
+              }}
               autoPlay
               playsInline
               muted
@@ -429,16 +483,26 @@ export const LeafCameraCapture: React.FC<LeafCameraCaptureProps> = ({
         )}
 
         {/* Capture / Upload Controls */}
-        <div className="grid grid-cols-2 gap-2.5 mb-4">
+        <div className="mb-4">
           {isCameraActive ? (
-            <>
+            <div className="grid grid-cols-3 gap-2">
               <button
                 type="button"
                 onClick={captureFrame}
                 className="py-2.5 px-3 rounded-lg bg-[#E95420] hover:bg-[#FF6332] text-white font-mono font-bold text-xs flex items-center justify-center gap-1.5 transition-all shadow-md"
               >
                 <Camera className="w-4 h-4" />
-                <span>Snap Specimen</span>
+                <span>Snap</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={toggleCameraFacing}
+                title="Switch Camera (Front/Back)"
+                className="py-2.5 px-3 rounded-lg bg-[#202020] hover:bg-[#2A2A2A] border border-[#3A3A3A] text-[#AEA79F] hover:text-white font-mono text-xs flex items-center justify-center gap-1.5 transition-all"
+              >
+                <SwitchCamera className="w-4 h-4 text-[#E95420]" />
+                <span>Flip</span>
               </button>
 
               <button
@@ -447,14 +511,14 @@ export const LeafCameraCapture: React.FC<LeafCameraCaptureProps> = ({
                 className="py-2.5 px-3 rounded-lg bg-[#141414] hover:bg-[#202020] border border-[#2E2E2E] text-[#AEA79F] hover:text-white font-mono text-xs flex items-center justify-center gap-1.5 transition-all"
               >
                 <StopCircle className="w-4 h-4" />
-                <span>Close Camera</span>
+                <span>Close</span>
               </button>
-            </>
+            </div>
           ) : (
-            <>
+            <div className="grid grid-cols-2 gap-2.5">
               <button
                 type="button"
-                onClick={startCamera}
+                onClick={() => startCamera()}
                 className="py-2.5 px-3 rounded-lg bg-[#E95420] hover:bg-[#FF6332] text-white font-mono font-bold text-xs flex items-center justify-center gap-1.5 transition-all shadow-md"
               >
                 <Camera className="w-4 h-4" />
@@ -471,7 +535,7 @@ export const LeafCameraCapture: React.FC<LeafCameraCaptureProps> = ({
                   className="hidden"
                 />
               </label>
-            </>
+            </div>
           )}
         </div>
 
