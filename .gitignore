@@ -30,3 +30,15 @@ agropulse-app/risk-engine/extracted_test_vectors/
 test compl/raw_banana/
 test compl/raw_coconut/
 test compl/curated_dataset/
+
+# Local media, pitch deliverables & BRAG assets (except 16:9 widescreen video and gif)
+brag/*
+!brag/agropulse_kinetic_169_widescreen.mp4
+!brag/agropulse_kinetic_169_widescreen.gif
+*.mp4
+!brag/agropulse_kinetic_169_widescreen.mp4
+*.mp3
+*.aac
+*.wav
+*.pdf
+

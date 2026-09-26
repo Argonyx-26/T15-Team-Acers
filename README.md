@@ -17,6 +17,16 @@ It fuses **edge optical leaf pathology**, **hyper-local 24-hour microclimate dis
 
 ---
 
+## 🎬 Product Pitch & Walkthrough
+
+<p align="center">
+  <img src="brag/agropulse_kinetic_169_widescreen.gif" alt="AgroPulse Kinetic Demo" width="100%" />
+</p>
+
+> 📹 **High-Definition Video**: [`brag/agropulse_kinetic_169_widescreen.mp4`](brag/agropulse_kinetic_169_widescreen.mp4) (1080p 16:9 Widescreen with synced bass audio)
+
+---
+
 ## 🚀 System Status & Completed Deliverables
 
 | Module / Component | Status | Implementation Details |
