@@ -164,5 +164,9 @@ chmod +x trial-run.sh
 
 ---
 
-## 👥 Team Acers (T15)
-* Built for the 2026 Agricultural Edge AI Challenge.
+## 👥 Authors & Team Acers (T15)
+
+* **Lead Author & Maintainer**: **Visweshwara S** ([@visweshvaras](https://github.com/visweshvaras) · `visweshvaras@gmail.com`)
+* **Co-Author & Contributor**: **Ishan Kumar** ([@ishannvn](https://github.com/ishannvn) · `ishannvn@gmail.com`)
+
+*Built for the 2026 Agricultural Edge AI Challenge.*

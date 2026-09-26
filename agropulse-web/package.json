@@ -2,6 +2,10 @@
   "name": "agropulse-web",
   "private": true,
   "version": "1.0.0",
+  "author": "Visweshwara S <visweshvaras@gmail.com>",
+  "contributors": [
+    "Ishan Kumar <ishannvn@gmail.com>"
+  ],
   "type": "module",
   "scripts": {
     "dev": "vite",
